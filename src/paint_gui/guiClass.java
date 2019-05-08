@@ -1,20 +1,26 @@
 package paint_gui;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import javax.swing.*;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
-    JMenuBar fileMenu;
-    JMenu file;
-    JMenuItem fileOpen, fileSave;
-    JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn;
+    public static String toggledButton = null;
+    private Box horizontalBoxPanel = Box.createHorizontalBox();
+    private Box verticalBoxPanel = Box.createVerticalBox();
 
     /**
      * Create the GUI and display it.
      */
     public void createGUI() {
+        JMenuBar fileMenu;
+        JMenu file;
+        JMenuItem fileOpen, fileSave;
+
+        // Build two tool bars
+        JPanel verticalPanel = new JPanel();
+        JPanel horizontalPanel = new JPanel();
+
         // Create and set up window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -34,30 +40,25 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         file.add(fileOpen);
         file.add(fileSave);
 
-        // Build two tool bars
-        JPanel verticalPanel = new JPanel();
-        JPanel horizontalPanel = new JPanel();
-        verticalPanel.setPreferredSize(new Dimension(32, 50));
-        horizontalPanel.setPreferredSize(new Dimension(50, 500));
+        // Edit the panels
+        verticalPanel.setPreferredSize(new Dimension(50, 500));
+        horizontalPanel.setPreferredSize(new Dimension(500, 50));
 
-        // Add buttons to the vertical panel of tools
-        plotBtn = new JButton("Plot");
-        // Add listener here
-        lineBtn = new JButton("Line");
-        // Add listener here
-        ellipseBtn = new JButton("Ellipse");
-        // Add listener here
-        polygonBtn = new JButton("Polygon");
-        // Add listener here
-        rectangleBtn = new JButton("Rectangle");
-        // Add listener here
-        verticalPanel.add(plotBtn); verticalPanel.add(rectangleBtn);
-        verticalPanel.add(lineBtn); verticalPanel.add(ellipseBtn);
-        verticalPanel.add(polygonBtn);
+        // Call the toolboxes to build
+        createButtonTools(); // horizontal one
+        verticalPanel.add(verticalBoxPanel);
+        horizontalPanel.add(horizontalBoxPanel);
+
+        // Create a canvas
+        JPanel paintCanvas = new JPanel();
+        paintCanvas.setPreferredSize(new Dimension(200, 200));
+        paintCanvas.setBackground(Color.white);
+        paintCanvas.getGraphics();
 
         // Add panels to control pane
-        getContentPane().add(horizontalPanel, BorderLayout.WEST);
-        getContentPane().add(verticalPanel, BorderLayout.PAGE_START);
+        getContentPane().add(paintCanvas, BorderLayout.CENTER);
+        getContentPane().add(horizontalPanel, BorderLayout.PAGE_START);
+        getContentPane().add(verticalPanel, BorderLayout.WEST);
 
         // Display the window
         setPreferredSize(new Dimension(600, 600));
@@ -66,5 +67,30 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         getContentPane().setBackground(Color.white);
         pack();
         setVisible(true);
+    }
+
+    public void createButtonTools() {
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn;
+        // Add buttons to the vertical panel of tools
+        plotBtn = createButton("Plot");
+        ellipseBtn = createButton("Ellipse");
+        lineBtn = createButton("Line");
+        polygonBtn = createButton("Polygon");
+        rectangleBtn = createButton("Rectangle");
+        horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
+        horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
+        horizontalBoxPanel.add(polygonBtn);
+    }
+
+    public JButton createButton(String name) {
+        JButton tempBtn = new JButton(name);
+        tempBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggledButton = name;
+                System.out.println("Selected button: " + toggledButton);
+            }
+        });
+        return tempBtn;
     }
 }
