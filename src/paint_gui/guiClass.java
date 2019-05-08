@@ -50,13 +50,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         horizontalPanel.add(horizontalBoxPanel);
 
         // Create a canvas
-        JPanel paintCanvas = new JPanel();
-        paintCanvas.setPreferredSize(new Dimension(200, 200));
-        paintCanvas.setBackground(Color.white);
-        paintCanvas.getGraphics();
+        Canvas canvas;
+        canvas = new Canvas(Color.white);
 
         // Add panels to control pane
-        getContentPane().add(paintCanvas, BorderLayout.CENTER);
+        getContentPane().add(canvas, BorderLayout.CENTER);
         getContentPane().add(horizontalPanel, BorderLayout.PAGE_START);
         getContentPane().add(verticalPanel, BorderLayout.WEST);
 
