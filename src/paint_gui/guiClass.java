@@ -49,24 +49,31 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 try {
                     BufferedReader in = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-                    for (String line = in.readLine(); line != null; line = in.readLine())
+                    for (String lineFile = in.readLine(); lineFile != null; lineFile = in.readLine())
                     {
-                        String[] input = line.split("\\s");
+                        String[] input = lineFile.split("\\s");
+                        int[] coordinates;
                         switch (input[0].toLowerCase()) {
                             case "line":
                                 System.out.println("line");
+                                coordinates = getPoints(input, input.length-1);
+                                Line line = new Line(coordinates[1], coordinates[2], coordinates[3], coordinates[4]);
                                 break;
                             case "plot":
                                 System.out.println("plot");
+                                coordinates = getPoints(input, input.length-1);
                                 break;
                             case "rectangle":
                                 System.out.println("rectangle");
+                                coordinates = getPoints(input, input.length-1);
                                 break;
                             case "ellipse":
                                 System.out.println("ellipse");
+                                coordinates = getPoints(input, input.length-1);
                                 break;
                             case "polygon":
                                 System.out.println("polygon");
+                                coordinates = getPoints(input, input.length-1);
                                 break;
                             case "pen":
                                 System.out.println("pen");
@@ -141,5 +148,13 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             }
         });
         return tempBtn;
+    }
+
+    private int[] getPoints(String[] input, int size) {
+        int[] points = new int[size];
+        for (int i = 1; i < input.length; i++) {
+            points[i] = Integer.parseInt(input[i]);
+        }
+        return points;
     }
 }
