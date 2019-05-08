@@ -2,7 +2,13 @@ package paint_gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static String toggledButton = null;
@@ -35,6 +41,51 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         // Build sub menu for fileOpen and fileSave
         fileOpen = new JMenuItem("Open file");
+        fileOpen.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    BufferedReader in = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
+                    for (String line = in.readLine(); line != null; line = in.readLine())
+                    {
+                        String[] input = line.split("\\s");
+                        switch (input[0].toLowerCase()) {
+                            case "line":
+                                System.out.println("line");
+                                break;
+                            case "plot":
+                                System.out.println("plot");
+                                break;
+                            case "rectangle":
+                                System.out.println("rectangle");
+                                break;
+                            case "ellipse":
+                                System.out.println("ellipse");
+                                break;
+                            case "polygon":
+                                System.out.println("polygon");
+                                break;
+                            case "pen":
+                                System.out.println("pen");
+                                break;
+                            case "fill":
+                                System.out.println("fill");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         fileSave = new JMenuItem("Save");
         // Add listener here
         file.add(fileOpen);
