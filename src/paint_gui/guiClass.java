@@ -44,14 +44,16 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         verticalPanel.setPreferredSize(new Dimension(50, 500));
         horizontalPanel.setPreferredSize(new Dimension(500, 50));
 
-        // Call the toolboxes to build
-        createButtonTools(); // horizontal one
-        verticalPanel.add(verticalBoxPanel);
-        horizontalPanel.add(horizontalBoxPanel);
-
         // Create a canvas
         Canvas canvas;
         canvas = new Canvas(Color.white);
+
+        // Call the toolboxes to build
+        createButtonTools(canvas); // horizontal one
+        verticalPanel.add(verticalBoxPanel);
+        horizontalPanel.add(horizontalBoxPanel);
+
+
 
         // Add panels to control pane
         getContentPane().add(canvas, BorderLayout.CENTER);
@@ -67,12 +69,28 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setVisible(true);
     }
 
-    public void createButtonTools() {
+    public void createButtonTools(Canvas canvas) {
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn;
         // Add buttons to the vertical panel of tools
+
+        //Plot button
         plotBtn = createButton("Plot");
+        plotBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                canvas.Plot();
+            }
+
+        });
         ellipseBtn = createButton("Ellipse");
+        //Line button
         lineBtn = createButton("Line");
+        lineBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                canvas.Line();
+            }
+
+        });
+
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
         horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
