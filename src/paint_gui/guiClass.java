@@ -82,6 +82,14 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         });
         ellipseBtn = createButton("Ellipse");
+        ellipseBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                canvas.Ellipse();
+            }
+
+        });
+
+
         //Line button
         lineBtn = createButton("Line");
         lineBtn.addActionListener(new ActionListener(){
@@ -92,7 +100,20 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         });
 
         polygonBtn = createButton("Polygon");
+        polygonBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                canvas.Polygon();
+            }
+
+        });
         rectangleBtn = createButton("Rectangle");
+        rectangleBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                canvas.Rectangle();
+            }
+
+        });
+
         horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
         horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
         horizontalBoxPanel.add(polygonBtn);

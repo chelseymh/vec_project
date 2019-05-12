@@ -3,6 +3,7 @@ package paint_gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
 
 public class Canvas extends JComponent {
 
@@ -52,6 +53,33 @@ public class Canvas extends JComponent {
         });
     }
 
+    public void Ellipse(){
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                x1 = e.getX();
+                y1 = e.getY();
+                System.out.println("Start co-ords are: " + x1 + " and " + y1);
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            public void mouseReleased (MouseEvent e){
+                super.mouseReleased(e);
+                x2 = e.getX();
+                y2 = e.getY();
+
+                System.out.println("End co-ords are: " + x2 + " and " + y2);
+
+                theInk.setPaint(Color.blue);
+                if (theInk != null)
+                    theInk.draw(new Ellipse2D.Double(50, 50, 250, 250));;
+                repaint();
+            }
+        });
+
+    }
+
     public void Line(){
         addMouseListener(new MouseAdapter() {
             @Override
@@ -73,6 +101,63 @@ public class Canvas extends JComponent {
                 theInk.setPaint(Color.blue);
                 if (theInk != null)
                     theInk.drawLine(x1, y1, x2, y2);
+                repaint();
+            }
+        });
+
+    }
+
+    public void Polygon(){
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                x1 = e.getX();
+                y1 = e.getY();
+                System.out.println("Start co-ords are: " + x1 + " and " + y1);
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            public void mouseReleased (MouseEvent e){
+                super.mouseReleased(e);
+                x2 = e.getX();
+                y2 = e.getY();
+
+                System.out.println("End co-ords are: " + x2 + " and " + y2);
+
+                theInk.setPaint(Color.blue);
+                if (theInk != null)
+                    theInk.drawLine(x1, y1, x2, y2);
+                repaint();
+            }
+        });
+
+    }
+
+    public void Rectangle(){
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                x1 = e.getX();
+                y1 = e.getY();
+                System.out.println("Start co-ords are: " + x1 + " and " + y1);
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            public void mouseReleased (MouseEvent e){
+                super.mouseReleased(e);
+                x2 = e.getX();
+                y2 = e.getY();
+
+                System.out.println("End co-ords are: " + x2 + " and " + y2);
+
+                theInk.setPaint(Color.blue);
+                if (theInk != null)
+                    //Rectangle works by starting xy point followed by desired width
+                    // and height, we get this by getting the difference of our start
+                    // and end coords
+                    theInk.drawRect(x1, y1, Math.abs(x2-x1), Math.abs(y2-y1));
                 repaint();
             }
         });
