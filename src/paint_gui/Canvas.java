@@ -3,7 +3,6 @@ package paint_gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Ellipse2D;
 
 public class Canvas extends JComponent {
 
@@ -17,10 +16,6 @@ public class Canvas extends JComponent {
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(color);
         setOpaque(true);
-
-        //repaint();
-
-
     }
     //Java Swing is a black box of graphics and will call this
     //as needed to paint components on the canvas
@@ -33,9 +28,14 @@ public class Canvas extends JComponent {
             //taken from window dimensions in guiClass
             image = createImage(600, 600);
             theInk = (Graphics2D)image.getGraphics();
+            theInk.setPaint(Color.DARK_GRAY);
+            image.flush();
         }
         graphics.drawImage(image, 0, 0, null);
+
     }
+
+
 
     public void Plot(){
         addMouseListener(new MouseAdapter() {
@@ -45,7 +45,6 @@ public class Canvas extends JComponent {
                 y1 = e.getY();
                 System.out.println("Start co-ords are: " + x1 + " and " + y1);
 
-                theInk.setPaint(Color.blue);
                 if (theInk != null)
                     theInk.drawLine(x1, y1, x1, y1);
                 repaint();
@@ -54,6 +53,7 @@ public class Canvas extends JComponent {
     }
 
     public void Ellipse(){
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -71,9 +71,10 @@ public class Canvas extends JComponent {
 
                 System.out.println("End co-ords are: " + x2 + " and " + y2);
 
-                theInk.setPaint(Color.blue);
                 if (theInk != null)
-                    theInk.draw(new Ellipse2D.Double(50, 50, 250, 250));;
+                    //ellipse function takes xy coords of start followed by width and height,
+                    // we get this by getting the difference of our start and end coords
+                    theInk.drawOval(x1, y1, Math.abs(x2-x1), Math.abs(y2-y1));
                 repaint();
             }
         });
@@ -98,7 +99,6 @@ public class Canvas extends JComponent {
 
                 System.out.println("End co-ords are: " + x2 + " and " + y2);
 
-                theInk.setPaint(Color.blue);
                 if (theInk != null)
                     theInk.drawLine(x1, y1, x2, y2);
                 repaint();
@@ -125,7 +125,6 @@ public class Canvas extends JComponent {
 
                 System.out.println("End co-ords are: " + x2 + " and " + y2);
 
-                theInk.setPaint(Color.blue);
                 if (theInk != null)
                     theInk.drawLine(x1, y1, x2, y2);
                 repaint();
@@ -152,7 +151,7 @@ public class Canvas extends JComponent {
 
                 System.out.println("End co-ords are: " + x2 + " and " + y2);
 
-                theInk.setPaint(Color.blue);
+
                 if (theInk != null)
                     //Rectangle works by starting xy point followed by desired width
                     // and height, we get this by getting the difference of our start
