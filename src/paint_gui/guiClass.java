@@ -2,13 +2,7 @@ package paint_gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static String toggledButton = null;
@@ -41,58 +35,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         // Build sub menu for fileOpen and fileSave
         fileOpen = new JMenuItem("Open file");
-        fileOpen.addActionListener(e -> {
-            JFileChooser chooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
-            chooser.setFileFilter(filter);
-            int returnVal = chooser.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                try {
-                    BufferedReader in = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-                    for (String lineFile = in.readLine(); lineFile != null; lineFile = in.readLine())
-                    {
-                        String[] input = lineFile.split("\\s");
-                        int[] coordinates;
-                        switch (input[0].toLowerCase()) {
-                            case "line":
-                                System.out.println("line");
-                                coordinates = getPoints(input, input.length-1);
-                                Line line = new Line(coordinates[1], coordinates[2], coordinates[3], coordinates[4]);
-                                break;
-                            case "plot":
-                                System.out.println("plot");
-                                coordinates = getPoints(input, input.length-1);
-                                break;
-                            case "rectangle":
-                                System.out.println("rectangle");
-                                coordinates = getPoints(input, input.length-1);
-                                break;
-                            case "ellipse":
-                                System.out.println("ellipse");
-                                coordinates = getPoints(input, input.length-1);
-                                break;
-                            case "polygon":
-                                System.out.println("polygon");
-                                coordinates = getPoints(input, input.length-1);
-                                break;
-                            case "pen":
-                                System.out.println("pen");
-                                break;
-                            case "fill":
-                                System.out.println("fill");
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
         fileSave = new JMenuItem("Save");
         // Add listener here
         file.add(fileOpen);
@@ -148,13 +90,5 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             }
         });
         return tempBtn;
-    }
-
-    private int[] getPoints(String[] input, int size) {
-        int[] points = new int[size];
-        for (int i = 1; i < input.length; i++) {
-            points[i] = Integer.parseInt(input[i]);
-        }
-        return points;
     }
 }
