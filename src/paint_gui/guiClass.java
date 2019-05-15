@@ -53,8 +53,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         verticalPanel.add(verticalBoxPanel);
         horizontalPanel.add(horizontalBoxPanel);
 
-
-
         // Add panels to control pane
         getContentPane().add(canvas, BorderLayout.CENTER);
         getContentPane().add(horizontalPanel, BorderLayout.PAGE_START);
@@ -88,7 +86,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             }
 
         });
-
 
         //Line button
         lineBtn = createButton("Line");

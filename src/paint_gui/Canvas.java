@@ -180,7 +180,6 @@ public class Canvas extends JComponent {
 
     }
 
-
     public Dimension getMinimumSize() {
         return minSize;
     }
