@@ -13,7 +13,7 @@ public class Ellipse extends Shape {
     }
 
     @Override
-    void draw(Graphics2D g) {
+    public void draw(Graphics2D g) {
         g.drawOval(x, y, width, height);
     }
 }
