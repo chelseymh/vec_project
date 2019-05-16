@@ -1,4 +1,4 @@
-package paint_gui;
+package Shapes;
 
 import java.awt.*;
 
