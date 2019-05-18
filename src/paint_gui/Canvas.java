@@ -1,31 +1,68 @@
 package paint_gui;
 
+import Shapes.*;
+import Shapes.Rectangle;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class Canvas extends JComponent {
-    guiClass gui;
-    Dimension minSize = new Dimension(200, 200);
+    private guiClass gui;
+    private Dimension minSize = new Dimension(200, 200);
+    private static final String NEWLINE = System.getProperty("line.separator");
     private int x1, y1, x2, y2;
-    Graphics2D theInk;
-    Image image;
+    private Graphics2D theInk;
+    private Image image;
 
     public Canvas(Color color) {
+        gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
         setBorder(BorderFactory.createLineBorder(Color.black));
-        setBackground(color);
+        setBackground(color.white);
         setOpaque(true);
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(new MouseListener() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                if (gui.toggledButton != null && gui.toggledButton != "Plot") {
-                    x1 = e.getX();
-                    y1 = e.getY();
-                    System.out.println("Master: Start co-ords are: " + x1 + " and " + y1);
+            public void mouseClicked(MouseEvent e) {
+                x1 = e.getX();
+                y1 = e.getY();
+                printEvent("Mouse clicked", e);
+                //repaint();
+                if (theInk != null && gui.toggledButton.equals("Plot")) {
+                    Plot plot = new Plot();
+                    plot.Plot(x1, y1, x2, y2);
+                    plot.draw(theInk);
+                    repaint();
                 }
             }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x1 = e.getX();
+                y1 = e.getY();
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                x2 = e.getX();
+                y2 = e.getY();
+                printEvent("Mouse released", e);
+                repaint();
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+        });
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                x2 = e.getX();
+                y2 = e.getY();
+                printEvent("Mouse dragged", e);
+                repaint();
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {}
         });
     }
     //Java Swing is a black box of graphics and will call this
@@ -33,7 +70,8 @@ public class Canvas extends JComponent {
     //bit dodgy may need to look at again in the future
     //Takes a graphics component to draw on but since we don't call
     //it ourselves, Swing takes care of it
-    public void paintComponent(Graphics graphics){
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
         //if there's no image already
         if(image == null){
             //taken from window dimensions in guiClass
@@ -43,141 +81,23 @@ public class Canvas extends JComponent {
             theInk.setStroke(new BasicStroke(4));
             image.flush();
         }
-        graphics.drawImage(image, 0, 0, null);
-    }
-
-    public void Plot(){
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                x1 = e.getX();
-                y1 = e.getY();
-                if (theInk != null && gui.toggledButton.equals("Plot"))
-                    System.out.println("Plot: Start co-ords are: " + x1 + " and " + y1);
-                theInk.drawLine(x1, y1, x1, y1);
-                repaint();
-            }
-        });
-    }
-
-    public void Ellipse(){
-        addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                System.out.println("Drag in motion");
-                x2 = e.getX();
-                y2 = e.getY();
-            }
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                repaint();
-            }
-        });
-        addMouseListener(new MouseAdapter() {
-            public void mouseReleased (MouseEvent e){
-                super.mouseReleased(e);
-                x2 = e.getX();
-                y2 = e.getY();
-                if (theInk != null && gui.toggledButton.equals("Ellipse"))
-                    System.out.println("End co-ords are: " + x2 + " and " + y2);
-                //ellipse function takes xy coords of start followed by width and height,
-                // we get this by getting the difference of our start and end coords
-                //theInk.drawOval(x1, y1, Math.abs(x2-x1), Math.abs(y2-y1));
-
-                // Revert if ellipse is reverted
-                if (x1 !=0 || x2 !=0) {
-                    boolean revertX = x1 < x2;
-                    boolean revertY = y1 < y2;
-                    theInk.drawOval(revertX ? x1 : x2, revertY ? y1 : y2, revertX ? Math.abs(x2-x1) : Math.abs(x1-x2),
-                            revertY ? Math.abs(y2-y1) : Math.abs(y1-y2));
-                }
-                repaint();
-            }
-        });
-    }
-
-    public void Line(){
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-                x2 = e.getX();
-                y2 = e.getY();
-                if (theInk != null && gui.toggledButton.equals("Line")) {
-                    System.out.println("End co-ords are: " + x2 + " and " + y2);
-                    theInk.drawLine(x1, y1, x2, y2);
-                }
-                repaint();
-            }
-        });
-        addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                x2 = e.getX();
-                y2 = e.getY();
-                System.out.println("Drag in motion");
-                theInk.drawLine(x1, y1, x2, y2);
-                repaint();
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                repaint();
-            }
-        });
-    }
-
-    public void Polygon(){
-        addMouseListener(new MouseAdapter() {
-            public void mouseReleased (MouseEvent e){
-                super.mouseReleased(e);
-                x2 = e.getX();
-                y2 = e.getY();
-                if (theInk != null)
-                    System.out.println("End co-ords are: " + x2 + " and " + y2);
-                theInk.drawLine(x1, y1, x2, y2);
-                repaint();
-            }
-        });
-
-    }
-
-    public void Rectangle(){
-        addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                x2 = e.getX();
-                y2 = e.getY();
-            }
-            @Override
-            public void mouseMoved(MouseEvent m) {
-                repaint();
-            }
-        });
-        addMouseListener(new MouseAdapter() {
-            public void mouseReleased (MouseEvent e) {
-                super.mouseReleased(e);
-                x2 = e.getX();
-                y2 = e.getY();
-                if (theInk != null && gui.toggledButton.equals("Rectangle")) {
-                    System.out.println("End co-ords are: " + x2 + " and " + y2);
-                    //Rectangle works by starting xy point followed by desired width
-                    // and height, we get this by getting the difference of our start
-                    // and end coords
-
-                    // Revert if rectangle is drawn backwards
-                    if (x1 != 0 || x2 != 0) {
-                        boolean revertX = x1 < x2;
-                        boolean revertY = y1 < y2;
-                        theInk.drawRect(revertX ? x1 : x2, revertY ? y1 : y2, revertX ? Math.abs(x2 - x1) : Math.abs(x1 - x2),
-                                revertY ? Math.abs(y2 - y1) : Math.abs(y1 - y2));
-                    }
-                    repaint();
-                }
-            }
-        });
-
+        g.drawImage(image, 0, 0, null);
+        if (theInk != null && gui.toggledButton.equals("Line")) {
+            Line line = new Line();
+            line.Line(x1, y1, x2, y2);
+            line.draw(theInk);
+        } else if (theInk != null && gui.toggledButton.equals("Rectangle")) {
+            Rectangle rect = new Rectangle();
+            rect.Rectangle(x1, y1, x2, y2);
+            rect.draw(theInk);
+        } else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
+            Ellipse ellipse = new Ellipse();
+            ellipse.Ellipse(x1, y1, x2, y2);
+            ellipse.draw(theInk);
+        } else if (theInk != null && gui.toggledButton.equals("Polygon")) {
+            // Insert Polygon code
+            theInk.drawLine(x1, y1, x2, y2);
+        }
     }
 
     public Dimension getMinimumSize() {
@@ -186,5 +106,12 @@ public class Canvas extends JComponent {
 
     public Dimension getPreferredSize() {
         return minSize;
+    }
+
+    void printEvent(String event, MouseEvent e) {
+        System.out.println(event + " (" + e.getX() + ", "
+                + e.getY() + ") " + "detected on "
+                + e.getComponent().getClass().getName()
+                + NEWLINE);
     }
 }

@@ -5,15 +5,23 @@ import java.awt.*;
 public class Ellipse extends Shape {
     private int x, y, height, width;
 
-    public Ellipse(int x1, int y1, int x2, int y2) {
+    public void Ellipse(int x1, int y1, int x2, int y2) {
         x = x1;
         y = y1;
-        height = y2-y1;
-        width = x2-x1;
+        height = x2;
+        width = y2;
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawOval(x, y, width, height);
+        //ellipse function takes xy coords of start followed by width and height,
+        // we get this by getting the difference of our start and end coords
+        // Revert if ellipse is reverted
+        if (x != 0 || height != 0) {
+            boolean revertX = x < height;
+            boolean revertY = y < width;
+            g.drawOval(revertX ? x : height, revertY ? y : width, revertX ? Math.abs(height - x) : Math.abs(x - height),
+                    revertY ? Math.abs(width - y) : Math.abs(y - width));
+        }
     }
 }
