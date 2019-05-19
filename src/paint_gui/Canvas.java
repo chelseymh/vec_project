@@ -31,6 +31,7 @@ public class Canvas extends JComponent {
                 if (theInk != null && gui.toggledButton.equals("Plot")) {
                     Plot plot = new Plot();
                     plot.Plot(x1, y1, x2, y2);
+                    System.out.println(plot.getCommand());
                     plot.draw(theInk);
                     repaint();
                 }
@@ -85,14 +86,17 @@ public class Canvas extends JComponent {
         if (theInk != null && gui.toggledButton.equals("Line")) {
             Line line = new Line();
             line.Line(x1, y1, x2, y2);
+            System.out.println(line.getCommand());
             line.draw(theInk);
         } else if (theInk != null && gui.toggledButton.equals("Rectangle")) {
             Rectangle rect = new Rectangle();
             rect.Rectangle(x1, y1, x2, y2);
+            System.out.println(rect.getCommand());
             rect.draw(theInk);
         } else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
             Ellipse ellipse = new Ellipse();
             ellipse.Ellipse(x1, y1, x2, y2);
+            System.out.println(ellipse.getCommand());
             ellipse.draw(theInk);
         } else if (theInk != null && gui.toggledButton.equals("Polygon")) {
             // Insert Polygon code

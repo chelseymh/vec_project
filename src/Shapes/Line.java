@@ -14,4 +14,9 @@ public class Line extends Shape {
     public void draw(Graphics2D g) {
         g.drawLine(x1, y1, x2, y2);
     }
+
+    public String getCommand(){
+        String command= String.format("LINE %1$d %2$d %3$d %4$d", x1, y1, x2, y2);
+        return command;
+    }
 }

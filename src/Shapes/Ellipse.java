@@ -24,4 +24,9 @@ public class Ellipse extends Shape {
                     revertY ? Math.abs(width - y) : Math.abs(y - width));
         }
     }
+
+    public String getCommand(){
+        String command= String.format("ELLIPSE %1$d %2$d %3$d %4$d", x, y, height, width);
+        return command;
+    }
 }
