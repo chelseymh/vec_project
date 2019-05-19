@@ -7,14 +7,17 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Canvas extends JComponent {
     private guiClass gui;
     private Dimension minSize = new Dimension(200, 200);
     private static final String NEWLINE = System.getProperty("line.separator");
-    private int x1, y1, x2, y2;
+    private int x1, y1, x2, y2, x3, y3;
     private Graphics2D theInk;
     private Image image;
+    private List<String> commands = new ArrayList<String>();
 
     public Canvas(Color color) {
         gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
@@ -32,6 +35,7 @@ public class Canvas extends JComponent {
                     Plot plot = new Plot();
                     plot.Plot(x1, y1, x2, y2);
                     System.out.println(plot.getCommand());
+                    commands.add(plot.getCommand());
                     plot.draw(theInk);
                     repaint();
                 }
@@ -80,23 +84,26 @@ public class Canvas extends JComponent {
             theInk = (Graphics2D)image.getGraphics();
             theInk.setPaint(Color.DARK_GRAY);
             theInk.setStroke(new BasicStroke(4));
-            image.flush();
+            clean();
         }
         g.drawImage(image, 0, 0, null);
         if (theInk != null && gui.toggledButton.equals("Line")) {
             Line line = new Line();
             line.Line(x1, y1, x2, y2);
             System.out.println(line.getCommand());
+            commands.add(line.getCommand());
             line.draw(theInk);
         } else if (theInk != null && gui.toggledButton.equals("Rectangle")) {
             Rectangle rect = new Rectangle();
             rect.Rectangle(x1, y1, x2, y2);
             System.out.println(rect.getCommand());
+            commands.add(rect.getCommand());
             rect.draw(theInk);
         } else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
             Ellipse ellipse = new Ellipse();
             ellipse.Ellipse(x1, y1, x2, y2);
             System.out.println(ellipse.getCommand());
+            commands.add(ellipse.getCommand());
             ellipse.draw(theInk);
         } else if (theInk != null && gui.toggledButton.equals("Polygon")) {
             // Insert Polygon code
@@ -118,4 +125,13 @@ public class Canvas extends JComponent {
                 + e.getComponent().getClass().getName()
                 + NEWLINE);
     }
+
+    public void clean(){
+        theInk.setPaint(Color.white);
+        theInk.fillRect(0, 0, getSize().width, getSize().height);
+        theInk.setPaint(Color.black);
+        repaint();
+    }
+
+
 }
