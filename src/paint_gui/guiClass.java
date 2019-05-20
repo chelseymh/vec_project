@@ -71,26 +71,29 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     public void createButtonTools() {
-        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn;
-        // Add buttons to the vertical panel of tools
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, penBtn;
+
         plotBtn = createButton("Plot");
         ellipseBtn = createButton("Ellipse");
         lineBtn = createButton("Line");
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
-        // Add buttons to horizontal panel of tools
+
         undoBtn = createButton("Undo");
         undoBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                canvas.Undo();
-            }
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  canvas.Undo();
+              }
         });
+
+        penBtn = createButton("Pen");
 
         horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
         horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
         horizontalBoxPanel.add(polygonBtn);
         verticalBoxPanel.add(undoBtn);
+        horizontalBoxPanel.add(penBtn);
     }
 
     public JButton createButton(String name) {
