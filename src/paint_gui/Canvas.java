@@ -65,6 +65,14 @@ public class Canvas extends JComponent {
                     commands.add(line.getCommand());
                     //line.draw(theInk);
                 }
+
+                else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
+                    Ellipse ellipse = new Ellipse();
+                    ellipse.Ellipse(x1, y1, x2, y2);
+                    System.out.println(ellipse.getCommand());
+                    commands.add(ellipse.getCommand());
+                    //ellipse.draw(theInk);
+                }
                 clean();
                 readCommands();
             }
@@ -96,6 +104,12 @@ public class Canvas extends JComponent {
                     Line line = new Line();
                     line.Line(x1, y1, x2, y2);
                     line.draw(theInk);
+                }
+
+                if (theInk != null && gui.toggledButton.equals("Ellipse")) {
+                    Ellipse ellipse = new Ellipse();
+                    ellipse.Ellipse(x1, y1, x2, y2);
+                    ellipse.draw(theInk);
                 }
 
                 repaint();
@@ -135,12 +149,7 @@ public class Canvas extends JComponent {
 
 
 
-        } else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
-            Ellipse ellipse = new Ellipse();
-            ellipse.Ellipse(x1, y1, x2, y2);
-            System.out.println(ellipse.getCommand());
-            commands.add(ellipse.getCommand());
-            //ellipse.draw(theInk);
+
 
         } else if (theInk != null && gui.toggledButton.equals("Polygon")) {
             // Insert Polygon code
@@ -196,7 +205,9 @@ public class Canvas extends JComponent {
                     break;
                 case "ellipse":
                     System.out.println("ellipse");
-
+                    Ellipse ellipse = new Ellipse();
+                    ellipse.Ellipse(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    ellipse.draw(theInk);
                     break;
                 case "polygon":
                     System.out.println("polygon");
