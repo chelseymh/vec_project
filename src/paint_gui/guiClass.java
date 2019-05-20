@@ -11,7 +11,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     public static Object toggledButton = null;
     private Box horizontalBoxPanel = Box.createHorizontalBox();
     private Box verticalBoxPanel = Box.createVerticalBox();
+<<<<<<< HEAD
     Canvas canvas;
+=======
+    private String tool = "PEN";
+>>>>>>> Implemented colours for quick selection in a very simplistic way
 
     /**
      * Create the GUI and display it.
@@ -45,7 +49,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         file.add(fileSave);
 
         // Edit the panels
+<<<<<<< HEAD
         verticalPanel.setPreferredSize(new Dimension(70, 500));
+=======
+        verticalPanel.setPreferredSize(new Dimension(100, 500));
+>>>>>>> Implemented colours for quick selection in a very simplistic way
         horizontalPanel.setPreferredSize(new Dimension(500, 50));
 
         // Instantiate the canvas
@@ -72,6 +80,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
     public void createButtonTools() {
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, penBtn;
+        JButton black, blue, red, green;
 
         plotBtn = createButton("Plot");
         ellipseBtn = createButton("Ellipse");
@@ -89,22 +98,47 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         penBtn = createButton("Pen");
 
+        black = createButton("Black");
+        blue = createButton("Blue");
+        red = createButton("Red");
+        green = createButton("Green");
+
         horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
         horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
         horizontalBoxPanel.add(polygonBtn);
+
         verticalBoxPanel.add(undoBtn);
-        horizontalBoxPanel.add(penBtn);
+        verticalBoxPanel.add(new JLabel("1. Choose tool:"));
+        verticalBoxPanel.add(penBtn);
+        verticalBoxPanel.add(new JLabel("2. Choose color:"));
+        verticalBoxPanel.add(black);
+        verticalBoxPanel.add(blue);
+        verticalBoxPanel.add(red);
+        verticalBoxPanel.add(green);
     }
 
     public JButton createButton(String name) {
         JButton tempBtn = new JButton(name);
         tempBtn.addActionListener(actionEvent -> {
-            if (name.equals("Pen")) {
-                String color = JOptionPane.showInputDialog(this, "Input color:", null);
-                Canvas.commands.add("PEN " + color);
-            } else {
-                toggledButton = name;
-                System.out.println("Selected button: " + toggledButton);
+            switch (name) {
+                case "Pen":
+                    tool = "PEN";
+                    break;
+                case "Black":
+                    Canvas.commands.add(tool + " #000000");
+                    break;
+                case "Blue":
+                    Canvas.commands.add(tool + " #0000FF");
+                    break;
+                case "Red":
+                    Canvas.commands.add(tool + " #FF0000");
+                    break;
+                case "Green":
+                    Canvas.commands.add(tool + " #00FF00");
+                    break;
+                default:
+                    toggledButton = name;
+                    System.out.println("Selected button: " + toggledButton);
             }
         });
         return tempBtn;
