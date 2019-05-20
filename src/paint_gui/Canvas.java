@@ -49,12 +49,21 @@ public class Canvas extends JComponent {
                 //x2 = e.getX();
                 //y2 = e.getY();
                 printEvent("Mouse released", e);
+
                 if (theInk != null && gui.toggledButton.equals("Rectangle")) {
                     Rectangle rect = new Rectangle();
                     rect.Rectangle(x1, y1, x2, y2);
                     System.out.println(rect.getCommand());
                     commands.add(rect.getCommand());
                     //rect.draw(theInk);
+                }
+
+                else if (theInk != null && gui.toggledButton.equals("Line")) {
+                    Line line = new Line();
+                    line.Line(x1, y1, x2, y2);
+                    System.out.println(line.getCommand());
+                    commands.add(line.getCommand());
+                    //line.draw(theInk);
                 }
                 clean();
                 readCommands();
@@ -82,6 +91,13 @@ public class Canvas extends JComponent {
                     rect.Rectangle(x1, y1, x2, y2);
                     rect.draw(theInk);
                 }
+
+                if (theInk != null && gui.toggledButton.equals("Line")) {
+                    Line line = new Line();
+                    line.Line(x1, y1, x2, y2);
+                    line.draw(theInk);
+                }
+
                 repaint();
                 //clean();
             }
@@ -107,28 +123,17 @@ public class Canvas extends JComponent {
             //clean();
         }
         g.drawImage(image, 0, 0, null);
+
         if (theInk != null && gui.toggledButton.equals("Plot")) {
             Plot plot = new Plot();
             plot.Plot(x1, y1, x2, y2);
             System.out.println(plot.getCommand());
             commands.add(plot.getCommand());
             plot.draw(theInk);
-        }
-        else if (theInk != null && gui.toggledButton.equals("Line")) {
-            Line line = new Line();
-            line.Line(x1, y1, x2, y2);
-            System.out.println(line.getCommand());
-            commands.add(line.getCommand());
-            //line.draw(theInk);
 
-        } else if (theInk != null && gui.toggledButton.equals("Rectangle")) {
-            //Rectangle rect = new Rectangle();
-            //rect.Rectangle(x1, y1, x2, y2);
-//            System.out.println(rect.getCommand());
-//            commands.add(rect.getCommand());
-            //clean();
-            //System.out.println("preview rectangle");
-            //rect.draw(theInk);
+
+
+
 
         } else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
             Ellipse ellipse = new Ellipse();
