@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Canvas extends JComponent {
     private guiClass gui;
     private Dimension minSize = new Dimension(200, 200);
@@ -215,5 +216,21 @@ public class Canvas extends JComponent {
         repaint();
     }
 
+    public List<String> getCommands() {
+        return commands;
+    }
+
+
+    public void Undo() {
+        int size = commands.size() -1;
+        if (!commands.isEmpty()) {
+            commands.remove(size);
+            System.out.println("Undo done");
+            System.out.println(commands);
+        }
+        clean();
+        readCommands();
+        repaint();
+    }
 
 }
