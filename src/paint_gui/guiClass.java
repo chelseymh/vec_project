@@ -2,12 +2,16 @@ package paint_gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
+import javax.swing.undo.CannotUndoException;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
     private Box horizontalBoxPanel = Box.createHorizontalBox();
     private Box verticalBoxPanel = Box.createVerticalBox();
+    Canvas canvas;
 
     /**
      * Create the GUI and display it.
@@ -41,11 +45,10 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         file.add(fileSave);
 
         // Edit the panels
-        verticalPanel.setPreferredSize(new Dimension(50, 500));
+        verticalPanel.setPreferredSize(new Dimension(70, 500));
         horizontalPanel.setPreferredSize(new Dimension(500, 50));
 
         // Instantiate the canvas
-        Canvas canvas;
         canvas = new Canvas(Color.white);
 
         // Call the toolboxes to build
@@ -68,17 +71,26 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     public void createButtonTools() {
-        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn;
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn;
         // Add buttons to the vertical panel of tools
         plotBtn = createButton("Plot");
         ellipseBtn = createButton("Ellipse");
         lineBtn = createButton("Line");
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
+        // Add buttons to horizontal panel of tools
+        undoBtn = createButton("Undo");
+        undoBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.Undo();
+            }
+        });
 
         horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
         horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
         horizontalBoxPanel.add(polygonBtn);
+        verticalBoxPanel.add(undoBtn);
     }
 
     public JButton createButton(String name) {
