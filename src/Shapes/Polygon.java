@@ -1,30 +1,49 @@
 package Shapes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.*;
 
-public class Polygon extends Shape implements FillingShape {
-    private int[] xPoints, yPoints;
+public class Polygon extends Shape {
+    //This should be better managed dictionary or something
+    private List<Integer[]> points= new ArrayList<Integer[]>();
     private int nPoints;
 
-    public Polygon(int[] xPoints, int[] yPoints, int nPoints) {
-        this.xPoints = xPoints;
-        this.yPoints = yPoints;
-        this.nPoints = nPoints;
+    public void Polygon() {
+
+    }
+
+    public void addPoints(Integer[] point){
+        points.add(point);
+    }
+
+    public Integer[] getPoints(int index){
+        Integer[] point=points.get(index);
+        return point;
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawPolygon(xPoints, yPoints, nPoints);
+        //get the first point, initialize the first point with it
+        int previousx=points.get(0)[0], previousy=points.get(0)[1];
+        for (Integer[] point : points.subList(1,points.size()-1)) {
+            g.drawLine(previousx, previousy, point[0], point[1]);
+            previousx = point[0];
+            previousy=point[1];
+
+            if (point== points.get(0)) {
+                break;
+            }
+        }
     }
 
     public String getCommand(){
         //place holder
-        String command= String.format("POLYGON %1$d %2$d %3$d %4$d", xPoints[0], yPoints[0], xPoints[1], yPoints[0]);
-        return command;
-    }
+        String command="POLYGON ";
+        for (Integer[] point : points){
+            command+= String.format("%1$d %2$d ", point[0], point[1]);
+        }
 
-    @Override
-    public void fill(Graphics2D g) {
-        //TODO
+        return command;
     }
 }
