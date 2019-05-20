@@ -12,6 +12,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     private Box horizontalBoxPanel = Box.createHorizontalBox();
     private Box verticalBoxPanel = Box.createVerticalBox();
     Canvas canvas;
+    private String tool = "PEN";
 
     /**
      * Create the GUI and display it.
@@ -45,7 +46,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         file.add(fileSave);
 
         // Edit the panels
-        verticalPanel.setPreferredSize(new Dimension(70, 500));
+        verticalPanel.setPreferredSize(new Dimension(100, 500));
         horizontalPanel.setPreferredSize(new Dimension(500, 50));
 
         // Instantiate the canvas
@@ -71,35 +72,73 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     public void createButtonTools() {
-        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn;
-        // Add buttons to the vertical panel of tools
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, penBtn;
+        JButton black, blue, red, green, otherColor;
+
         plotBtn = createButton("Plot");
         ellipseBtn = createButton("Ellipse");
         lineBtn = createButton("Line");
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
-        // Add buttons to horizontal panel of tools
+
         undoBtn = createButton("Undo");
         undoBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                canvas.Undo();
-            }
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  canvas.Undo();
+              }
         });
+
+        penBtn = createButton("Pen");
+
+        black = createButton("Black");
+        blue = createButton("Blue");
+        red = createButton("Red");
+        green = createButton("Green");
+        otherColor = createButton("Other");
 
         horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
         horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
         horizontalBoxPanel.add(polygonBtn);
+
         verticalBoxPanel.add(undoBtn);
+        verticalBoxPanel.add(new JLabel("1. Choose tool:"));
+        verticalBoxPanel.add(penBtn);
+        verticalBoxPanel.add(new JLabel("2. Choose color:"));
+        verticalBoxPanel.add(black);
+        verticalBoxPanel.add(blue);
+        verticalBoxPanel.add(red);
+        verticalBoxPanel.add(green);
+        verticalBoxPanel.add(otherColor);
     }
 
     public JButton createButton(String name) {
         JButton tempBtn = new JButton(name);
-        tempBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                toggledButton = name;
-                System.out.println("Selected button: " + toggledButton);
+        tempBtn.addActionListener(actionEvent -> {
+            switch (name) {
+                case "Pen":
+                    tool = "PEN";
+                    break;
+                case "Black":
+                    Canvas.commands.add(tool + " #000000");
+                    break;
+                case "Blue":
+                    Canvas.commands.add(tool + " #0000FF");
+                    break;
+                case "Red":
+                    Canvas.commands.add(tool + " #FF0000");
+                    break;
+                case "Green":
+                    Canvas.commands.add(tool + " #00FF00");
+                    break;
+                case "Other":
+                    Color color = JColorChooser.showDialog(this, "Color chooser",null);
+                    String hex = "#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue());
+                    Canvas.commands.add(tool + " " + hex);
+                    break;
+                default:
+                    toggledButton = name;
+                    System.out.println("Selected button: " + toggledButton);
             }
         });
         return tempBtn;
