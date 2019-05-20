@@ -34,20 +34,20 @@ public class Canvas extends JComponent {
                 y1 = e.getY();
                 printEvent("Mouse pressed", e);
 
+                if (theInk != null && gui.toggledButton.equals("Plot")) {
+                    Plot plot = new Plot();
+                    plot.Plot(x1, y1);
+                    System.out.println(plot.getCommand());
+                    commands.add(plot.getCommand());
+                }
             }
 
             @Override
             public void mouseClicked(MouseEvent e) {
-//                x1 = e.getX();
-//                y1 = e.getY();
-//                printEvent("Mouse clicked", e);
-                //repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                //x2 = e.getX();
-                //y2 = e.getY();
                 printEvent("Mouse released", e);
 
                 if (theInk != null && gui.toggledButton.equals("Rectangle")) {
@@ -55,7 +55,6 @@ public class Canvas extends JComponent {
                     rect.Rectangle(x1, y1, x2, y2);
                     System.out.println(rect.getCommand());
                     commands.add(rect.getCommand());
-                    //rect.draw(theInk);
                 }
 
                 else if (theInk != null && gui.toggledButton.equals("Line")) {
@@ -63,7 +62,6 @@ public class Canvas extends JComponent {
                     line.Line(x1, y1, x2, y2);
                     System.out.println(line.getCommand());
                     commands.add(line.getCommand());
-                    //line.draw(theInk);
                 }
 
                 else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
@@ -71,7 +69,6 @@ public class Canvas extends JComponent {
                     ellipse.Ellipse(x1, y1, x2, y2);
                     System.out.println(ellipse.getCommand());
                     commands.add(ellipse.getCommand());
-                    //ellipse.draw(theInk);
                 }
                 clean();
                 readCommands();
@@ -138,20 +135,7 @@ public class Canvas extends JComponent {
         }
         g.drawImage(image, 0, 0, null);
 
-        if (theInk != null && gui.toggledButton.equals("Plot")) {
-            Plot plot = new Plot();
-            plot.Plot(x1, y1, x2, y2);
-            System.out.println(plot.getCommand());
-            commands.add(plot.getCommand());
-            plot.draw(theInk);
-
-
-
-
-
-
-
-        } else if (theInk != null && gui.toggledButton.equals("Polygon")) {
+        if (theInk != null && gui.toggledButton.equals("Polygon")) {
             // Insert Polygon code
             //theInk.drawLine(x1, y1, x2, y2);
         }
@@ -185,7 +169,6 @@ public class Canvas extends JComponent {
         for (String lineFile : commands)
         {
             String[] input = lineFile.split("\\s");
-            int[] coordinates;
             switch (input[0].toLowerCase()) {
                 case "line":
                     System.out.println("line");
@@ -195,6 +178,9 @@ public class Canvas extends JComponent {
                     break;
                 case "plot":
                     System.out.println("plot");
+                    Plot plot = new Plot();
+                    plot.Plot(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                    plot.draw(theInk);
 
                     break;
                 case "rectangle":
