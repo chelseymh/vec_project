@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
-    public static String toggledButton = null;
+    public static Object toggledButton = null;
     private Box horizontalBoxPanel = Box.createHorizontalBox();
     private Box verticalBoxPanel = Box.createVerticalBox();
 
@@ -44,12 +44,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         verticalPanel.setPreferredSize(new Dimension(50, 500));
         horizontalPanel.setPreferredSize(new Dimension(500, 50));
 
-        // Create a canvas
+        // Instantiate the canvas
         Canvas canvas;
         canvas = new Canvas(Color.white);
 
         // Call the toolboxes to build
-        createButtonTools(canvas); // horizontal one
+        createButtonTools(); // horizontal one
         verticalPanel.add(verticalBoxPanel);
         horizontalPanel.add(horizontalBoxPanel);
 
@@ -67,49 +67,14 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setVisible(true);
     }
 
-    public void createButtonTools(Canvas canvas) {
+    public void createButtonTools() {
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn;
         // Add buttons to the vertical panel of tools
-
-        //Plot button
         plotBtn = createButton("Plot");
-        plotBtn.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                canvas.Plot();
-            }
-
-        });
         ellipseBtn = createButton("Ellipse");
-        ellipseBtn.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                canvas.Ellipse();
-            }
-
-        });
-
-        //Line button
         lineBtn = createButton("Line");
-        lineBtn.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                canvas.Line();
-            }
-
-        });
-
         polygonBtn = createButton("Polygon");
-        polygonBtn.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                canvas.Polygon();
-            }
-
-        });
         rectangleBtn = createButton("Rectangle");
-        rectangleBtn.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                canvas.Rectangle();
-            }
-
-        });
 
         horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
         horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
