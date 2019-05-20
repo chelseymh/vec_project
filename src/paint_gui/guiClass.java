@@ -98,9 +98,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
     public JButton createButton(String name) {
         JButton tempBtn = new JButton(name);
-        tempBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        tempBtn.addActionListener(actionEvent -> {
+            if (name.equals("Pen")) {
+                String color = JOptionPane.showInputDialog(this, "Input color:", null);
+                Canvas.commands.add("PEN " + color);
+            } else {
                 toggledButton = name;
                 System.out.println("Selected button: " + toggledButton);
             }
