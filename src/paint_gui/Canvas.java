@@ -91,6 +91,7 @@ public class Canvas extends JComponent {
                 y2 = e.getY();
                 printEvent("Mouse dragged", e);
                 clean();
+                readCommands();
                 if (theInk != null && gui.toggledButton.equals("Rectangle")) {
                     Rectangle rect = new Rectangle();
                     rect.Rectangle(x1, y1, x2, y2);
@@ -129,6 +130,8 @@ public class Canvas extends JComponent {
             //taken from window dimensions in guiClass
             image = createImage(600, 600);
             theInk = (Graphics2D)image.getGraphics();
+            theInk.setPaint(Color.white);
+            theInk.fillRect(0, 0, getSize().width, getSize().height);
             theInk.setPaint(Color.DARK_GRAY);
             theInk.setStroke(new BasicStroke(4));
             //clean();
