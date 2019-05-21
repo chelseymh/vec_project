@@ -2,7 +2,7 @@ package Shapes;
 
 import java.awt.*;
 
-public class Ellipse extends Shape {
+public class Ellipse extends Shape implements FillingShape {
     private int x, y, height, width;
 
     public void Ellipse(int x1, int y1, int x2, int y2) {
@@ -28,5 +28,15 @@ public class Ellipse extends Shape {
     public String getCommand(){
         String command= String.format("ELLIPSE %1$d %2$d %3$d %4$d", x, y, height, width);
         return command;
+    }
+
+    @Override
+    public void fill(Graphics2D g) {
+        if (x != 0 || height != 0) {
+            boolean revertX = x < height;
+            boolean revertY = y < width;
+            g.fillOval(revertX ? x : height, revertY ? y : width, revertX ? Math.abs(height - x) : Math.abs(x - height),
+                    revertY ? Math.abs(width - y) : Math.abs(y - width));
+        }
     }
 }
