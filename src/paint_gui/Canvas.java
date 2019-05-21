@@ -18,7 +18,7 @@ public class Canvas extends JComponent {
     private int x1, y1, x2, y2, x3, y3;
     private Graphics2D theInk;
     private Image image;
-    public static List<String> commands = new ArrayList<String>();
+    private List<String> commands = new ArrayList<String>();
 
     public Canvas(Color color) {
         gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
@@ -232,6 +232,10 @@ public class Canvas extends JComponent {
         clean();
         readCommands();
         repaint();
+    }
+
+    public void addCommand(String command) {
+        commands.add(command);
     }
 
 }
