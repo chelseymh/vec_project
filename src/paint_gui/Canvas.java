@@ -170,6 +170,8 @@ public class Canvas extends JComponent {
     }
 
     public void readCommands(){
+        Graphics2D fillInk = (Graphics2D) image.getGraphics();
+
         System.out.println("Reading commands");
         for (String lineFile : commands)
         {
@@ -192,15 +194,15 @@ public class Canvas extends JComponent {
                     System.out.println("rectangle");
                     Rectangle rect = new Rectangle();
                     rect.Rectangle(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
-                    if (fill) rect.fill(theInk);
-                    else rect.draw(theInk);
+                    rect.draw(theInk);
+                    if (fill) rect.fill(fillInk);
                     break;
                 case "ellipse":
                     System.out.println("ellipse");
                     Ellipse ellipse = new Ellipse();
                     ellipse.Ellipse(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
-                    if (fill) ellipse.fill(theInk);
-                    else ellipse.draw(theInk);
+                    ellipse.draw(theInk);
+                    if (fill) ellipse.fill(fillInk);
                     break;
                 case "polygon":
                     System.out.println("polygon");
@@ -213,7 +215,7 @@ public class Canvas extends JComponent {
                     break;
                 case "fill":
                     System.out.println("fill");
-                    theInk.setPaint(Color.decode(input[1]));
+                    fillInk.setPaint(Color.decode(input[1]));
                     fill = true;
                     break;
                 default:
