@@ -74,7 +74,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
     public void createButtonTools() {
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn;
-        JToggleButton penBtn, fillBtn;
+        JToggleButton fillBtn;
         JButton black, blue, red, green, otherColor;
 
         plotBtn = createButton("Plot");
@@ -85,20 +85,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         undoBtn = createButton("Undo");
 
-        penBtn = new JToggleButton("Pen");
-        penBtn.setFocusable(true);
-        penBtn.addActionListener(actionEvent -> {
-            tool = "PEN";
-        });
-        fillBtn = new JToggleButton("Fill");
-        fillBtn.addActionListener(actionEvent -> {
-            fill = !fill;
-            if (fill) tool = "FILL";
-            else {
-                tool = "PEN";
-                canvas.addCommand("FILL OFF");
-            }
-        });
+        fillBtn = makeFillButton();
 
         black = createButton("Black");
         blue = createButton("Blue");
@@ -111,8 +98,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         horizontalBoxPanel.add(polygonBtn);
 
         verticalBoxPanel.add(undoBtn);
-        verticalBoxPanel.add(new JLabel("1. Choose tool:"));
-        verticalBoxPanel.add(penBtn);
+        verticalBoxPanel.add(new JLabel("1. Fill on/off:"));
         verticalBoxPanel.add(fillBtn);
         verticalBoxPanel.add(new JLabel("2. Choose color:"));
         verticalBoxPanel.add(black);
@@ -129,12 +115,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 case "Undo":
                     canvas.Undo();
                     break;
-//                case "Pen":
-//                    tool = "PEN";
-//                    break;
-//                case "Fill":
-//                    tool = "FILL";
-//                    break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
                     break;
@@ -158,5 +138,18 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             }
         });
         return tempBtn;
+    }
+
+    private JToggleButton makeFillButton() {
+        JToggleButton button = new JToggleButton("Fill");
+        button.addActionListener(actionEvent -> {
+            fill = !fill;
+            if (fill) tool = "FILL";
+            else {
+                tool = "PEN";
+                canvas.addCommand("FILL OFF");
+            }
+        });
+        return button;
     }
 }
