@@ -215,8 +215,12 @@ public class Canvas extends JComponent {
                     break;
                 case "fill":
                     System.out.println("fill");
-                    fillInk.setPaint(Color.decode(input[1]));
-                    fill = true;
+                    if (input[1].equals("OFF")) {
+                        fill = false;
+                    } else {
+                        fillInk.setPaint(Color.decode(input[1]));
+                        fill = true;
+                    }
                     break;
                 default:
                     break;
