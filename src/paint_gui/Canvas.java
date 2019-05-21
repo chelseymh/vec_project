@@ -19,6 +19,7 @@ public class Canvas extends JComponent {
     private Graphics2D theInk;
     private Image image;
     private List<String> commands = new ArrayList<String>();
+    private boolean fill = false;
 
     public Canvas(Color color) {
         gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
@@ -191,13 +192,15 @@ public class Canvas extends JComponent {
                     System.out.println("rectangle");
                     Rectangle rect = new Rectangle();
                     rect.Rectangle(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
-                    rect.draw(theInk);
+                    if (fill) rect.fill(theInk);
+                    else rect.draw(theInk);
                     break;
                 case "ellipse":
                     System.out.println("ellipse");
                     Ellipse ellipse = new Ellipse();
                     ellipse.Ellipse(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
-                    ellipse.draw(theInk);
+                    if (fill) ellipse.fill(theInk);
+                    else ellipse.draw(theInk);
                     break;
                 case "polygon":
                     System.out.println("polygon");
@@ -206,9 +209,12 @@ public class Canvas extends JComponent {
                 case "pen":
                     System.out.println("pen");
                     theInk.setPaint(Color.decode(input[1]));
+                    fill = false;
                     break;
                 case "fill":
                     System.out.println("fill");
+                    theInk.setPaint(Color.decode(input[1]));
+                    fill = true;
                     break;
                 default:
                     break;
@@ -237,5 +243,4 @@ public class Canvas extends JComponent {
     public void addCommand(String command) {
         commands.add(command);
     }
-
 }

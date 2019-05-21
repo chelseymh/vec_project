@@ -72,7 +72,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     public void createButtonTools() {
-        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, penBtn;
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, penBtn, fillBtn;
         JButton black, blue, red, green, otherColor;
 
         plotBtn = createButton("Plot");
@@ -83,6 +83,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         undoBtn = createButton("Undo");
         penBtn = createButton("Pen");
+        fillBtn = createButton("Fill");
         black = createButton("Black");
         blue = createButton("Blue");
         red = createButton("Red");
@@ -96,6 +97,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         verticalBoxPanel.add(undoBtn);
         verticalBoxPanel.add(new JLabel("1. Choose tool:"));
         verticalBoxPanel.add(penBtn);
+        verticalBoxPanel.add(fillBtn);
         verticalBoxPanel.add(new JLabel("2. Choose color:"));
         verticalBoxPanel.add(black);
         verticalBoxPanel.add(blue);
@@ -113,6 +115,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     break;
                 case "Pen":
                     tool = "PEN";
+                    break;
+                case "Fill":
+                    tool = "FILL";
                     break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
