@@ -82,15 +82,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         rectangleBtn = createButton("Rectangle");
 
         undoBtn = createButton("Undo");
-        undoBtn.addActionListener(new ActionListener() {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                  canvas.Undo();
-              }
-        });
-
         penBtn = createButton("Pen");
-
         black = createButton("Black");
         blue = createButton("Blue");
         red = createButton("Red");
@@ -116,25 +108,28 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         JButton tempBtn = new JButton(name);
         tempBtn.addActionListener(actionEvent -> {
             switch (name) {
+                case "Undo":
+                    canvas.Undo();
+                    break;
                 case "Pen":
                     tool = "PEN";
                     break;
                 case "Black":
-                    Canvas.commands.add(tool + " #000000");
+                    canvas.addCommand(tool + " #000000");
                     break;
                 case "Blue":
-                    Canvas.commands.add(tool + " #0000FF");
+                    canvas.addCommand(tool + " #0000FF");
                     break;
                 case "Red":
-                    Canvas.commands.add(tool + " #FF0000");
+                    canvas.addCommand(tool + " #FF0000");
                     break;
                 case "Green":
-                    Canvas.commands.add(tool + " #00FF00");
+                    canvas.addCommand(tool + " #00FF00");
                     break;
                 case "Other":
                     Color color = JColorChooser.showDialog(this, "Color chooser",null);
                     String hex = "#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue());
-                    Canvas.commands.add(tool + " " + hex);
+                    canvas.addCommand(tool + " " + hex);
                     break;
                 default:
                     toggledButton = name;
