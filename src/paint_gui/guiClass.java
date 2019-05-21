@@ -13,6 +13,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     private Box verticalBoxPanel = Box.createVerticalBox();
     Canvas canvas;
     private String tool = "PEN";
+    private boolean fill = false;
 
     /**
      * Create the GUI and display it.
@@ -72,7 +73,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     public void createButtonTools() {
-        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, penBtn;
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn;
+        JToggleButton fillBtn;
         JButton black, blue, red, green, otherColor;
 
         plotBtn = createButton("Plot");
@@ -82,7 +84,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         rectangleBtn = createButton("Rectangle");
 
         undoBtn = createButton("Undo");
-        penBtn = createButton("Pen");
+
+        fillBtn = makeFillButton();
+
         black = createButton("Black");
         blue = createButton("Blue");
         red = createButton("Red");
@@ -94,8 +98,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         horizontalBoxPanel.add(polygonBtn);
 
         verticalBoxPanel.add(undoBtn);
-        verticalBoxPanel.add(new JLabel("1. Choose tool:"));
-        verticalBoxPanel.add(penBtn);
+        verticalBoxPanel.add(new JLabel("1. Fill on/off:"));
+        verticalBoxPanel.add(fillBtn);
         verticalBoxPanel.add(new JLabel("2. Choose color:"));
         verticalBoxPanel.add(black);
         verticalBoxPanel.add(blue);
@@ -110,9 +114,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             switch (name) {
                 case "Undo":
                     canvas.Undo();
-                    break;
-                case "Pen":
-                    tool = "PEN";
                     break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
@@ -137,5 +138,18 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             }
         });
         return tempBtn;
+    }
+
+    private JToggleButton makeFillButton() {
+        JToggleButton button = new JToggleButton("Fill");
+        button.addActionListener(actionEvent -> {
+            fill = !fill;
+            if (fill) tool = "FILL";
+            else {
+                tool = "PEN";
+                canvas.addCommand("FILL OFF");
+            }
+        });
+        return button;
     }
 }
