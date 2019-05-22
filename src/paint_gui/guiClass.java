@@ -46,7 +46,13 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileSave = new JMenuItem("Save");
 
         // Add action listeners
-        fileOpen.addActionListener(e -> openFile());
+        fileOpen.addActionListener(e -> {
+            try {
+                openFile();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
         fileSave.addActionListener(actionEvent -> {
             try {
                 saveFile();
@@ -166,24 +172,20 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return button;
     }
 
-    private void openFile() {
+    private void openFile() throws IOException {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-                canvas.getCommands().clear();
-                for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
-                {
-                    canvas.addCommand(lineFile);
-                }
-                canvas.clean();
-                canvas.readCommands();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
+            canvas.getCommands().clear();
+            for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
+            {
+                canvas.addCommand(lineFile);
             }
+            canvas.clean();
+            canvas.readCommands();
         }
     }
 
