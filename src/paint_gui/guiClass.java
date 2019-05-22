@@ -2,9 +2,13 @@ package paint_gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.CannotUndoException;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
@@ -41,8 +45,10 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         // Build sub menu for fileOpen and fileSave
         fileOpen = new JMenuItem("Open file");
+        fileOpen.addActionListener(e -> openFile());
+
         fileSave = new JMenuItem("Save");
-        // Add listener here
+
         file.add(fileOpen);
         file.add(fileSave);
 
@@ -151,5 +157,26 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             }
         });
         return button;
+    }
+
+    private void openFile() {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
+                canvas.getCommands().clear();
+                for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
+                {
+                    canvas.addCommand(lineFile);
+                }
+                canvas.clean();
+                canvas.readCommands();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 }
