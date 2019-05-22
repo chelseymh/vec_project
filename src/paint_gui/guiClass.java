@@ -191,12 +191,14 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
     private void saveFile() throws IOException {
         JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC && TXT file", "vec", "txt");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileToSave = chooser.getSelectedFile();
-            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+            String filePath = fileToSave.getAbsolutePath();
+            // Check the type of the file
+            if (!filePath.endsWith(".vec")) fileToSave = new File(filePath.concat(".vec"));
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
             for (String command : canvas.getCommands()) {
                 writer.write(command);
