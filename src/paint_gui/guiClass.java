@@ -2,9 +2,7 @@ package paint_gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -45,10 +43,19 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         // Build sub menu for fileOpen and fileSave
         fileOpen = new JMenuItem("Open file");
-        fileOpen.addActionListener(e -> openFile());
-
         fileSave = new JMenuItem("Save");
 
+        // Add action listeners
+        fileOpen.addActionListener(e -> openFile());
+        fileSave.addActionListener(actionEvent -> {
+            try {
+                saveFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // Add menu items
         file.add(fileOpen);
         file.add(fileSave);
 
@@ -177,6 +184,23 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+        }
+    }
+
+    private void saveFile() throws IOException {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC && TXT file", "vec", "txt");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = chooser.getSelectedFile();
+            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
+            for (String command : canvas.getCommands()) {
+                writer.write(command);
+                writer.newLine();
+            }
+            writer.close();
         }
     }
 }
