@@ -156,7 +156,7 @@ public class Polygon extends Shape implements FillingShape {
         //place holder
         String command="POLYGON ";
         for (Point point : points){
-            command+= String.format("%1$d %2$d ", point.x, point.y);
+            command+= String.format("%1$.2f %2$.2f ", (float)point.x/canvas.getHeight(), (float)point.y/canvas.getWidth());
         }
 
         return command;

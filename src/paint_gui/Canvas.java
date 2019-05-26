@@ -81,13 +81,13 @@ public class Canvas extends JComponent {
                 case "line":
                     //System.out.println("line");
                     Line line = new Line();
-                    line.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    line.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     line.draw(theInk);
                     break;
                 case "plot":
                     //System.out.println("plot");
                     Plot plot = new Plot();
-                    plot.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                    plot.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()));
                     plot.draw(theInk);
 
                     break;
@@ -111,7 +111,7 @@ public class Canvas extends JComponent {
                     int i = 1;
                     while (i < input.length - 1) {
                         Point point = new Point();
-                        point.setLocation(Integer.parseInt(input[i]), Integer.parseInt(input[i + 1]));
+                        point.setLocation(Float.parseFloat(input[i])*getHeight(), Float.parseFloat(input[i + 1])*getWidth());
                         polygon.addPoints(point);
                         i = i + 2;
                     }

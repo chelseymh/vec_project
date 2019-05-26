@@ -71,7 +71,7 @@ public class Plot extends Shape {
     }
 
     public String getCommand(){
-        String command= String.format("PLOT %1$d %2$d", x1, y1);
+        String command= String.format("PLOT %1$.2f %2$.2f", (float)x1/canvas.getHeight(), (float)y1/canvas.getWidth());
         return command;
     }
 }
