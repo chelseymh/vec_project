@@ -90,7 +90,7 @@ public class Line extends Shape {
     }
 
     public String getCommand(){
-        String command= String.format("LINE %1$d %2$d %3$d %4$d", x1, y1, x2, y2);
+        String command= String.format("LINE %1$.2f %2$.2f %3$.2f %4$.2f", (float)x1/canvas.getHeight(), (float)y1/canvas.getWidth(), (float)x2/canvas.getHeight(), (float)y2/canvas.getWidth());
         return command;
     }
 }

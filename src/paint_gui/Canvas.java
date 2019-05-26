@@ -12,16 +12,14 @@ import java.util.List;
 
 public class Canvas extends JComponent {
     private guiClass gui;
-    private Dimension minSize = new Dimension(200, 200);
+    private Dimension minSize = new Dimension(300, 300);
     private static final String NEWLINE = System.getProperty("line.separator");
-    private int x1, y1, x2, y2;
     private Graphics2D theInk;
     private Image image;
     private List<String> commands = new ArrayList<String>();
     private boolean fill = false;
 
     public Canvas(Color color) {
-        //gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(color.white);
         setOpaque(true);
@@ -37,7 +35,7 @@ public class Canvas extends JComponent {
         //create the blank image
         if(image == null){
             //taken from window dimensions in guiClass
-            image = createImage(600, 600);
+            image = createImage(getSize().width, getSize().height);
             theInk = (Graphics2D)image.getGraphics();
             theInk.setPaint(Color.white);
             theInk.fillRect(0, 0, getSize().width, getSize().height);
@@ -83,27 +81,27 @@ public class Canvas extends JComponent {
                 case "line":
                     //System.out.println("line");
                     Line line = new Line();
-                    line.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    line.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     line.draw(theInk);
                     break;
                 case "plot":
                     //System.out.println("plot");
                     Plot plot = new Plot();
-                    plot.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                    plot.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()));
                     plot.draw(theInk);
 
                     break;
                 case "rectangle":
                     //System.out.println("rectangle");
                     Shapes.Rectangle rect = new Shapes.Rectangle();
-                    rect.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    rect.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     rect.draw(theInk);
                     if (fill) rect.fill(fillInk);
                     break;
                 case "ellipse":
                     //System.out.println("ellipse");
                     Ellipse ellipse = new Ellipse();
-                    ellipse.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    ellipse.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     ellipse.draw(theInk);
                     if (fill) ellipse.fill(fillInk);
                     break;
@@ -113,7 +111,7 @@ public class Canvas extends JComponent {
                     int i = 1;
                     while (i < input.length - 1) {
                         Point point = new Point();
-                        point.setLocation(Integer.parseInt(input[i]), Integer.parseInt(input[i + 1]));
+                        point.setLocation(Float.parseFloat(input[i])*getHeight(), Float.parseFloat(input[i + 1])*getWidth());
                         polygon.addPoints(point);
                         i = i + 2;
                     }
