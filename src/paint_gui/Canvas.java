@@ -15,7 +15,7 @@ public class Canvas extends JComponent {
     private guiClass gui;
     private Dimension minSize = new Dimension(200, 200);
     private static final String NEWLINE = System.getProperty("line.separator");
-    private int x1, y1, x2, y2, x3, y3;
+    private int x1, y1, x2, y2;
     private Graphics2D theInk;
     private Image image;
     private List<String> commands = new ArrayList<String>();
@@ -140,10 +140,6 @@ public class Canvas extends JComponent {
         }
         g.drawImage(image, 0, 0, null);
 
-        if (theInk != null && gui.toggledButton.equals("Polygon")) {
-            // Insert Polygon code
-            //theInk.drawLine(x1, y1, x2, y2);
-        }
     }
 
     public Dimension getMinimumSize() {
@@ -206,6 +202,16 @@ public class Canvas extends JComponent {
                     break;
                 case "polygon":
                     System.out.println("polygon");
+                    Shapes.Polygon polygon = new Shapes.Polygon();
+                    int i = 1;
+                    while (i < input.length - 1) {
+                        Point point = new Point();
+                        point.setLocation(Integer.parseInt(input[i]), Integer.parseInt(input[i + 1]));
+                        polygon.addPoints(point);
+                        i = i + 2;
+                    }
+                    polygon.draw(theInk);
+                    if (fill) polygon.fill(fillInk);
 
                     break;
                 case "pen":
@@ -249,4 +255,10 @@ public class Canvas extends JComponent {
     public void addCommand(String command) {
         commands.add(command);
     }
+
+    public Graphics2D getTheInk() {
+        return theInk;
+    }
+
 }
+
