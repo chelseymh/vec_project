@@ -167,6 +167,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     ellipse.create(canvas);
                     System.out.println("Ellip selected");
                     break;
+                case "Line":
+                    Shapes.Line line = new Shapes.Line();
+                    line.create(canvas);
+                    System.out.println("Line selected");
+                    break;
                 default:
                     toggledButton = name;
                     System.out.println("Selected button: " + toggledButton);

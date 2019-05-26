@@ -115,7 +115,7 @@ public class Polygon extends Shape implements FillingShape {
                     int x2 = e.getX();
                     int y2 = e.getY();
                     Line line = new Line();
-                    line.Line(points.get(points.size()-1).x, points.get(points.size()-1).y, x2, y2);
+                    line.addPoints(points.get(points.size()-1).x, points.get(points.size()-1).y, x2, y2);
                     line.draw(theInk);
                     canvas.repaint();
                     //redraw only the saved commands
