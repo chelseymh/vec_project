@@ -12,17 +12,27 @@ import java.util.List;
 
 public class Canvas extends JComponent {
     private guiClass gui;
-    private Dimension minSize = new Dimension(300, 300);
+    //private Dimension minSize = new Dimension(300, 300);
     private static final String NEWLINE = System.getProperty("line.separator");
     private Graphics2D theInk;
-    private Image image;
+    //REMEMBER TO SET PUBLIC VALUES BACK TO PRIVATE!!!
+    public Image image;
     private List<String> commands = new ArrayList<String>();
     private boolean fill = false;
+    public int imageSizex=400, imageSizey=400;
 
     public Canvas(Color color) {
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(color.white);
         setOpaque(true);
+    }
+
+    public void resizeCanvas(){
+        image = createImage(imageSizex, imageSizey);
+        theInk = (Graphics2D)image.getGraphics();
+        theInk.setPaint(Color.white);
+        theInk.fillRect(0, 0, getSize().width, getSize().width);
+
     }
     //Java Swing is a black box of graphics and will call this
     //as needed to paint components on the canvas
@@ -35,10 +45,10 @@ public class Canvas extends JComponent {
         //create the blank image
         if(image == null){
             //taken from window dimensions in guiClass
-            image = createImage(getSize().width, getSize().height);
+            image = createImage(imageSizex, imageSizey);
             theInk = (Graphics2D)image.getGraphics();
             theInk.setPaint(Color.white);
-            theInk.fillRect(0, 0, getSize().width, getSize().height);
+            theInk.fillRect(0, 0, imageSizex, imageSizey);
             theInk.setPaint(Color.DARK_GRAY);
             theInk.setStroke(new BasicStroke(4));
             //clean();
@@ -47,13 +57,13 @@ public class Canvas extends JComponent {
 
     }
 
-    public Dimension getMinimumSize() {
-        return minSize;
-    }
-
-    public Dimension getPreferredSize() {
-        return minSize;
-    }
+//    public Dimension getMinimumSize() {
+//        return minSize;
+//    }
+//
+//    public Dimension getPreferredSize() {
+//        return minSize;
+//    }
 
     void printEvent(String event, MouseEvent e) {
         System.out.println(event + " (" + e.getX() + ", "
@@ -64,7 +74,7 @@ public class Canvas extends JComponent {
 
     public void clean(){
         theInk.setPaint(Color.white);
-        theInk.fillRect(0, 0, getSize().width, getSize().height);
+        theInk.fillRect(0, 0, imageSizex, imageSizey);
         theInk.setPaint(Color.DARK_GRAY);
         theInk.setStroke(new BasicStroke(4));
         repaint();

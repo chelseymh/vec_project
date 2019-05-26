@@ -84,12 +84,36 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         getContentPane().add(verticalPanel, BorderLayout.WEST);
 
         // Display the window
-        setPreferredSize(new Dimension(800, 800));
+        setPreferredSize(new Dimension(400, 400));
         setLocation(new Point(200, 200));
         setJMenuBar(fileMenu);
         getContentPane().setBackground(Color.white);
         pack();
         setVisible(true);
+
+        addComponentListener(new ComponentAdapter( ) {
+            public void componentResized(ComponentEvent ev) {
+                System.out.println("Window has been resized");
+                System.out.println(canvas.getHeight());
+                System.out.println(canvas.getWidth());
+
+                if (ev.getComponent().getWidth()> ev.getComponent().getHeight()){
+                    canvas.setBounds(150,50,ev.getComponent().getHeight(),ev.getComponent().getHeight());
+                    canvas.imageSizex=ev.getComponent().getHeight();
+                    canvas.imageSizey=ev.getComponent().getHeight();
+                } else {
+                    canvas.setBounds(150,50,ev.getComponent().getWidth(),ev.getComponent().getWidth());
+                    canvas.imageSizex=ev.getComponent().getWidth();
+                    canvas.imageSizey=ev.getComponent().getWidth();
+                }
+
+                if (canvas.image!=null) {
+                    canvas.clean();
+                    canvas.readCommands();
+                    canvas.repaint();
+                }
+            }
+        });
     }
 
     public void createButtonTools() {
