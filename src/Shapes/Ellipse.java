@@ -103,7 +103,7 @@ public class Ellipse extends Shape implements FillingShape {
     }
 
     public String getCommand(){
-        String command= String.format("ELLIPSE %1$d %2$d %3$d %4$d", x, y, height, width);
+        String command= String.format("ELLIPSE %1$.2f %2$.2f %3$.2f %4$.2f", (float)x/canvas.getHeight(), (float)y/canvas.getWidth(), (float)height/canvas.getHeight(), (float)width/canvas.getWidth());
         return command;
     }
 

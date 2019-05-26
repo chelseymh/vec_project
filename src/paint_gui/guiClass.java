@@ -84,7 +84,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         getContentPane().add(verticalPanel, BorderLayout.WEST);
 
         // Display the window
-        setPreferredSize(new Dimension(600, 600));
+        setPreferredSize(new Dimension(800, 800));
         setLocation(new Point(200, 200));
         setJMenuBar(fileMenu);
         getContentPane().setBackground(Color.white);
