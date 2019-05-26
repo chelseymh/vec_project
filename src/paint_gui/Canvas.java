@@ -1,7 +1,6 @@
 package paint_gui;
 
 import Shapes.*;
-import Shapes.Rectangle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -22,102 +21,10 @@ public class Canvas extends JComponent {
     private boolean fill = false;
 
     public Canvas(Color color) {
-        gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
+        //gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(color.white);
         setOpaque(true);
-
-
-        addMouseListener(new MouseListener() {
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x1 = e.getX();
-                y1 = e.getY();
-                printEvent("Mouse pressed", e);
-
-                if (theInk != null && gui.toggledButton.equals("Plot")) {
-                    Plot plot = new Plot();
-                    plot.Plot(x1, y1);
-                    System.out.println(plot.getCommand());
-                    commands.add(plot.getCommand());
-                }
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                printEvent("Mouse released", e);
-
-                if (theInk != null && gui.toggledButton.equals("Rectangle")) {
-                    Rectangle rect = new Rectangle();
-                    rect.Rectangle(x1, y1, x2, y2);
-                    System.out.println(rect.getCommand());
-                    commands.add(rect.getCommand());
-                }
-
-                else if (theInk != null && gui.toggledButton.equals("Line")) {
-                    Line line = new Line();
-                    line.Line(x1, y1, x2, y2);
-                    System.out.println(line.getCommand());
-                    commands.add(line.getCommand());
-                }
-
-                else if (theInk != null && gui.toggledButton.equals("Ellipse")) {
-                    Ellipse ellipse = new Ellipse();
-                    ellipse.Ellipse(x1, y1, x2, y2);
-                    System.out.println(ellipse.getCommand());
-                    commands.add(ellipse.getCommand());
-                }
-                clean();
-                readCommands();
-            }
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                x2 = e.getX();
-                y2 = e.getY();
-                printEvent("Mouse dragged", e);
-                clean();
-                readCommands();
-                if (theInk != null && gui.toggledButton.equals("Rectangle")) {
-                    Rectangle rect = new Rectangle();
-                    rect.Rectangle(x1, y1, x2, y2);
-                    rect.draw(theInk);
-                }
-
-                if (theInk != null && gui.toggledButton.equals("Line")) {
-                    Line line = new Line();
-                    line.Line(x1, y1, x2, y2);
-                    line.draw(theInk);
-                }
-
-                if (theInk != null && gui.toggledButton.equals("Ellipse")) {
-                    Ellipse ellipse = new Ellipse();
-                    ellipse.Ellipse(x1, y1, x2, y2);
-                    ellipse.draw(theInk);
-                }
-
-                repaint();
-                //clean();
-            }
-            @Override
-            public void mouseMoved(MouseEvent e) {}
-        });
     }
     //Java Swing is a black box of graphics and will call this
     //as needed to paint components on the canvas
@@ -168,40 +75,40 @@ public class Canvas extends JComponent {
     public void readCommands(){
         Graphics2D fillInk = (Graphics2D) image.getGraphics();
 
-        System.out.println("Reading commands");
+        //System.out.println("Reading commands");
         for (String lineFile : commands)
         {
             String[] input = lineFile.split("\\s");
             switch (input[0].toLowerCase()) {
                 case "line":
-                    System.out.println("line");
+                    //System.out.println("line");
                     Line line = new Line();
-                    line.Line(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    line.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
                     line.draw(theInk);
                     break;
                 case "plot":
-                    System.out.println("plot");
+                    //System.out.println("plot");
                     Plot plot = new Plot();
-                    plot.Plot(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                    plot.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
                     plot.draw(theInk);
 
                     break;
                 case "rectangle":
-                    System.out.println("rectangle");
-                    Rectangle rect = new Rectangle();
-                    rect.Rectangle(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    //System.out.println("rectangle");
+                    Shapes.Rectangle rect = new Shapes.Rectangle();
+                    rect.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
                     rect.draw(theInk);
                     if (fill) rect.fill(fillInk);
                     break;
                 case "ellipse":
-                    System.out.println("ellipse");
+                    //System.out.println("ellipse");
                     Ellipse ellipse = new Ellipse();
-                    ellipse.Ellipse(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    ellipse.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
                     ellipse.draw(theInk);
                     if (fill) ellipse.fill(fillInk);
                     break;
                 case "polygon":
-                    System.out.println("polygon");
+                    //System.out.println("polygon");
                     Shapes.Polygon polygon = new Shapes.Polygon();
                     int i = 1;
                     while (i < input.length - 1) {
@@ -232,6 +139,7 @@ public class Canvas extends JComponent {
                     break;
             }
         }
+        System.out.println("readcommands: "+commands);
         repaint();
     }
 

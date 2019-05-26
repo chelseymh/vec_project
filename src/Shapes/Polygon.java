@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import paint_gui.Canvas;
+import paint_gui.guiClass;
 
 //mouse handlers
 import java.awt.event.MouseEvent;
@@ -31,51 +32,56 @@ public class Polygon extends Shape implements FillingShape {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //Polygon is marked as done with a double click
-                if (e.getClickCount() == 2) {
-                    Point point= new Point(e.getX(), e.getY());
-                    points.add(point);
-                    Point firstPoint= points.get(0);
-                    points.add(firstPoint);
-                    System.out.println(getCommand());
-                    canvas.addCommand(getCommand());
-                    //redraw only the saved commands
-                    canvas.readCommands();
+                if (guiClass.toggledButton=="Polygon") {
 
 
-                    points.clear();
-                    clickstatus="firstclick";
-                    //The first point in a polygon line segment
-                } else if (clickstatus.equals("firstclick")){
-                    Point point= new Point(e.getX(), e.getY());
-                    points.add(point);
-                    clickstatus="polygoncommenced";
-                    System.out.println("firstclick");
-                    System.out.println("point added");
-                    //redraw only the saved commands
-                    canvas.readCommands();
-                    //because our polygon isn't finished it hasn't been
-                    //saved to commands so we draw manually
-                    if (points.size() > 1) {
+                    if (e.getClickCount() == 2) {
+                        Point point = new Point(e.getX(), e.getY());
+                        points.add(point);
+                        Point firstPoint = points.get(0);
+                        points.add(firstPoint);
+                        // System.out.println(getCommand());
+                            canvas.addCommand(getCommand());
+
+                        //redraw only the saved commands
+                        canvas.readCommands();
+
+
+                        points.clear();
+                        clickstatus = "firstclick";
+                        //The first point in a polygon line segment
+                    } else if (clickstatus.equals("firstclick")) {
+                        Point point = new Point(e.getX(), e.getY());
+                        points.add(point);
+                        clickstatus = "polygoncommenced";
+                        System.out.println("firstclick");
+                        System.out.println("point added");
+                        //redraw only the saved commands
+                        canvas.readCommands();
+                        //because our polygon isn't finished it hasn't been
+                        //saved to commands so we draw manually
+                        if (points.size() > 1) {
+                            draw(theInk);
+                        }
+
+                        //The second click in a polygon line segment
+                    } else {
+                        //store mouse coords into a point object
+                        Point point = new Point(e.getX(), e.getY());
+                        //add that point to the polygon points list
+                        points.add(point);
+                        System.out.println("point added");
                         draw(theInk);
+                        //clear the canvas of any previews
+                        canvas.clean();
+                        //redraw only the saved commands
+                        canvas.readCommands();
+                        //because our polygon isn't finished it hasn't been
+                        //saved to commands so we draw manually
+                        draw(theInk);
+
+
                     }
-
-                    //The second click in a polygon line segment
-                } else {
-                    //store mouse coords into a point object
-                    Point point= new Point(e.getX(), e.getY());
-                    //add that point to the polygon points list
-                    points.add(point);
-                    System.out.println("point added");
-                    draw(theInk);
-                    //clear the canvas of any previews
-                    canvas.clean();
-                    //redraw only the saved commands
-                    canvas.readCommands();
-                    //because our polygon isn't finished it hasn't been
-                    //saved to commands so we draw manually
-                    draw(theInk);
-
-
                 }
             }
 
@@ -106,7 +112,7 @@ public class Polygon extends Shape implements FillingShape {
             public void mouseDragged(MouseEvent e) {}
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (theInk != null && !clickstatus.equals("firstclick")) {
+                if (theInk != null && !clickstatus.equals("firstclick") && guiClass.toggledButton=="Polygon") {
                     canvas.clean();
                     canvas.readCommands();
                     if (points.size() > 1) {
@@ -115,7 +121,7 @@ public class Polygon extends Shape implements FillingShape {
                     int x2 = e.getX();
                     int y2 = e.getY();
                     Line line = new Line();
-                    line.Line(points.get(points.size()-1).x, points.get(points.size()-1).y, x2, y2);
+                    line.addPoints(points.get(points.size()-1).x, points.get(points.size()-1).y, x2, y2);
                     line.draw(theInk);
                     canvas.repaint();
                     //redraw only the saved commands
