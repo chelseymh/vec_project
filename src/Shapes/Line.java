@@ -67,13 +67,15 @@ public class Line extends Shape {
         canvas.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                if (guiClass.toggledButton=="Line") {
 
-                x2 = e.getX();
-                y2 = e.getY();
-                canvas.clean();
-                canvas.readCommands();
-                draw(theInk);
-                canvas.repaint();
+                    x2 = e.getX();
+                    y2 = e.getY();
+                    canvas.clean();
+                    canvas.readCommands();
+                    draw(theInk);
+                    canvas.repaint();
+                }
 
 
             }

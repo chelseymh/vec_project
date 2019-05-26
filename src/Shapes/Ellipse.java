@@ -69,14 +69,15 @@ public class Ellipse extends Shape implements FillingShape {
             canvas.addMouseMotionListener(new MouseMotionListener() {
                 @Override
                 public void mouseDragged(MouseEvent e) {
+                    if (guiClass.toggledButton=="Ellipse") {
 
-                    height = e.getX();
-                    width = e.getY();
-                    canvas.clean();
-                    canvas.readCommands();
-                    draw(theInk);
-                    canvas.repaint();
-
+                        height = e.getX();
+                        width = e.getY();
+                        canvas.clean();
+                        canvas.readCommands();
+                        draw(theInk);
+                        canvas.repaint();
+                    }
 
                 }
 
@@ -84,7 +85,7 @@ public class Ellipse extends Shape implements FillingShape {
                 public void mouseMoved(MouseEvent e) {
                 }
             });
-            System.out.println("this is outside of the ellipse mouse listenter");
+            
         }
     }
 
