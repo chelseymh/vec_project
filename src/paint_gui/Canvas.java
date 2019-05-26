@@ -51,15 +51,15 @@ public class Canvas extends JComponent {
             @Override
             public void mouseReleased(MouseEvent e) {
                 printEvent("Mouse released", e);
+//
+//                if (theInk != null && gui.toggledButton.equals("Rectangle")) {
+//                    Rectangle rect = new Rectangle();
+//                    rect.create(x1, y1, x2, y2);
+//                    System.out.println(rect.getCommand());
+//                    commands.add(rect.getCommand());
+//                }
 
-                if (theInk != null && gui.toggledButton.equals("Rectangle")) {
-                    Rectangle rect = new Rectangle();
-                    rect.Rectangle(x1, y1, x2, y2);
-                    System.out.println(rect.getCommand());
-                    commands.add(rect.getCommand());
-                }
-
-                else if (theInk != null && gui.toggledButton.equals("Line")) {
+                if (theInk != null && gui.toggledButton.equals("Line")) {
                     Line line = new Line();
                     line.Line(x1, y1, x2, y2);
                     System.out.println(line.getCommand());
@@ -94,11 +94,11 @@ public class Canvas extends JComponent {
                 printEvent("Mouse dragged", e);
                 clean();
                 readCommands();
-                if (theInk != null && gui.toggledButton.equals("Rectangle")) {
-                    Rectangle rect = new Rectangle();
-                    rect.Rectangle(x1, y1, x2, y2);
-                    rect.draw(theInk);
-                }
+//                if (theInk != null && gui.toggledButton.equals("Rectangle")) {
+//                    Rectangle rect = new Rectangle();
+//                    rect.create(x1, y1, x2, y2);
+//                    rect.draw(theInk);
+//                }
 
                 if (theInk != null && gui.toggledButton.equals("Line")) {
                     Line line = new Line();
@@ -188,8 +188,8 @@ public class Canvas extends JComponent {
                     break;
                 case "rectangle":
                     System.out.println("rectangle");
-                    Rectangle rect = new Rectangle();
-                    rect.Rectangle(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
+                    Shapes.Rectangle rect = new Shapes.Rectangle();
+                    rect.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]), Integer.parseInt(input[3]), Integer.parseInt(input[4]));
                     rect.draw(theInk);
                     if (fill) rect.fill(fillInk);
                     break;

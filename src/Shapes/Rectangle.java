@@ -1,11 +1,23 @@
 package Shapes;
 
 import java.awt.*;
+import paint_gui.Canvas;
+
+//mouse handlers
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class Rectangle extends Shape implements FillingShape {
     private int x, y, height, width;
+    private paint_gui.Canvas canvas;
+    private Graphics2D theInk;
 
-    public void Rectangle(int x1, int y1, int x2, int y2) {
+    public void Rectangle() {
+;
+    }
+
+    public void addPoints(int x1, int y1, int x2, int y2){
         //Rectangle works by starting xy point followed by desired width
         // and height, we get this by getting the difference of our start
         // and end coords
@@ -14,6 +26,66 @@ public class Rectangle extends Shape implements FillingShape {
         this.y = y1;
         this.height = x2;
         this.width = y2;
+        //canvas to paint shape on
+
+
+    }
+
+    public void create(Canvas canvas) {
+        this.canvas = canvas;
+        this.theInk = canvas.getTheInk();
+        canvas.addMouseListener(new MouseListener() {
+
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                height = e.getX();
+                width = e.getY();
+
+                System.out.println(getCommand());
+                canvas.addCommand(getCommand());
+
+                canvas.clean();
+                canvas.readCommands();
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        canvas.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+                height = e.getX();
+                width = e.getY();
+                canvas.clean();
+                canvas.readCommands();
+                draw(theInk);
+                canvas.repaint();
+
+
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {}
+        });
+
     }
 
     @Override
