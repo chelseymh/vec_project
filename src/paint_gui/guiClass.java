@@ -160,7 +160,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 case "Rectangle":
                     Shapes.Rectangle rect = new Shapes.Rectangle();
                     rect.create(canvas);
-                    System.out.println("Poly selected");
+                    System.out.println("Rect selected");
+                    break;
+                case "Ellipse":
+                    Shapes.Ellipse ellipse = new Shapes.Ellipse();
+                    ellipse.create(canvas);
+                    System.out.println("Ellip selected");
                     break;
                 default:
                     toggledButton = name;

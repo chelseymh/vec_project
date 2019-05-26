@@ -1,15 +1,85 @@
 package Shapes;
 
+import paint_gui.Canvas;
+
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class Ellipse extends Shape implements FillingShape {
     private int x, y, height, width;
+    private paint_gui.Canvas canvas;
+    private Graphics2D theInk;
 
-    public void Ellipse(int x1, int y1, int x2, int y2) {
+    public void Ellipse() {
+
+    }
+
+    public void addPoints(int x1, int y1, int x2, int y2) {
         x = x1;
         y = y1;
         height = x2;
         width = y2;
+    }
+
+    public void create(Canvas canvas) {
+        this.canvas = canvas;
+        this.theInk = canvas.getTheInk();
+        canvas.addMouseListener(new MouseListener() {
+
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                x = e.getX();
+                y = e.getY();
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                height = e.getX();
+                width = e.getY();
+
+                System.out.println(getCommand());
+                canvas.addCommand(getCommand());
+
+                canvas.clean();
+                canvas.readCommands();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        canvas.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+                height = e.getX();
+                width = e.getY();
+                canvas.clean();
+                canvas.readCommands();
+                draw(theInk);
+                canvas.repaint();
+
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+            }
+        });
     }
 
     @Override
