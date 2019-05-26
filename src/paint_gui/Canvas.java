@@ -21,47 +21,10 @@ public class Canvas extends JComponent {
     private boolean fill = false;
 
     public Canvas(Color color) {
-        gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
+        //gui.toggledButton = "Plot"; // By default, the Plot tool is toggled
         setBorder(BorderFactory.createLineBorder(Color.black));
         setBackground(color.white);
         setOpaque(true);
-
-
-        addMouseListener(new MouseListener() {
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x1 = e.getX();
-                y1 = e.getY();
-
-
-                if (theInk != null && gui.toggledButton.equals("Plot")) {
-                    Plot plot = new Plot();
-                    plot.addPoints(x1, y1);
-                    System.out.println(plot.getCommand());
-                    commands.add(plot.getCommand());
-                }
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {;
-            }
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-
     }
     //Java Swing is a black box of graphics and will call this
     //as needed to paint components on the canvas
@@ -176,6 +139,7 @@ public class Canvas extends JComponent {
                     break;
             }
         }
+        System.out.println("readcommands: "+commands);
         repaint();
     }
 

@@ -2,6 +2,7 @@ package Shapes;
 
 import java.awt.*;
 import paint_gui.Canvas;
+import paint_gui.guiClass;
 
 //mouse handlers
 import java.awt.event.MouseEvent;
@@ -44,8 +45,10 @@ public class Line extends Shape {
                 x2 = e.getX();
                 y2 = e.getY();
 
-                System.out.println(getCommand());
-                canvas.addCommand(getCommand());
+                //System.out.println(getCommand());
+                if (guiClass.toggledButton=="Line") {
+                    canvas.addCommand(getCommand());
+                }
 
                 canvas.clean();
                 canvas.readCommands();

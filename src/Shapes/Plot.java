@@ -3,6 +3,7 @@ package Shapes;
 import javax.swing.*;
 import java.awt.*;
 import paint_gui.Canvas;
+import paint_gui.guiClass;
 
 //mouse handlers
 import java.awt.event.MouseEvent;
@@ -42,8 +43,10 @@ public class Plot extends Shape {
             @Override
             public void mouseReleased(MouseEvent e) {
 
-                System.out.println(getCommand());
-                canvas.addCommand(getCommand());
+                //System.out.println(getCommand());
+                if (guiClass.toggledButton=="Plot") {
+                    canvas.addCommand(getCommand());
+                }
 
                 canvas.clean();
                 canvas.readCommands();

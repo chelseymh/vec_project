@@ -1,6 +1,7 @@
 package Shapes;
 
 import paint_gui.Canvas;
+import paint_gui.guiClass;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -26,60 +27,65 @@ public class Ellipse extends Shape implements FillingShape {
     public void create(Canvas canvas) {
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
-        canvas.addMouseListener(new MouseListener() {
+        if (guiClass.toggledButton=="Ellipse") {
+            canvas.addMouseListener(new MouseListener() {
 
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    x = e.getX();
+                    y = e.getY();
+                }
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                }
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                height = e.getX();
-                width = e.getY();
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    height = e.getX();
+                    width = e.getY();
 
-                System.out.println(getCommand());
-                canvas.addCommand(getCommand());
+                    // System.out.println(getCommand());
+                    if (guiClass.toggledButton=="Ellipse") {
+                        canvas.addCommand(getCommand());
+                    }
 
-                canvas.clean();
-                canvas.readCommands();
-            }
+                    canvas.clean();
+                    canvas.readCommands();
+                }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
+                @Override
+                public void mouseEntered(MouseEvent e) {
 
-            }
+                }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
+                @Override
+                public void mouseExited(MouseEvent e) {
 
-            }
-        });
+                }
+            });
 
-        canvas.addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
+            canvas.addMouseMotionListener(new MouseMotionListener() {
+                @Override
+                public void mouseDragged(MouseEvent e) {
 
-                height = e.getX();
-                width = e.getY();
-                canvas.clean();
-                canvas.readCommands();
-                draw(theInk);
-                canvas.repaint();
+                    height = e.getX();
+                    width = e.getY();
+                    canvas.clean();
+                    canvas.readCommands();
+                    draw(theInk);
+                    canvas.repaint();
 
 
-            }
+                }
 
-            @Override
-            public void mouseMoved(MouseEvent e) {
-            }
-        });
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                }
+            });
+            System.out.println("this is outside of the ellipse mouse listenter");
+        }
     }
 
     @Override

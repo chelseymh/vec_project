@@ -153,34 +153,41 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     canvas.addCommand(tool + " " + hex);
                     break;
                 case "Polygon":
+                    toggledButton = name;
                     Shapes.Polygon polygon = new Shapes.Polygon();
                     polygon.create(canvas);
                     System.out.println("Poly selected");
                     break;
                 case "Rectangle":
+                    toggledButton = name;
                     Shapes.Rectangle rect = new Shapes.Rectangle();
                     rect.create(canvas);
                     System.out.println("Rect selected");
                     break;
                 case "Ellipse":
+                    toggledButton = name;
                     Shapes.Ellipse ellipse = new Shapes.Ellipse();
                     ellipse.create(canvas);
                     System.out.println("Ellip selected");
                     break;
                 case "Line":
+                    toggledButton = name;
                     Shapes.Line line = new Shapes.Line();
                     line.create(canvas);
                     System.out.println("Line selected");
                     break;
                 case "Plot":
+                    toggledButton = name;
                     Shapes.Plot plot = new Shapes.Plot();
                     plot.create(canvas);
                     System.out.println("Plot selected");
                     break;
                 default:
-                    toggledButton = name;
-                    System.out.println("Selected button: " + toggledButton);
+                    //toggledButton = name;
+                    //System.out.println("Selected button: " + toggledButton);
             }
+            //toggledButton = name;
+
         });
         return tempBtn;
     }

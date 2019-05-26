@@ -2,6 +2,7 @@ package Shapes;
 
 import java.awt.*;
 import paint_gui.Canvas;
+import paint_gui.guiClass;
 
 //mouse handlers
 import java.awt.event.MouseEvent;
@@ -51,10 +52,9 @@ public class Rectangle extends Shape implements FillingShape {
             public void mouseReleased(MouseEvent e) {
                 height = e.getX();
                 width = e.getY();
-
-                System.out.println(getCommand());
-                canvas.addCommand(getCommand());
-
+                if (guiClass.toggledButton=="Rectangle") {
+                    canvas.addCommand(getCommand());
+                }
                 canvas.clean();
                 canvas.readCommands();
             }
@@ -72,19 +72,23 @@ public class Rectangle extends Shape implements FillingShape {
         canvas.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                if (guiClass.toggledButton=="Rectangle") {
 
-                height = e.getX();
-                width = e.getY();
-                canvas.clean();
-                canvas.readCommands();
-                draw(theInk);
-                canvas.repaint();
+                    height = e.getX();
+                    width = e.getY();
+                    canvas.clean();
+                    canvas.readCommands();
+                    draw(theInk);
+                    canvas.repaint();
+                }
 
 
             }
             @Override
             public void mouseMoved(MouseEvent e) {}
         });
+
+
 
     }
 
