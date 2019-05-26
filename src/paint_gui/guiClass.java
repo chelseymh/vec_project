@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.undo.CannotUndoException;
+import Shapes.*;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
@@ -150,6 +151,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     Color color = JColorChooser.showDialog(this, "Color chooser",null);
                     String hex = "#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue());
                     canvas.addCommand(tool + " " + hex);
+                    break;
+                case "Polygon":
+                    Shapes.Polygon polygon = new Shapes.Polygon();
+                    polygon.create(canvas);
+                    System.out.println("Poly selected");
                     break;
                 default:
                     toggledButton = name;
