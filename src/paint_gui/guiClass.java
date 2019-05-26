@@ -172,6 +172,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     line.create(canvas);
                     System.out.println("Line selected");
                     break;
+                case "Plot":
+                    Shapes.Plot plot = new Shapes.Plot();
+                    plot.create(canvas);
+                    System.out.println("Plot selected");
+                    break;
                 default:
                     toggledButton = name;
                     System.out.println("Selected button: " + toggledButton);

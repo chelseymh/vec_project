@@ -37,7 +37,7 @@ public class Canvas extends JComponent {
 
                 if (theInk != null && gui.toggledButton.equals("Plot")) {
                     Plot plot = new Plot();
-                    plot.Plot(x1, y1);
+                    plot.addPoints(x1, y1);
                     System.out.println(plot.getCommand());
                     commands.add(plot.getCommand());
                 }
@@ -126,7 +126,7 @@ public class Canvas extends JComponent {
                 case "plot":
                     //System.out.println("plot");
                     Plot plot = new Plot();
-                    plot.Plot(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
+                    plot.addPoints(Integer.parseInt(input[1]), Integer.parseInt(input[2]));
                     plot.draw(theInk);
 
                     break;
