@@ -2,16 +2,15 @@ package paint_gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.GridLayout;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
-    public static String toggledButton = null;
-    private Box horizontalBoxPanel = Box.createHorizontalBox();
-    private Box verticalBoxPanel = Box.createVerticalBox();
+    public static Object toggledButton = null;
+    private JPanel eastPanel = new JPanel();
+    private JPanel westPanel = new JPanel();
     Canvas canvas;
     private String tool = "PEN";
     private boolean fill = false;
@@ -22,8 +21,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
      * Create the GUI and display it.
      */
     public void createGUI() {
-        canvas = new Canvas(Color.white);
-
         JMenuBar fileMenu;
         JMenu file, edit;
         JMenuItem fileNew, fileOpen, fileSave, undo, undoHistory;
@@ -33,8 +30,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         undoHisOpen = true;
 
         // Build two tool bars
-        JPanel verticalPanel = new JPanel();
-        JPanel horizontalPanel = new JPanel();
+        add(eastPanel);
+        add(westPanel);
 
         // Create and set up window
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -45,7 +42,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileMenu.setBackground(Color.cyan);
         fileMenu.setPreferredSize(new Dimension(200, 20));
         file = new JMenu("File");
-
         // Add listener here
         fileMenu.add(file);
         fileMenu.add(edit);
@@ -106,21 +102,22 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         });
 
         // Edit the panels
-        verticalPanel.setPreferredSize(new Dimension(100, 500));
-        horizontalPanel.setPreferredSize(new Dimension(500, 50));
+        eastPanel.setLayout(new GridLayout(5, 2));
+        westPanel.setLayout(new GridLayout(5, 1));
+
+        // Instantiate the canvas
+        canvas = new Canvas(Color.white);
 
         // Call the toolboxes to build
-        createButtonTools(); // horizontal one
-        verticalPanel.add(verticalBoxPanel);
-        horizontalPanel.add(horizontalBoxPanel);
+        createButtonTools();
 
         // Add panels to control pane
         getContentPane().add(canvas, BorderLayout.CENTER);
-        getContentPane().add(horizontalPanel, BorderLayout.PAGE_START);
-        getContentPane().add(verticalPanel, BorderLayout.WEST);
+        getContentPane().add(westPanel, BorderLayout.WEST);
+        getContentPane().add(eastPanel, BorderLayout.EAST);
 
         // Display the window
-        setPreferredSize(new Dimension(400, 400));
+        setPreferredSize(new Dimension(800, 500));
         setLocation(new Point(200, 200));
         setJMenuBar(fileMenu);
         getContentPane().setBackground(Color.white);
@@ -176,7 +173,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     public void createButtonTools() {
-        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn;
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, historyBtn;
         JToggleButton fillBtn;
         JButton black, blue, red, green, otherColor;
 
@@ -185,30 +182,22 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         lineBtn = createButton("Line");
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
-
-
-
+        undoBtn = createButton("Undo");
+        historyBtn = createButton("History");
         fillBtn = makeFillButton();
-
         black = createButton("Black");
         blue = createButton("Blue");
         red = createButton("Red");
         green = createButton("Green");
         otherColor = createButton("Other");
 
-        horizontalBoxPanel.add(plotBtn); horizontalBoxPanel.add(rectangleBtn);
-        horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
-        horizontalBoxPanel.add(polygonBtn);
-
-
-        verticalBoxPanel.add(new JLabel("1. Fill on/off:"));
-        verticalBoxPanel.add(fillBtn);
-        verticalBoxPanel.add(new JLabel("2. Choose color:"));
-        verticalBoxPanel.add(black);
-        verticalBoxPanel.add(blue);
-        verticalBoxPanel.add(red);
-        verticalBoxPanel.add(green);
-        verticalBoxPanel.add(otherColor);
+        westPanel.add(plotBtn); westPanel.add(rectangleBtn);
+        westPanel.add(lineBtn); westPanel.add(ellipseBtn); westPanel.add(polygonBtn);
+        eastPanel.add(undoBtn); eastPanel.add(historyBtn);
+        eastPanel.add(new JLabel("Step 1: Toggle Fill"));
+        eastPanel.add(fillBtn); eastPanel.add(new JLabel("Step 2: Select Color"));
+        eastPanel.add(black); eastPanel.add(blue); eastPanel.add(red);
+        eastPanel.add(green); eastPanel.add(otherColor);
     }
 
     public JButton createButton(String name) {
