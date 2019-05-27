@@ -167,7 +167,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             }
         };
 
-        canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK),
+        canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
                 "undo");
         canvas.getActionMap().put("undo",
                 undoCommand);
