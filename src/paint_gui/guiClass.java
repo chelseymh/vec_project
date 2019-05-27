@@ -127,20 +127,26 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         pack();
         setVisible(true);
 
+        //Checks for window resize
         addComponentListener(new ComponentAdapter( ) {
             public void componentResized(ComponentEvent ev) {
-
-
+                System.out.println("Window has been resized");
+                System.out.println(canvas.getHeight());
+                System.out.println(canvas.getWidth());
+                //if the width is bigger than the height, the size of the square
+                //canvas should be set to the height to maintain aspect ratio
                 if (ev.getComponent().getWidth()> ev.getComponent().getHeight()){
                     canvas.setBounds(150,50,ev.getComponent().getHeight(),ev.getComponent().getHeight());
                     canvas.imageSizex=ev.getComponent().getHeight();
                     canvas.imageSizey=ev.getComponent().getHeight();
+                    //if the height is bigger than the width canvas should
+                    //be set to width to maintain aspect ratio
                 } else {
                     canvas.setBounds(150,50,ev.getComponent().getWidth(),ev.getComponent().getWidth());
                     canvas.imageSizex=ev.getComponent().getWidth();
                     canvas.imageSizey=ev.getComponent().getWidth();
                 }
-
+                //Redraw the canvas so the images will be resized
                 if (canvas.image!=null) {
                     canvas.clean();
                     canvas.readCommands();
@@ -148,6 +154,25 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 }
             }
         });
+
+        //ctrl z undo listener
+
+        int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
+
+
+        Action undoCommand = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                //do nothing
+                canvas.Undo();
+            }
+        };
+
+        canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK),
+                "undo");
+        canvas.getActionMap().put("undo",
+                undoCommand);
+
+
     }
 
     public void createButtonTools() {
