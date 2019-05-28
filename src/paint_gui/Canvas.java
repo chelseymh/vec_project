@@ -19,7 +19,7 @@ public class Canvas extends JComponent {
     public Image image;
     private List<String> commands = new ArrayList<String>();
     private boolean fill = false;
-    public int imageSizex=400, imageSizey=400;
+    public int imageSizex = 600, imageSizey = 600;
 
     public Canvas(Color color) {
         setBorder(BorderFactory.createLineBorder(Color.black));
