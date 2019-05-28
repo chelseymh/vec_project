@@ -8,6 +8,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
@@ -25,7 +27,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     public void createGUI() {
         JMenuBar fileMenu;
         JMenu file, edit;
-        JMenuItem fileNew, fileOpen, fileSave, undo, undoHistory;
+        JMenuItem fileNew, fileOpen, fileSave, undo, undoHistory, fileExportBMP;
         edit = new JMenu("Edit");
 
         // Build two tool bars
@@ -49,6 +51,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileNew = new JMenuItem("New file");
         fileOpen = new JMenuItem("Open file");
         fileSave = new JMenuItem("Save");
+        fileExportBMP = new JMenuItem("Export as BMP");
 
         // Add action listeners
         fileNew.addActionListener(e -> {
@@ -77,11 +80,19 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 e.printStackTrace();
             }
         });
+        fileExportBMP.addActionListener(actionEvent -> {
+            try {
+                exportBMP();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         // Add menu items
         file.add(fileNew);
         file.add(fileOpen);
         file.add(fileSave);
+        file.add(fileExportBMP);
 
         edit.add(undo);
         edit.add(undoHistory);
@@ -144,8 +155,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     canvas.imageSizex=ev.getComponent().getWidth();
                     canvas.imageSizey=ev.getComponent().getWidth();
                 }
-                //Redraw the canvas so the images will be resized
-                if (canvas.image!=null) {
+
+                if (canvas.getImage()!=null) {
                     canvas.clean();
                     canvas.readCommands();
                     canvas.repaint();
@@ -352,5 +363,30 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             contentPane.add(scrollPane, BorderLayout.CENTER);
             guiHist.setVisible(true);
         }
+    }
+
+    private void exportBMP() throws IOException {
+        BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage());
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("BMP file", "bmp");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = chooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+            if (!filePath.endsWith(".bmp")) fileToSave = new File(filePath.concat(".bmp"));
+            ImageIO.write(bufferedImage, "BMP", fileToSave);
+        }
+    }
+
+    private BufferedImage imageToBufferedImage(Image image) {
+        // Create a buffered image with transparency
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        // Draw the image on to the buffered image
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+
+        return bufferedImage;
     }
 }
