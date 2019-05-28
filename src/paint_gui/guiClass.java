@@ -284,7 +284,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     private void exportBMP() throws IOException {
-        BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage());
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("BMP file", "bmp");
         chooser.setFileFilter(filter);
@@ -293,16 +292,36 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             File fileToSave = chooser.getSelectedFile();
             String filePath = fileToSave.getAbsolutePath();
             if (!filePath.endsWith(".bmp")) fileToSave = new File(filePath.concat(".bmp"));
-            ImageIO.write(bufferedImage, "BMP", fileToSave);
+
+            JTextField widthField = new JTextField(5);
+            JTextField heightField = new JTextField(5);
+
+            int result = getInput(widthField, heightField);
+            if (result == JOptionPane.OK_OPTION) {
+                int width = widthField.getText().equals("") ? canvas.imageSizex : Integer.parseInt(widthField.getText());
+                int height = heightField.getText().equals("") ? canvas.imageSizey : Integer.parseInt(heightField.getText());
+                BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage(), width, height);
+                ImageIO.write(bufferedImage, "BMP", fileToSave);
+            }
         }
     }
 
-    private BufferedImage imageToBufferedImage(Image image) {
-        // Create a buffered image with transparency
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        // Draw the image on to the buffered image
+    private int getInput(JTextField widthField, JTextField heightField) {
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Height:"));
+        panel.add(heightField);
+        panel.add(new JLabel("Width:"));
+        panel.add(widthField);
+
+        return JOptionPane.showConfirmDialog(this, panel, "Please enter height and width:", JOptionPane.OK_CANCEL_OPTION);
+    }
+
+    private BufferedImage imageToBufferedImage(Image image, int width, int height) {
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        // Draw the image onto the buffered image
         Graphics2D g = bufferedImage.createGraphics();
-        g.drawImage(image, 0, 0, null);
+        g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
 
         return bufferedImage;
