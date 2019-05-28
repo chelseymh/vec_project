@@ -11,7 +11,7 @@ import javax.swing.undo.CannotUndoException;
 import Shapes.*;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
-    public static Object toggledButton = null;
+    public static String toggledButton = null;
     private Box horizontalBoxPanel = Box.createHorizontalBox();
     private Box verticalBoxPanel = Box.createVerticalBox();
     Canvas canvas;
@@ -22,16 +22,18 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
      * Create the GUI and display it.
      */
     public void createGUI() {
+        canvas = new Canvas(Color.white);
+
         JMenuBar fileMenu;
         JMenu file;
-        JMenuItem fileOpen, fileSave;
+        JMenuItem fileNew, fileOpen, fileSave;
 
         // Build two tool bars
         JPanel verticalPanel = new JPanel();
         JPanel horizontalPanel = new JPanel();
 
         // Create and set up window
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Build top menu and first file dropdown
         fileMenu = new JMenuBar();
@@ -43,13 +45,23 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileMenu.add(file);
 
         // Build sub menu for fileOpen and fileSave
+        fileNew = new JMenuItem("New file");
         fileOpen = new JMenuItem("Open file");
         fileSave = new JMenuItem("Save");
 
         // Add action listeners
+        fileNew.addActionListener(e -> {
+            guiClass gui = new guiClass();
+            gui.createGUI();
+        });
+
         fileOpen.addActionListener(e -> {
             try {
-                openFile();
+                guiClass gui = new guiClass();
+                gui.createGUI();
+                BufferedReader reader = openFile();
+                if (reader != null) gui.readFile(reader);
+                else throw new RuntimeException("Reader null");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -63,15 +75,13 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         });
 
         // Add menu items
+        file.add(fileNew);
         file.add(fileOpen);
         file.add(fileSave);
 
         // Edit the panels
         verticalPanel.setPreferredSize(new Dimension(100, 500));
         horizontalPanel.setPreferredSize(new Dimension(500, 50));
-
-        // Instantiate the canvas
-        canvas = new Canvas(Color.white);
 
         // Call the toolboxes to build
         createButtonTools(); // horizontal one
@@ -93,9 +103,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         addComponentListener(new ComponentAdapter( ) {
             public void componentResized(ComponentEvent ev) {
-                System.out.println("Window has been resized");
-                System.out.println(canvas.getHeight());
-                System.out.println(canvas.getWidth());
+
 
                 if (ev.getComponent().getWidth()> ev.getComponent().getHeight()){
                     canvas.setBounds(150,50,ev.getComponent().getHeight(),ev.getComponent().getHeight());
@@ -229,21 +237,24 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return button;
     }
 
-    private void openFile() throws IOException {
+    private BufferedReader openFile() throws IOException {
+        BufferedReader reader = null;
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-            canvas.getCommands().clear();
-            for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
-            {
-                canvas.addCommand(lineFile);
-            }
-            canvas.clean();
-            canvas.readCommands();
+            reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
         }
+        return reader;
+    }
+
+    public void readFile(BufferedReader reader) throws IOException {
+        for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
+        {
+            canvas.addCommand(lineFile);
+        }
+        canvas.readCommands();
     }
 
     private void saveFile() throws IOException {
