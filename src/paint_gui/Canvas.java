@@ -16,7 +16,7 @@ public class Canvas extends JComponent {
     private static final String NEWLINE = System.getProperty("line.separator");
     private Graphics2D theInk;
     //REMEMBER TO SET PUBLIC VALUES BACK TO PRIVATE!!!
-    public Image image;
+    private Image image;
     private List<String> commands = new ArrayList<String>();
     private boolean fill = false;
     public int imageSizex=400, imageSizey=400;
@@ -176,5 +176,8 @@ public class Canvas extends JComponent {
         return theInk;
     }
 
+    public Image getImage() {
+        return image;
+    }
 }
 
