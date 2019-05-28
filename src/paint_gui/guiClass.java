@@ -22,6 +22,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
      * Create the GUI and display it.
      */
     public void createGUI() {
+        canvas = new Canvas(Color.white);
+
         JMenuBar fileMenu;
         JMenu file;
         JMenuItem fileNew, fileOpen, fileSave;
@@ -75,9 +77,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         // Edit the panels
         verticalPanel.setPreferredSize(new Dimension(100, 500));
         horizontalPanel.setPreferredSize(new Dimension(500, 50));
-
-        // Instantiate the canvas
-        canvas = new Canvas(Color.white);
 
         // Call the toolboxes to build
         createButtonTools(); // horizontal one
@@ -240,14 +239,18 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-            canvas.getCommands().clear();
-            for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
-            {
-                canvas.addCommand(lineFile);
-            }
-            canvas.clean();
-            canvas.readCommands();
+            guiClass gui = new guiClass();
+            gui.createGUI();
+            gui.readFile(reader);
         }
+    }
+
+    public void readFile(BufferedReader reader) throws IOException {
+        for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
+        {
+            canvas.addCommand(lineFile);
+        }
+        canvas.readCommands();
     }
 
     private void saveFile() throws IOException {
