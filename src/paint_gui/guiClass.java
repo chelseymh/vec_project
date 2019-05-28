@@ -39,7 +39,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         // Build top menu and first file dropdown
         fileMenu = new JMenuBar();
         fileMenu.setOpaque(true);
-        fileMenu.setBackground(Color.cyan);
+        fileMenu.setBackground(Color.white);
         fileMenu.setPreferredSize(new Dimension(200, 20));
         file = new JMenu("File");
         // Add listener here
