@@ -3,12 +3,10 @@ package paint_gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.undo.CannotUndoException;
-import Shapes.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static String toggledButton = null;
@@ -17,6 +15,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     Canvas canvas;
     private String tool = "PEN";
     private boolean fill = false;
+    History history;
+    private boolean undoHisOpen;
 
     /**
      * Create the GUI and display it.
@@ -25,8 +25,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         canvas = new Canvas(Color.white);
 
         JMenuBar fileMenu;
-        JMenu file;
-        JMenuItem fileNew, fileOpen, fileSave;
+        JMenu file, edit;
+        JMenuItem fileNew, fileOpen, fileSave, undo, undoHistory;
+        edit = new JMenu("Edit");
+
+        history = new History(canvas);
+        undoHisOpen = true;
 
         // Build two tool bars
         JPanel verticalPanel = new JPanel();
@@ -41,8 +45,10 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileMenu.setBackground(Color.cyan);
         fileMenu.setPreferredSize(new Dimension(200, 20));
         file = new JMenu("File");
+
         // Add listener here
         fileMenu.add(file);
+        fileMenu.add(edit);
 
         // Build sub menu for fileOpen and fileSave
         fileNew = new JMenuItem("New file");
@@ -54,6 +60,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             guiClass gui = new guiClass();
             gui.createGUI();
         });
+
+        undo = new JMenuItem("Undo");
+        undoHistory = new JMenuItem("Undo History");
 
         fileOpen.addActionListener(e -> {
             try {
@@ -78,6 +87,23 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         file.add(fileNew);
         file.add(fileOpen);
         file.add(fileSave);
+
+        edit.add(undo);
+        edit.add(undoHistory);
+
+        // Undo Listeners
+        undo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                canvas.Undo();
+            }
+        });
+        undoHistory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                undoHistory();
+            }
+        });
 
         // Edit the panels
         verticalPanel.setPreferredSize(new Dimension(100, 500));
@@ -125,7 +151,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     }
 
     public void createButtonTools() {
-        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn;
+        JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn;
         JToggleButton fillBtn;
         JButton black, blue, red, green, otherColor;
 
@@ -135,7 +161,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
 
-        undoBtn = createButton("Undo");
+
 
         fillBtn = makeFillButton();
 
@@ -149,7 +175,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         horizontalBoxPanel.add(lineBtn); horizontalBoxPanel.add(ellipseBtn);
         horizontalBoxPanel.add(polygonBtn);
 
-        verticalBoxPanel.add(undoBtn);
+
         verticalBoxPanel.add(new JLabel("1. Fill on/off:"));
         verticalBoxPanel.add(fillBtn);
         verticalBoxPanel.add(new JLabel("2. Choose color:"));
@@ -273,6 +299,43 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 writer.newLine();
             }
             writer.close();
+        }
+    }
+
+    public void undoHistory() {
+        if (undoHisOpen) {
+            //build the list
+            undoHisOpen = false;
+            JFrame guiHist = new JFrame();
+            history.fillLabels();
+            JList histList = new JList(history.labels);
+            JScrollPane scrollPane = new JScrollPane(histList);
+            histList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+            histList.setLayoutOrientation(JList.VERTICAL);
+            histList.addListSelectionListener(new ListSelectionListener() {
+                //start listener
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        //pass through the desired index
+                        history.displayPreview(histList.getSelectedIndex());
+                    }
+                }
+            });
+            guiHist.setSize(200, 150);
+            guiHist.setLocation(new Point(50, 50));
+            guiHist.setTitle("Undo History");
+            guiHist.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    super.windowClosing(e);
+                    undoHisOpen = true;
+                    history.windowCloseAction();
+                }
+            });
+            Container contentPane = guiHist.getContentPane();
+            contentPane.add(scrollPane, BorderLayout.CENTER);
+            guiHist.setVisible(true);
         }
     }
 }
