@@ -11,7 +11,7 @@ import javax.swing.undo.CannotUndoException;
 import Shapes.*;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
-    public static Object toggledButton = null;
+    public static String toggledButton = null;
     private Box horizontalBoxPanel = Box.createHorizontalBox();
     private Box verticalBoxPanel = Box.createVerticalBox();
     Canvas canvas;
@@ -24,14 +24,14 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     public void createGUI() {
         JMenuBar fileMenu;
         JMenu file;
-        JMenuItem fileOpen, fileSave;
+        JMenuItem fileNew, fileOpen, fileSave;
 
         // Build two tool bars
         JPanel verticalPanel = new JPanel();
         JPanel horizontalPanel = new JPanel();
 
         // Create and set up window
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Build top menu and first file dropdown
         fileMenu = new JMenuBar();
@@ -43,10 +43,15 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileMenu.add(file);
 
         // Build sub menu for fileOpen and fileSave
+        fileNew = new JMenuItem("New file");
         fileOpen = new JMenuItem("Open file");
         fileSave = new JMenuItem("Save");
 
         // Add action listeners
+        fileNew.addActionListener(e -> {
+            guiClass gui = new guiClass();
+            gui.createGUI();
+        });
         fileOpen.addActionListener(e -> {
             try {
                 openFile();
@@ -63,6 +68,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         });
 
         // Add menu items
+        file.add(fileNew);
         file.add(fileOpen);
         file.add(fileSave);
 
@@ -93,9 +99,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         addComponentListener(new ComponentAdapter( ) {
             public void componentResized(ComponentEvent ev) {
-                System.out.println("Window has been resized");
-                System.out.println(canvas.getHeight());
-                System.out.println(canvas.getWidth());
+
 
                 if (ev.getComponent().getWidth()> ev.getComponent().getHeight()){
                     canvas.setBounds(150,50,ev.getComponent().getHeight(),ev.getComponent().getHeight());
