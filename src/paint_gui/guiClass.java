@@ -54,9 +54,14 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             guiClass gui = new guiClass();
             gui.createGUI();
         });
+
         fileOpen.addActionListener(e -> {
             try {
-                openFile();
+                guiClass gui = new guiClass();
+                gui.createGUI();
+                BufferedReader reader = openFile();
+                if (reader != null) gui.readFile(reader);
+                else throw new RuntimeException("Reader null");
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -232,17 +237,16 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return button;
     }
 
-    private void openFile() throws IOException {
+    private BufferedReader openFile() throws IOException {
+        BufferedReader reader = null;
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-            guiClass gui = new guiClass();
-            gui.createGUI();
-            gui.readFile(reader);
+            reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
         }
+        return reader;
     }
 
     public void readFile(BufferedReader reader) throws IOException {
