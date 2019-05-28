@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
@@ -25,9 +27,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         JMenu file, edit;
         JMenuItem fileNew, fileOpen, fileSave, undo, undoHistory;
         edit = new JMenu("Edit");
-
-        history = new History(canvas);
-        undoHisOpen = true;
 
         // Build two tool bars
         add(eastPanel);
@@ -107,6 +106,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         // Instantiate the canvas
         canvas = new Canvas(Color.white);
+        history = new History(canvas);
+        undoHisOpen = true;
 
         // Call the toolboxes to build
         createButtonTools();
@@ -133,13 +134,13 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 //if the width is bigger than the height, the size of the square
                 //canvas should be set to the height to maintain aspect ratio
                 if (ev.getComponent().getWidth()> ev.getComponent().getHeight()){
-                    canvas.setBounds(150,50,ev.getComponent().getHeight(),ev.getComponent().getHeight());
+                    canvas.setBounds(110,0,ev.getComponent().getHeight(),ev.getComponent().getHeight());
                     canvas.imageSizex=ev.getComponent().getHeight();
                     canvas.imageSizey=ev.getComponent().getHeight();
                     //if the height is bigger than the width canvas should
                     //be set to width to maintain aspect ratio
                 } else {
-                    canvas.setBounds(150,50,ev.getComponent().getWidth(),ev.getComponent().getWidth());
+                    canvas.setBounds(110,0,ev.getComponent().getWidth(),ev.getComponent().getWidth());
                     canvas.imageSizex=ev.getComponent().getWidth();
                     canvas.imageSizey=ev.getComponent().getWidth();
                 }
