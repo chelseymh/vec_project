@@ -158,10 +158,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 } else {
                     canvas.setBounds(westPanel.getWidth(),0,sizeX,sizeX);
                 }
-<<<<<<< HEAD
 
-                if (canvas.getImage()!=null) {
-=======
                 //Redraw the canvas so the images will be resized
                 canvas.refreshCanvas();
                 canvas.readCommands();
@@ -413,8 +410,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
             int result = getInput(widthField, heightField);
             if (result == JOptionPane.OK_OPTION) {
-                int width = widthField.getText().equals("") ? canvas.imageSizex : Integer.parseInt(widthField.getText());
-                int height = heightField.getText().equals("") ? canvas.imageSizey : Integer.parseInt(heightField.getText());
+                int width = widthField.getText().equals("") ? canvas.getWidth() : Integer.parseInt(widthField.getText());
+                int height = heightField.getText().equals("") ? canvas.getHeight() : Integer.parseInt(heightField.getText());
                 BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage(), width, height);
                 ImageIO.write(bufferedImage, "BMP", fileToSave);
             }
