@@ -177,6 +177,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 canvas.Undo();
             }
         };
+
         //create keybinding
         canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 "undo");
@@ -248,6 +249,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             switch (name) {
                 case "Undo":
                     canvas.Undo();
+                    break;
+                case "History":
+                    undoHistory();
                     break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
