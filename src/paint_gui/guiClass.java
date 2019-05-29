@@ -163,14 +163,10 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 if (canvas.getImage()!=null) {
 =======
                 //Redraw the canvas so the images will be resized
-                canvas.resizeCanvas();
-                if (canvas.image!=null) {
-                    canvas.resizeCanvas();
->>>>>>> Basic fix for scaling
-                    canvas.clean();
-                    canvas.readCommands();
-                    canvas.repaint();
-                }
+                canvas.refreshCanvas();
+                canvas.readCommands();
+                canvas.repaint();
+
             }
         });
 
@@ -190,6 +186,35 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         //attach action to keybinding
         canvas.getActionMap().put("undo",
                 undoCommand);
+
+        //Checks for window resize
+        addComponentListener(new ComponentAdapter( ) {
+            public void componentResized(ComponentEvent ev) {
+                //Canvas needs to take up the space between the west and east panels
+                int sizeX=ev.getComponent().getWidth()-eastPanel.getWidth()-westPanel.getWidth();
+                //height is not constrained in this way so just take same height as everyone
+                int sizeY=ev.getComponent().getHeight();
+
+                //add a leetle buffer
+                sizeX-=10;
+                sizeY-=10;
+
+                //if the width is bigger than the height, the size of the square
+                //canvas should be set to the height to maintain aspect ratio
+                if (sizeX> sizeY){
+                    //canvas bounds starts at where west panel ends
+                    canvas.setBounds(westPanel.getWidth(),westPanel.getY(), sizeY, sizeY);
+                    //if the height is bigger than the width canvas should
+                    //be set to width to maintain aspect ratio
+                } else {
+                    canvas.setBounds(westPanel.getWidth(),westPanel.getY(),sizeX,sizeX);
+                }
+                //Redraw the canvas so the images will be resized
+                canvas.clean();
+                canvas.readCommands();
+                canvas.repaint();
+            }
+        });
     }
 
     public void createButtonTools() {
