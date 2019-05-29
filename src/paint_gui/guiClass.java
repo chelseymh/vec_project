@@ -9,17 +9,21 @@ import java.awt.event.*;
 import java.awt.GridLayout;
 import java.io.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
     private JPanel eastPanel = new JPanel();
     private JPanel westPanel = new JPanel();
     Canvas canvas;
+    History history;
+    Undo undo;
     private String tool = "PEN";
     private boolean fill = false;
-    History history;
     private boolean undoHisOpen;
     private FileHandler fileHandler;
 
@@ -27,14 +31,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
      * Create the GUI and display it.
      */
     public void createGUI() {
-        // Instantiate the canvas
-        canvas = new Canvas(Color.white);
-        history = new History(canvas);
-        undoHisOpen = true;
-
         JMenuBar fileMenu;
         JMenu file, edit;
-        JMenuItem fileNew, fileOpen, fileSave, undo, undoHistory, fileExportBMP;
+        JMenuItem fileNew, fileOpen, fileSave, undoButton, undoHistory, fileExportBMP;
         edit = new JMenu("Edit");
 
         // Build two tool bars
@@ -70,7 +69,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             gui.createGUI();
         });
 
-        undo = new JMenuItem("Undo");
+        undoButton = new JMenuItem("Undo");
         undoHistory = new JMenuItem("Undo History");
 
         fileOpen.addActionListener(actionEvent -> {
@@ -103,18 +102,18 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         file.add(fileSave);
         file.add(fileExportBMP);
 
-        edit.add(undo);
+        edit.add(undoButton);
         edit.add(undoHistory);
 
         // Undo Listeners
-        undo.addActionListener(new ActionListener() {
+        undoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
-                    canvas.Undo();
+                    undo.Undo();
                 } catch (UndoException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
-                }
+                } 
             }
         });
         undoHistory.addActionListener(new ActionListener() {
@@ -127,6 +126,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         // Edit the panels
         eastPanel.setLayout(new GridLayout(5, 2));
         westPanel.setLayout(new GridLayout(5, 1));
+
+       // Instantiate the canvas
+        canvas = new Canvas(Color.white);
+        history = new History(canvas);
+        undo = new Undo(canvas);
+        undoHisOpen = true;
 
         // Call the toolboxes to build
         createButtonTools();
@@ -180,10 +185,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
         //create action for key binding
         Action undoCommand = new AbstractAction() {
+            @Override
             public void actionPerformed(ActionEvent event) {
                 //do nothing
                 try {
-                    canvas.Undo();
+                    undo.Undo();
                 } catch (UndoException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -261,7 +267,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             switch (name) {
                 case "Undo":
                     try {
-                        canvas.Undo();
+                        undo.Undo();
                     } catch (UndoException e) {
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -373,6 +379,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     super.windowClosing(e);
                     undoHisOpen = true;
                     history.windowCloseAction();
+                    guiHist.dispose();
                 }
             });
             Container contentPane = guiHist.getContentPane();
