@@ -132,7 +132,7 @@ public class Canvas extends JComponent {
                     break;
             }
         }
-        System.out.println("readcommands: "+commands);
+        
         repaint();
     }
 
