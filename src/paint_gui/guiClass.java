@@ -54,9 +54,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileMenu.add(file);
         fileMenu.add(edit);
 
-        //Instantiate file handlers
-        fileHandler = new FileHandler(canvas);
-        ExporterBMP BMPexporter = new ExporterBMP(canvas);
+
 
         // Build sub menu for fileOpen and fileSave
         fileNew = new JMenuItem("New file");
@@ -73,29 +71,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         undoButton = new JMenuItem("Undo");
         undoHistory = new JMenuItem("Undo History");
 
-        fileOpen.addActionListener(actionEvent -> {
-            try {
-                fileHandler.openFileNewWindow();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } catch (RuntimeException e2) {
-                JOptionPane.showMessageDialog(this, "Something went wrong", "Error message", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        fileSave.addActionListener(actionEvent -> {
-            try {
-                fileHandler.saveFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        fileExportBMP.addActionListener(actionEvent -> {
-            try {
-                BMPexporter.exportBMP();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+
+
+
 
         // Add menu items
         file.add(fileNew);
@@ -133,6 +111,34 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         history = new History(canvas);
         undo = new Undo(canvas);
         undoHisOpen = true;
+
+        //Instantiate file handlers
+        fileHandler = new FileHandler(canvas);
+        ExporterBMP BMPexporter = new ExporterBMP(canvas);
+
+        fileOpen.addActionListener(actionEvent -> {
+            try {
+                fileHandler.openFileNewWindow();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (RuntimeException e2) {
+                JOptionPane.showMessageDialog(this, "Something went wrong", "Error message", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        fileSave.addActionListener(actionEvent -> {
+            try {
+                fileHandler.saveFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        fileExportBMP.addActionListener(actionEvent -> {
+            try {
+                BMPexporter.exportBMP();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         // Call the toolboxes to build
         createButtonTools();
