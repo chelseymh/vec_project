@@ -142,21 +142,35 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 System.out.println("Window has been resized");
                 System.out.println(canvas.getHeight());
                 System.out.println(canvas.getWidth());
+
+                //Canvas needs to take up the space between the west and east panels
+                int sizeX=ev.getComponent().getWidth()-eastPanel.getWidth()-westPanel.getWidth();
+                //height is not constrained in this way so just take same height as everyone
+                int sizeY=ev.getComponent().getHeight();
+
+                //add a leetle buffer
+                sizeX-=10;
+                sizeY-=10;
+
+
                 //if the width is bigger than the height, the size of the square
                 //canvas should be set to the height to maintain aspect ratio
-                if (ev.getComponent().getWidth()> ev.getComponent().getHeight()){
-                    canvas.setBounds(110,0,ev.getComponent().getHeight(),ev.getComponent().getHeight());
-                    canvas.imageSizex=ev.getComponent().getHeight();
-                    canvas.imageSizey=ev.getComponent().getHeight();
+                if (sizeX> sizeY){
+                    canvas.setBounds(westPanel.getWidth(),0, sizeY, sizeY);
                     //if the height is bigger than the width canvas should
                     //be set to width to maintain aspect ratio
                 } else {
-                    canvas.setBounds(110,0,ev.getComponent().getWidth(),ev.getComponent().getWidth());
-                    canvas.imageSizex=ev.getComponent().getWidth();
-                    canvas.imageSizey=ev.getComponent().getWidth();
+                    canvas.setBounds(110,0,sizeX,sizeX);
                 }
+<<<<<<< HEAD
 
                 if (canvas.getImage()!=null) {
+=======
+                //Redraw the canvas so the images will be resized
+                canvas.resizeCanvas();
+                if (canvas.image!=null) {
+                    canvas.resizeCanvas();
+>>>>>>> Basic fix for scaling
                     canvas.clean();
                     canvas.readCommands();
                     canvas.repaint();

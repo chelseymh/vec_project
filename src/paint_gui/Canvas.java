@@ -28,10 +28,10 @@ public class Canvas extends JComponent {
     }
 
     public void resizeCanvas(){
-        image = createImage(imageSizex, imageSizey);
+        image = createImage(getWidth(), getHeight());
         theInk = (Graphics2D)image.getGraphics();
         theInk.setPaint(Color.white);
-        theInk.fillRect(0, 0, getSize().width, getSize().width);
+        theInk.fillRect(0, 0, getSize().height, getSize().width);
 
     }
     //Java Swing is a black box of graphics and will call this
