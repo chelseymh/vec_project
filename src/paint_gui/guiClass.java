@@ -378,8 +378,10 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 public void windowClosing(WindowEvent e) {
                     super.windowClosing(e);
                     undoHisOpen = true;
-                    history.windowCloseAction();
-                    guiHist.dispose();
+                    if(!histList.isSelectionEmpty()) {
+                        history.windowCloseAction();
+                    	guiHist.dispose();
+                    }
                 }
             });
             Container contentPane = guiHist.getContentPane();
