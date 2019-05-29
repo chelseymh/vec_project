@@ -17,14 +17,14 @@ public class Line extends Shape {
     public void Line(){
     }
 
-    public void addPoints(int x1, int y1, int x2, int y2) {
+    public Line(int x1, int y1, int x2, int y2) {
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
     }
 
-    public void create(Canvas canvas){
+    public Line(Canvas canvas){
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
         canvas.addMouseListener(new MouseListener() {

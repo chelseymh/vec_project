@@ -59,28 +59,24 @@ public class Canvas extends JComponent {
             switch (input[0].toLowerCase()) {
                 case "line":
                     //System.out.println("line");
-                    Line line = new Line();
-                    line.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
+                    Shapes.Line line = new Shapes.Line((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     line.draw(theInk);
                     break;
                 case "plot":
                     //System.out.println("plot");
-                    Plot plot = new Plot();
-                    plot.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()));
+                    Plot plot = new Plot((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()));
                     plot.draw(theInk);
 
                     break;
                 case "rectangle":
                     //System.out.println("rectangle");
-                    Shapes.Rectangle rect = new Shapes.Rectangle();
-                    rect.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
+                    Shapes.Rectangle rect = new Shapes.Rectangle((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     rect.draw(theInk);
                     if (fill) rect.fill(fillInk);
                     break;
                 case "ellipse":
                     //System.out.println("ellipse");
-                    Ellipse ellipse = new Ellipse();
-                    ellipse.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
+                    Ellipse ellipse = new Ellipse((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     ellipse.draw(theInk);
                     if (fill) ellipse.fill(fillInk);
                     break;

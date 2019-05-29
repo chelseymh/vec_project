@@ -13,18 +13,15 @@ public class Ellipse extends Shape implements FillingShape {
     private paint_gui.Canvas canvas;
     private Graphics2D theInk;
 
-    public void Ellipse() {
 
-    }
-
-    public void addPoints(int x1, int y1, int x2, int y2) {
+    public Ellipse(int x1, int y1, int x2, int y2) {
         x = x1;
         y = y1;
         height = x2;
         width = y2;
     }
 
-    public void create(Canvas canvas) {
+    public Ellipse(Canvas canvas) {
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
         if (guiClass.toggledButton=="Ellipse") {

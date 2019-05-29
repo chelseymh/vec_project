@@ -14,25 +14,7 @@ public class Rectangle extends Shape implements FillingShape {
     private paint_gui.Canvas canvas;
     private Graphics2D theInk;
 
-    public void Rectangle() {
-;
-    }
-
-    public void addPoints(int x1, int y1, int x2, int y2){
-        //Rectangle works by starting xy point followed by desired width
-        // and height, we get this by getting the difference of our start
-        // and end coords
-        // Revert if rectangle is drawn backwards
-        this.x = x1;
-        this.y = y1;
-        this.height = x2;
-        this.width = y2;
-        //canvas to paint shape on
-
-
-    }
-
-    public void create(Canvas canvas) {
+    public Rectangle(Canvas canvas) {
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
         canvas.addMouseListener(new MouseListener() {
@@ -84,9 +66,17 @@ public class Rectangle extends Shape implements FillingShape {
             @Override
             public void mouseMoved(MouseEvent e) {}
         });
+    }
 
-
-
+    public Rectangle(int x1, int y1, int x2, int y2){
+        //Rectangle works by starting xy point followed by desired width
+        // and height, we get this by getting the difference of our start
+        // and end coords
+        // Revert if rectangle is drawn backwards
+        this.x = x1;
+        this.y = y1;
+        this.height = x2;
+        this.width = y2;
     }
 
     @Override

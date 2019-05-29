@@ -15,16 +15,12 @@ public class Plot extends Shape {
     private paint_gui.Canvas canvas;
     private Graphics2D theInk;
 
-    public void Plot(){
-
-    }
-
-    public void addPoints(int x1, int y1) {
+    public Plot(int x1, int y1) {
         this.x1 = x1;
         this.y1 = y1;
     }
 
-    public void create(Canvas canvas) {
+    public Plot(Canvas canvas) {
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
         canvas.addMouseListener(new MouseListener() {
