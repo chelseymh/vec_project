@@ -46,7 +46,6 @@ public class History {
 
         //save the list in case user wants this
         userSelection.addAll(commands);
-
         canvas.clean();
         canvas.readCommands();
         canvas.repaint();
