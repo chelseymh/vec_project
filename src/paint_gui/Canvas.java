@@ -1,22 +1,15 @@
 package paint_gui;
 
-import Exceptions.UndoException;
 import Shapes.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Canvas extends JComponent {
-    private guiClass gui;
     //private Dimension minSize = new Dimension(300, 300);
-    private static final String NEWLINE = System.getProperty("line.separator");
     private Graphics2D theInk;
-    //REMEMBER TO SET PUBLIC VALUES BACK TO PRIVATE!!!
     private Image image;
     private List<String> commands = new ArrayList<String>();
     private boolean fill = false;
@@ -36,11 +29,6 @@ public class Canvas extends JComponent {
         theInk.setStroke(new BasicStroke(4));
     }
 
-    //Java Swing is a black box of graphics and will call this
-    //as needed to paint components on the canvas
-    //bit dodgy may need to look at again in the future
-    //Takes a graphics component to draw on but since we don't call
-    //it ourselves, Swing takes care of it
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         //if there's no image already
@@ -49,14 +37,6 @@ public class Canvas extends JComponent {
            refreshCanvas();
         }
         g.drawImage(image, 0, 0, null);
-
-    }
-
-    void printEvent(String event, MouseEvent e) {
-        System.out.println(event + " (" + e.getX() + ", "
-                + e.getY() + ") " + "detected on "
-                + e.getComponent().getClass().getName()
-                + NEWLINE);
     }
 
     public void clean(){
@@ -79,28 +59,24 @@ public class Canvas extends JComponent {
             switch (input[0].toLowerCase()) {
                 case "line":
                     //System.out.println("line");
-                    Line line = new Line();
-                    line.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
+                    Shapes.Line line = new Shapes.Line((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     line.draw(theInk);
                     break;
                 case "plot":
                     //System.out.println("plot");
-                    Plot plot = new Plot();
-                    plot.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()));
+                    Shapes.Plot plot = new Shapes.Plot((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[1]))*getHeight()), (int)(Float.parseFloat(input[2])*getWidth()));
                     plot.draw(theInk);
 
                     break;
                 case "rectangle":
                     //System.out.println("rectangle");
-                    Shapes.Rectangle rect = new Shapes.Rectangle();
-                    rect.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
+                    Shapes.Rectangle rect = new Shapes.Rectangle((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     rect.draw(theInk);
                     if (fill) rect.fill(fillInk);
                     break;
                 case "ellipse":
                     //System.out.println("ellipse");
-                    Ellipse ellipse = new Ellipse();
-                    ellipse.addPoints((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
+                    Ellipse ellipse = new Ellipse((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
                     ellipse.draw(theInk);
                     if (fill) ellipse.fill(fillInk);
                     break;
@@ -134,7 +110,6 @@ public class Canvas extends JComponent {
                     break;
             }
         }
-        
         repaint();
     }
 

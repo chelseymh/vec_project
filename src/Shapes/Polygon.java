@@ -23,7 +23,7 @@ public class Polygon extends Shape implements FillingShape {
 
     }
 
-    public void create(Canvas canvas) {
+    public Polygon(Canvas canvas) {
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
         System.out.println("poly constructor");
@@ -121,8 +121,7 @@ public class Polygon extends Shape implements FillingShape {
                     }
                     int x2 = e.getX();
                     int y2 = e.getY();
-                    Line line = new Line();
-                    line.addPoints(points.get(points.size()-1).x, points.get(points.size()-1).y, x2, y2);
+                    Line line = new Line(points.get(points.size()-1).x, points.get(points.size()-1).y, x2, y2);
                     line.draw(theInk);
                     canvas.repaint();
                     //redraw only the saved commands
@@ -139,8 +138,7 @@ public class Polygon extends Shape implements FillingShape {
                     }
                     int x2 = e.getX();
                     int y2 = e.getY();
-                    Line line = new Line();
-                    line.addPoints(points.get(points.size() - 1).x, points.get(points.size() - 1).y, x2, y2);
+                    Line line = new Line(points.get(points.size() - 1).x, points.get(points.size() - 1).y, x2, y2);
                     line.draw(theInk);
                     canvas.repaint();
                     //redraw only the saved commands

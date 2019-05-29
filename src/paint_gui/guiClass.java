@@ -1,5 +1,6 @@
 package paint_gui;
 
+
 import Exceptions.WindowResizeException;
 import FileHandlers.ExporterBMP;
 import FileHandlers.FileHandler;
@@ -10,11 +11,10 @@ import java.awt.event.*;
 import java.awt.GridLayout;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import Shapes.Shape;
+
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
@@ -185,10 +185,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 //Redraw the canvas so the images will be resized
                 canvas.readCommands();
                 canvas.repaint();
-
             }
         });
-
         calculateCanvasBounds();
    }
 
@@ -227,7 +225,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, historyBtn;
         JToggleButton fillBtn;
         JButton black, blue, red, green, otherColor;
-
         plotBtn = createButton("Plot");
         ellipseBtn = createButton("Ellipse");
         lineBtn = createButton("Line");
@@ -278,7 +275,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     canvas.addCommand(tool + " #00FF00");
                     break;
                 case "Other":
-                    Color color = JColorChooser.showDialog(this, "Color chooser",null);
+                    Color color = JColorChooser.showDialog(this, "Color chooser", null);
                     if (color != null) {
                         String red = color.getRed() == 0 ? "00" : Integer.toHexString(color.getRed());
                         String green = color.getGreen() == 0 ? "00" : Integer.toHexString(color.getGreen());
@@ -289,39 +286,32 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     break;
                 case "Polygon":
                     toggledButton = name;
-                    Shapes.Polygon polygon = new Shapes.Polygon();
-                    polygon.create(canvas);
+                    Shapes.Shape polygon = new Shapes.Polygon(canvas);
                     System.out.println("Poly selected");
                     break;
                 case "Rectangle":
                     toggledButton = name;
-                    Shapes.Rectangle rect = new Shapes.Rectangle();
-                    rect.create(canvas);
+                    Shapes.Shape rect = new Shapes.Rectangle(canvas);
                     System.out.println("Rect selected");
                     break;
                 case "Ellipse":
                     toggledButton = name;
-                    Shapes.Ellipse ellipse = new Shapes.Ellipse();
-                    ellipse.create(canvas);
+                    Shapes.Shape ellipse = new Shapes.Ellipse(canvas);
+
                     System.out.println("Ellip selected");
                     break;
                 case "Line":
                     toggledButton = name;
-                    Shapes.Line line = new Shapes.Line();
-                    line.create(canvas);
+                    Shapes.Shape line = new Shapes.Line(canvas);
                     System.out.println("Line selected");
                     break;
                 case "Plot":
                     toggledButton = name;
-                    Shapes.Plot plot = new Shapes.Plot();
-                    plot.create(canvas);
+                    Shapes.Shape plot = new Shapes.Plot(canvas);
                     System.out.println("Plot selected");
                     break;
                 default:
-                    //toggledButton = name;
-                    //System.out.println("Selected button: " + toggledButton);
             }
-            //toggledButton = name;
 
         });
         return tempBtn;
