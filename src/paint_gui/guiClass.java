@@ -179,23 +179,21 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         });
 
         //ctrl z undo listener
-
+        //
         int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
-
-
+        //create action for key binding
         Action undoCommand = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 //do nothing
                 canvas.Undo();
             }
         };
-
+        //create keybinding
         canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 "undo");
+        //attach action to keybinding
         canvas.getActionMap().put("undo",
                 undoCommand);
-
-
     }
 
     public void createButtonTools() {
