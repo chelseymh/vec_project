@@ -1,22 +1,15 @@
 package paint_gui;
 
-import Exceptions.UndoException;
 import Shapes.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Canvas extends JComponent {
-    private guiClass gui;
     //private Dimension minSize = new Dimension(300, 300);
-    private static final String NEWLINE = System.getProperty("line.separator");
     private Graphics2D theInk;
-    //REMEMBER TO SET PUBLIC VALUES BACK TO PRIVATE!!!
     private Image image;
     private List<String> commands = new ArrayList<String>();
     private boolean fill = false;
@@ -36,11 +29,6 @@ public class Canvas extends JComponent {
         theInk.setStroke(new BasicStroke(4));
     }
 
-    //Java Swing is a black box of graphics and will call this
-    //as needed to paint components on the canvas
-    //bit dodgy may need to look at again in the future
-    //Takes a graphics component to draw on but since we don't call
-    //it ourselves, Swing takes care of it
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         //if there's no image already
@@ -49,14 +37,6 @@ public class Canvas extends JComponent {
            refreshCanvas();
         }
         g.drawImage(image, 0, 0, null);
-
-    }
-
-    void printEvent(String event, MouseEvent e) {
-        System.out.println(event + " (" + e.getX() + ", "
-                + e.getY() + ") " + "detected on "
-                + e.getComponent().getClass().getName()
-                + NEWLINE);
     }
 
     public void clean(){
@@ -134,7 +114,6 @@ public class Canvas extends JComponent {
                     break;
             }
         }
-        
         repaint();
     }
 
