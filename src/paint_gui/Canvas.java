@@ -140,21 +140,6 @@ public class Canvas extends JComponent {
         return commands;
     }
 
-
-    public void Undo() throws UndoException {
-        int size = commands.size() -1;
-        if (!commands.isEmpty()) {
-            commands.remove(size);
-            System.out.println("Undo done");
-            System.out.println(commands);
-        } else {
-            throw new UndoException("No more undoes");
-        }
-        clean();
-        readCommands();
-        repaint();
-    }
-
     public void addCommand(String command) {
         commands.add(command);
     }
