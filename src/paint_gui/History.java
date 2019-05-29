@@ -7,7 +7,6 @@ import java.util.List;
 public class History {
     Canvas canvas;
     public String labels[];
-    private List<String> tempCommands = new ArrayList<String>();
     private List<String> userSelection= new ArrayList<String>();
 
     public History(Canvas canvas) {
@@ -15,13 +14,10 @@ public class History {
     }
 
     public void fillLabels() {
+        List<String> tempCommands = new ArrayList<String>();
         tempCommands.clear(); // Clear the Jlist on open to ensure OLD / UNDOED drawings are removed
-        for (String string : canvas.getCommands()) { // go through commands and add them to a tempList
-            tempCommands.add(string);
-        }
-        for (int i = 0; i < canvas.getCommands().size(); i++) { // Go through tempList and convert to Array to display
-            labels = tempCommands.toArray(new String[0]);
-        }
+        tempCommands.addAll(canvas.getCommands());
+        labels = tempCommands.toArray(new String[0]);
     }
 
     //displays a preview of what undo history would look
