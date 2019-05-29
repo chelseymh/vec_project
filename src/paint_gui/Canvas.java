@@ -1,5 +1,6 @@
 package paint_gui;
 
+import Exceptions.UndoException;
 import Shapes.*;
 import javax.swing.*;
 import java.awt.*;
@@ -140,12 +141,14 @@ public class Canvas extends JComponent {
     }
 
 
-    public void Undo() {
+    public void Undo() throws UndoException {
         int size = commands.size() -1;
         if (!commands.isEmpty()) {
             commands.remove(size);
             System.out.println("Undo done");
             System.out.println(commands);
+        } else {
+            throw new UndoException("No more undoes");
         }
         clean();
         readCommands();
