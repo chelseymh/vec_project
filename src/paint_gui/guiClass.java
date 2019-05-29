@@ -2,6 +2,7 @@ package paint_gui;
 
 import FileHandlers.ExporterBMP;
 import FileHandlers.FileHandler;
+import Exceptions.UndoException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -108,8 +109,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         // Undo Listeners
         undo.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                canvas.Undo();
+            public void actionPerformed(ActionEvent event) {
+                try {
+                    canvas.Undo();
+                } catch (UndoException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         undoHistory.addActionListener(new ActionListener() {
@@ -175,9 +180,13 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
         //create action for key binding
         Action undoCommand = new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent event) {
                 //do nothing
-                canvas.Undo();
+                try {
+                    canvas.Undo();
+                } catch (UndoException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         };
 
@@ -251,7 +260,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         tempBtn.addActionListener(actionEvent -> {
             switch (name) {
                 case "Undo":
-                    canvas.Undo();
+                    try {
+                        canvas.Undo();
+                    } catch (UndoException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                    }
                     break;
                 case "History":
                     undoHistory();
