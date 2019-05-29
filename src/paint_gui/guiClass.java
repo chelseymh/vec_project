@@ -273,7 +273,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                         String blue = color.getBlue() == 0 ? "00" : Integer.toHexString(color.getBlue());
                         String hex = "#" + red + green + blue;
                         canvas.addCommand(tool + " " + hex);
-                    } //255, 0, 102
+                    }
                     break;
                 case "Polygon":
                     toggledButton = name;
