@@ -268,9 +268,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 case "Other":
                     Color color = JColorChooser.showDialog(this, "Color chooser",null);
                     if (color != null) {
-                        String hex = "#" + Integer.toHexString(color.getRed()) + Integer.toHexString(color.getGreen()) + Integer.toHexString(color.getBlue());
+                        String red = color.getRed() == 0 ? "00" : Integer.toHexString(color.getRed());
+                        String green = color.getGreen() == 0 ? "00" : Integer.toHexString(color.getGreen());
+                        String blue = color.getBlue() == 0 ? "00" : Integer.toHexString(color.getBlue());
+                        String hex = "#" + red + green + blue;
                         canvas.addCommand(tool + " " + hex);
-                    }
+                    } //255, 0, 102
                     break;
                 case "Polygon":
                     toggledButton = name;
