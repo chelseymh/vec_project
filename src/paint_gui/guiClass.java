@@ -28,7 +28,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     private boolean fill = false;
     private boolean undoHisOpen;
     private FileHandler fileHandler;
-    private final  int minWidth = 550, minHeight = 242;
 
     /**
      * Create the GUI and display it.
@@ -194,6 +193,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
    }
 
     public void calculateCanvasBounds() {
+        final int minWidth = 550, minHeight = 242;
         //Canvas needs to take up the space between the west and east panels
         int sizeX = getWidth() - eastPanel.getWidth() - westPanel.getWidth();
         ////Canvas needs to take up the space below fileMenu panel
