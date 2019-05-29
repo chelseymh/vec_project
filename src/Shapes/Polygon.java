@@ -23,7 +23,7 @@ public class Polygon extends Shape implements FillingShape {
 
     }
 
-    public void create(Canvas canvas) {
+    public Polygon(Canvas canvas) {
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
         System.out.println("poly constructor");
