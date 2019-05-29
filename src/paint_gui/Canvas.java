@@ -70,6 +70,8 @@ public class Canvas extends JComponent {
     public void readCommands(){
         Graphics2D fillInk = (Graphics2D) image.getGraphics();
 
+        //Reset theInk and fill to their default values
+        theInk.setPaint(Color.DARK_GRAY);
         if (fill) fill = false;
         for (String lineFile : commands)
         {
