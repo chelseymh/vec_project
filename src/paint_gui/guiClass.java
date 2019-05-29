@@ -28,6 +28,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     private boolean fill = false;
     private boolean undoHisOpen;
     private FileHandler fileHandler;
+    private final  int minWidth = 550, minHeight = 242;
 
     /**
      * Create the GUI and display it.
@@ -213,7 +214,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 canvas.setBounds(westPanel.getWidth() + 10, 10, sizeX, sizeX);
             }
             canvas.refreshCanvas();
-            if (getWidth() <= 550 && getHeight() <= 242) {
+            if (getWidth() <= minWidth && getHeight() <= minHeight) {
                 throw new WindowResizeException("Window is at minimum size. Cannot minimise any further.");
             }
             } catch (WindowResizeException e) {
