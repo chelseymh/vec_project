@@ -1,5 +1,6 @@
 package paint_gui;
 
+import Exceptions.WindowResizeException;
 import FileHandlers.ExporterBMP;
 import FileHandlers.FileHandler;
 import Exceptions.UndoException;
@@ -54,8 +55,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileMenu.add(file);
         fileMenu.add(edit);
 
-
-
         // Build sub menu for fileOpen and fileSave
         fileNew = new JMenuItem("New file");
         fileOpen = new JMenuItem("Open file");
@@ -70,10 +69,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         undoButton = new JMenuItem("Undo");
         undoHistory = new JMenuItem("Undo History");
-
-
-
-
 
         // Add menu items
         file.add(fileNew);
@@ -151,6 +146,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         // Display the window
         setPreferredSize(new Dimension(800, 500));
         setLocation(new Point(200, 200));
+        setMinimumSize(new Dimension(550, 242));
         setJMenuBar(fileMenu);
         getContentPane().setBackground(Color.white);
         pack();
@@ -187,7 +183,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             public void componentResized(ComponentEvent ev) {
                 calculateCanvasBounds();
                 //Redraw the canvas so the images will be resized
-
                 canvas.readCommands();
                 canvas.repaint();
 
@@ -204,21 +199,26 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         int sizeY = eastPanel.getHeight();
 
         //add a leetle buffer
-        sizeX-=20;
-        sizeY-=20;
-
-
-        //if the width is bigger than the height, the size of the square
-        //canvas should be set to the height to maintain aspect ratio
-        if (sizeX > sizeY) {
-            //canvas bounds starts at where west panel ends
-            canvas.setBounds(westPanel.getWidth()+10, 10, sizeY, sizeY);
-            //if the height is bigger than the width canvas should
-            //be set to width to maintain aspect ratio
-        } else {
-            canvas.setBounds(westPanel.getWidth()+10, 10, sizeX, sizeX);
+        sizeX -= 20;
+        sizeY -= 20;
+        try {
+            //if the width is bigger than the height, the size of the square
+            //canvas should be set to the height to maintain aspect ratio
+            if (sizeX > sizeY) {
+                //canvas bounds starts at where west panel ends
+                canvas.setBounds(westPanel.getWidth() + 10, 10, sizeY, sizeY);
+                //if the height is bigger than the width canvas should
+                //be set to width to maintain aspect ratio
+            } else {
+                canvas.setBounds(westPanel.getWidth() + 10, 10, sizeX, sizeX);
+            }
+            canvas.refreshCanvas();
+            if (getWidth() <= 550 && getHeight() <= 242) {
+                throw new WindowResizeException("Window is at minimum size. Cannot minimise any further.");
+            }
+            } catch (WindowResizeException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
         }
-        canvas.refreshCanvas();
     }
 
 
