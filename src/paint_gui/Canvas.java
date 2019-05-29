@@ -64,7 +64,7 @@ public class Canvas extends JComponent {
                     break;
                 case "plot":
                     //System.out.println("plot");
-                    Plot plot = new Plot((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()));
+                    Shapes.Plot plot = new Shapes.Plot((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[1]))*getHeight()), (int)(Float.parseFloat(input[2])*getWidth()));
                     plot.draw(theInk);
 
                     break;
