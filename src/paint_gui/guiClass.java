@@ -139,49 +139,79 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         //Checks for window resize
         addComponentListener(new ComponentAdapter( ) {
             public void componentResized(ComponentEvent ev) {
-                System.out.println("Window has been resized");
-                System.out.println(canvas.getHeight());
-                System.out.println(canvas.getWidth());
+                //Canvas needs to take up the space between the west and east panels
+                int sizeX=ev.getComponent().getWidth()-eastPanel.getWidth()-westPanel.getWidth();
+                //height is not constrained in this way so just take same height as everyone
+                int sizeY=ev.getComponent().getHeight();
+
+                //add a leetle buffer
+                sizeX-=10;
+                sizeY-=10;
+
                 //if the width is bigger than the height, the size of the square
                 //canvas should be set to the height to maintain aspect ratio
-                if (ev.getComponent().getWidth()> ev.getComponent().getHeight()){
-                    canvas.setBounds(110,0,ev.getComponent().getHeight(),ev.getComponent().getHeight());
-                    canvas.imageSizex=ev.getComponent().getHeight();
-                    canvas.imageSizey=ev.getComponent().getHeight();
+                if (sizeX> sizeY){
+                    //canvas bounds starts at where west panel ends
+                    canvas.setBounds(westPanel.getWidth(),0, sizeY, sizeY);
                     //if the height is bigger than the width canvas should
                     //be set to width to maintain aspect ratio
                 } else {
-                    canvas.setBounds(110,0,ev.getComponent().getWidth(),ev.getComponent().getWidth());
-                    canvas.imageSizex=ev.getComponent().getWidth();
-                    canvas.imageSizey=ev.getComponent().getWidth();
+                    canvas.setBounds(westPanel.getWidth(),0,sizeX,sizeX);
                 }
 
-                if (canvas.getImage()!=null) {
-                    canvas.clean();
-                    canvas.readCommands();
-                    canvas.repaint();
-                }
+                //Redraw the canvas so the images will be resized
+                canvas.refreshCanvas();
+                canvas.readCommands();
+                canvas.repaint();
+
             }
         });
 
         //ctrl z undo listener
-
+        //
         int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
-
-
+        //create action for key binding
         Action undoCommand = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 //do nothing
                 canvas.Undo();
             }
         };
-
+        //create keybinding
         canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
                 "undo");
+        //attach action to keybinding
         canvas.getActionMap().put("undo",
                 undoCommand);
 
+        //Checks for window resize
+        addComponentListener(new ComponentAdapter( ) {
+            public void componentResized(ComponentEvent ev) {
+                //Canvas needs to take up the space between the west and east panels
+                int sizeX=ev.getComponent().getWidth()-eastPanel.getWidth()-westPanel.getWidth();
+                //height is not constrained in this way so just take same height as everyone
+                int sizeY=ev.getComponent().getHeight();
 
+                //add a leetle buffer
+                sizeX-=10;
+                sizeY-=10;
+
+                //if the width is bigger than the height, the size of the square
+                //canvas should be set to the height to maintain aspect ratio
+                if (sizeX> sizeY){
+                    //canvas bounds starts at where west panel ends
+                    canvas.setBounds(westPanel.getWidth(),westPanel.getY(), sizeY, sizeY);
+                    //if the height is bigger than the width canvas should
+                    //be set to width to maintain aspect ratio
+                } else {
+                    canvas.setBounds(westPanel.getWidth(),westPanel.getY(),sizeX,sizeX);
+                }
+                //Redraw the canvas so the images will be resized
+                canvas.clean();
+                canvas.readCommands();
+                canvas.repaint();
+            }
+        });
     }
 
     public void createButtonTools() {
@@ -380,8 +410,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
             int result = getInput(widthField, heightField);
             if (result == JOptionPane.OK_OPTION) {
-                int width = widthField.getText().equals("") ? canvas.imageSizex : Integer.parseInt(widthField.getText());
-                int height = heightField.getText().equals("") ? canvas.imageSizey : Integer.parseInt(heightField.getText());
+                int width = widthField.getText().equals("") ? canvas.getWidth() : Integer.parseInt(widthField.getText());
+                int height = heightField.getText().equals("") ? canvas.getHeight() : Integer.parseInt(heightField.getText());
                 BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage(), width, height);
                 ImageIO.write(bufferedImage, "BMP", fileToSave);
             }

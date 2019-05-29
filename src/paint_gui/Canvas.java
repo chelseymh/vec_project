@@ -19,7 +19,6 @@ public class Canvas extends JComponent {
     private Image image;
     private List<String> commands = new ArrayList<String>();
     private boolean fill = false;
-    public int imageSizex = 600, imageSizey = 600;
 
     public Canvas(Color color) {
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -27,13 +26,15 @@ public class Canvas extends JComponent {
         setOpaque(true);
     }
 
-    public void resizeCanvas(){
-        image = createImage(imageSizex, imageSizey);
+    public void refreshCanvas(){
+        image = createImage(getWidth(), getHeight());
         theInk = (Graphics2D)image.getGraphics();
         theInk.setPaint(Color.white);
-        theInk.fillRect(0, 0, getSize().width, getSize().width);
-
+        theInk.fillRect(0, 0, getWidth(), getHeight());
+        theInk.setPaint(Color.DARK_GRAY);
+        theInk.setStroke(new BasicStroke(4));
     }
+
     //Java Swing is a black box of graphics and will call this
     //as needed to paint components on the canvas
     //bit dodgy may need to look at again in the future
@@ -44,26 +45,11 @@ public class Canvas extends JComponent {
         //if there's no image already
         //create the blank image
         if(image == null){
-            //taken from window dimensions in guiClass
-            image = createImage(imageSizex, imageSizey);
-            theInk = (Graphics2D)image.getGraphics();
-            theInk.setPaint(Color.white);
-            theInk.fillRect(0, 0, imageSizex, imageSizey);
-            theInk.setPaint(Color.DARK_GRAY);
-            theInk.setStroke(new BasicStroke(4));
-            //clean();
+           refreshCanvas();
         }
         g.drawImage(image, 0, 0, null);
 
     }
-
-//    public Dimension getMinimumSize() {
-//        return minSize;
-//    }
-//
-//    public Dimension getPreferredSize() {
-//        return minSize;
-//    }
 
     void printEvent(String event, MouseEvent e) {
         System.out.println(event + " (" + e.getX() + ", "
@@ -74,7 +60,7 @@ public class Canvas extends JComponent {
 
     public void clean(){
         theInk.setPaint(Color.white);
-        theInk.fillRect(0, 0, imageSizex, imageSizey);
+        theInk.fillRect(0, 0, getHeight(), getWidth());
         theInk.setPaint(Color.DARK_GRAY);
         theInk.setStroke(new BasicStroke(4));
         repaint();

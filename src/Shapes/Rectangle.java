@@ -80,8 +80,6 @@ public class Rectangle extends Shape implements FillingShape {
                     draw(theInk);
                     canvas.repaint();
                 }
-
-
             }
             @Override
             public void mouseMoved(MouseEvent e) {}
