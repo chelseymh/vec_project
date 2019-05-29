@@ -120,7 +120,6 @@ public class Canvas extends JComponent {
                     theInk.setPaint(Color.decode(input[1]));
                     break;
                 case "fill":
-                    System.out.println("fill");
                     if (input[1].equals("OFF")) {
                         fill = false;
                     } else {
