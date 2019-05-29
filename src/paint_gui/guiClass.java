@@ -1,5 +1,8 @@
 package paint_gui;
 
+import FileHandlers.ExporterBMP;
+import FileHandlers.FileHandler;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.GridLayout;
@@ -20,11 +23,17 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     private boolean fill = false;
     History history;
     private boolean undoHisOpen;
+    private FileHandler fileHandler;
 
     /**
      * Create the GUI and display it.
      */
     public void createGUI() {
+        // Instantiate the canvas
+        canvas = new Canvas(Color.white);
+        history = new History(canvas);
+        undoHisOpen = true;
+
         JMenuBar fileMenu;
         JMenu file, edit;
         JMenuItem fileNew, fileOpen, fileSave, undo, undoHistory, fileExportBMP;
@@ -47,6 +56,10 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileMenu.add(file);
         fileMenu.add(edit);
 
+        //Instantiate file handlers
+        fileHandler = new FileHandler(canvas);
+        ExporterBMP BMPexporter = new ExporterBMP(canvas);
+
         // Build sub menu for fileOpen and fileSave
         fileNew = new JMenuItem("New file");
         fileOpen = new JMenuItem("Open file");
@@ -62,27 +75,25 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         undo = new JMenuItem("Undo");
         undoHistory = new JMenuItem("Undo History");
 
-        fileOpen.addActionListener(e -> {
+        fileOpen.addActionListener(actionEvent -> {
             try {
-                guiClass gui = new guiClass();
-                gui.createGUI();
-                BufferedReader reader = openFile();
-                if (reader != null) gui.readFile(reader);
-                else throw new RuntimeException("Reader null");
+                fileHandler.openFileNewWindow();
             } catch (IOException e1) {
                 e1.printStackTrace();
+            } catch (RuntimeException e2) {
+                JOptionPane.showMessageDialog(this, "Something went wrong", "Error message", JOptionPane.ERROR_MESSAGE);
             }
         });
         fileSave.addActionListener(actionEvent -> {
             try {
-                saveFile();
+                fileHandler.saveFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
         fileExportBMP.addActionListener(actionEvent -> {
             try {
-                exportBMP();
+                BMPexporter.exportBMP();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -114,11 +125,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         // Edit the panels
         eastPanel.setLayout(new GridLayout(5, 2));
         westPanel.setLayout(new GridLayout(5, 1));
-
-        // Instantiate the canvas
-        canvas = new Canvas(Color.white);
-        history = new History(canvas);
-        undoHisOpen = true;
 
         // Call the toolboxes to build
         createButtonTools();
@@ -328,45 +334,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return button;
     }
 
-    private BufferedReader openFile() throws IOException {
-        BufferedReader reader = null;
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-        }
-        return reader;
-    }
-
-    public void readFile(BufferedReader reader) throws IOException {
-        for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
-        {
-            canvas.addCommand(lineFile);
-        }
-        canvas.readCommands();
-    }
-
-    private void saveFile() throws IOException {
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showSaveDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = chooser.getSelectedFile();
-            String filePath = fileToSave.getAbsolutePath();
-            // Check the type of the file
-            if (!filePath.endsWith(".vec")) fileToSave = new File(filePath.concat(".vec"));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
-            for (String command : canvas.getCommands()) {
-                writer.write(command);
-                writer.newLine();
-            }
-            writer.close();
-        }
-    }
-
     public void undoHistory() {
         if (undoHisOpen) {
             //build the list
@@ -404,47 +371,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         }
     }
 
-    private void exportBMP() throws IOException {
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("BMP file", "bmp");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showSaveDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = chooser.getSelectedFile();
-            String filePath = fileToSave.getAbsolutePath();
-            if (!filePath.endsWith(".bmp")) fileToSave = new File(filePath.concat(".bmp"));
-
-            JTextField widthField = new JTextField(5);
-            JTextField heightField = new JTextField(5);
-
-            int result = getInput(widthField, heightField);
-            if (result == JOptionPane.OK_OPTION) {
-                int width = widthField.getText().equals("") ? canvas.getWidth() : Integer.parseInt(widthField.getText());
-                int height = heightField.getText().equals("") ? canvas.getHeight() : Integer.parseInt(heightField.getText());
-                BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage(), width, height);
-                ImageIO.write(bufferedImage, "BMP", fileToSave);
-            }
-        }
-    }
-
-    private int getInput(JTextField widthField, JTextField heightField) {
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Height:"));
-        panel.add(heightField);
-        panel.add(new JLabel("Width:"));
-        panel.add(widthField);
-
-        return JOptionPane.showConfirmDialog(this, panel, "Please enter height and width:", JOptionPane.OK_CANCEL_OPTION);
-    }
-
-    private BufferedImage imageToBufferedImage(Image image, int width, int height) {
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-        // Draw the image onto the buffered image
-        Graphics2D g = bufferedImage.createGraphics();
-        g.drawImage(image, 0, 0, width, height, null);
-        g.dispose();
-
-        return bufferedImage;
+    public FileHandler getFileHandler() {
+        return fileHandler;
     }
 }
