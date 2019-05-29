@@ -1,0 +1,63 @@
+package FileHandlers;
+
+import paint_gui.Canvas;
+import paint_gui.guiClass;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
+
+public class FileHandler {
+    private Canvas canvas;
+
+    public FileHandler(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    public void openFileNewWindow() throws IOException {
+        guiClass gui = new guiClass();
+        gui.createGUI();
+        BufferedReader reader = openFile();
+        if (reader != null) gui.getFileHandler().readFile(reader);
+        else throw new RuntimeException("Reader null");
+    }
+
+    private BufferedReader openFile() throws IOException {
+        BufferedReader reader = null;
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
+        }
+        return reader;
+    }
+
+    public void readFile(BufferedReader reader) throws IOException {
+        for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
+        {
+            canvas.addCommand(lineFile);
+        }
+        canvas.readCommands();
+    }
+
+    public void saveFile() throws IOException {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showSaveDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = chooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+            // Check the type of the file
+            if (!filePath.endsWith(".vec")) fileToSave = new File(filePath.concat(".vec"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
+            for (String command : canvas.getCommands()) {
+                writer.write(command);
+                writer.newLine();
+            }
+            writer.close();
+        }
+    }
+}
