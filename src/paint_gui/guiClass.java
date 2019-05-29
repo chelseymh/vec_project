@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
+    private JMenuBar fileMenu;
     private JPanel eastPanel = new JPanel();
     private JPanel westPanel = new JPanel();
     Canvas canvas;
@@ -31,7 +32,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
      * Create the GUI and display it.
      */
     public void createGUI() {
-        JMenuBar fileMenu;
+
         JMenu file, edit;
         JMenuItem fileNew, fileOpen, fileSave, undoButton, undoHistory, fileExportBMP;
         edit = new JMenu("Edit");
@@ -149,36 +150,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         pack();
         setVisible(true);
 
-        //Checks for window resize
-        addComponentListener(new ComponentAdapter( ) {
-            public void componentResized(ComponentEvent ev) {
-                //Canvas needs to take up the space between the west and east panels
-                int sizeX=ev.getComponent().getWidth()-eastPanel.getWidth()-westPanel.getWidth();
-                //height is not constrained in this way so just take same height as everyone
-                int sizeY=ev.getComponent().getHeight();
-
-                //add a leetle buffer
-                sizeX-=10;
-                sizeY-=10;
-
-                //if the width is bigger than the height, the size of the square
-                //canvas should be set to the height to maintain aspect ratio
-                if (sizeX> sizeY){
-                    //canvas bounds starts at where west panel ends
-                    canvas.setBounds(westPanel.getWidth(),0, sizeY, sizeY);
-                    //if the height is bigger than the width canvas should
-                    //be set to width to maintain aspect ratio
-                } else {
-                    canvas.setBounds(westPanel.getWidth(),0,sizeX,sizeX);
-                }
-
-                //Redraw the canvas so the images will be resized
-                canvas.refreshCanvas();
-                canvas.readCommands();
-                canvas.repaint();
-
-            }
-        });
 
         //ctrl z undo listener
         //
@@ -203,35 +174,47 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         canvas.getActionMap().put("undo",
                 undoCommand);
 
+
+
         //Checks for window resize
-        addComponentListener(new ComponentAdapter( ) {
+        addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent ev) {
-                //Canvas needs to take up the space between the west and east panels
-                int sizeX=ev.getComponent().getWidth()-eastPanel.getWidth()-westPanel.getWidth();
-                //height is not constrained in this way so just take same height as everyone
-                int sizeY=ev.getComponent().getHeight();
-
-                //add a leetle buffer
-                sizeX-=10;
-                sizeY-=10;
-
-                //if the width is bigger than the height, the size of the square
-                //canvas should be set to the height to maintain aspect ratio
-                if (sizeX> sizeY){
-                    //canvas bounds starts at where west panel ends
-                    canvas.setBounds(westPanel.getWidth(),westPanel.getY(), sizeY, sizeY);
-                    //if the height is bigger than the width canvas should
-                    //be set to width to maintain aspect ratio
-                } else {
-                    canvas.setBounds(westPanel.getWidth(),westPanel.getY(),sizeX,sizeX);
-                }
+                calculateCanvasBounds();
                 //Redraw the canvas so the images will be resized
-                canvas.clean();
+
                 canvas.readCommands();
                 canvas.repaint();
+
             }
         });
+
+        calculateCanvasBounds();
+   }
+
+    public void calculateCanvasBounds() {
+        //Canvas needs to take up the space between the west and east panels
+        int sizeX = getWidth() - eastPanel.getWidth() - westPanel.getWidth();
+        ////Canvas needs to take up the space below fileMenu panel
+        int sizeY = eastPanel.getHeight();
+
+        //add a leetle buffer
+        sizeX-=20;
+        sizeY-=20;
+
+
+        //if the width is bigger than the height, the size of the square
+        //canvas should be set to the height to maintain aspect ratio
+        if (sizeX > sizeY) {
+            //canvas bounds starts at where west panel ends
+            canvas.setBounds(westPanel.getWidth()+10, 10, sizeY, sizeY);
+            //if the height is bigger than the width canvas should
+            //be set to width to maintain aspect ratio
+        } else {
+            canvas.setBounds(westPanel.getWidth()+10, 10, sizeX, sizeX);
+        }
+        canvas.refreshCanvas();
     }
+
 
     public void createButtonTools() {
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, historyBtn;
