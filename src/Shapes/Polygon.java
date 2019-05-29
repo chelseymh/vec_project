@@ -14,6 +14,7 @@ public class Polygon extends Shape implements FillingShape {
     //This should be better managed dictionary or something
     private List<Point> points= new ArrayList<Point>();
     //canvas to paint shape on
+    private int x1, y1;
     private paint_gui.Canvas canvas;
     private Graphics2D theInk;
     private String clickstatus="firstclick";
@@ -31,6 +32,12 @@ public class Polygon extends Shape implements FillingShape {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
                 //Polygon is marked as done with a double click
                 if (guiClass.toggledButton=="Polygon") {
 
@@ -41,7 +48,7 @@ public class Polygon extends Shape implements FillingShape {
                         Point firstPoint = points.get(0);
                         points.add(firstPoint);
                         // System.out.println(getCommand());
-                            canvas.addCommand(getCommand());
+                        canvas.addCommand(getCommand());
 
                         //redraw only the saved commands
                         canvas.readCommands();
@@ -83,15 +90,11 @@ public class Polygon extends Shape implements FillingShape {
 
                     }
                 }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent mouseEvent) {
 
             }
 
             @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
+            public void mouseReleased(MouseEvent e) {
 
             }
 
@@ -109,9 +112,7 @@ public class Polygon extends Shape implements FillingShape {
 
         canvas.addMouseMotionListener(new MouseMotionListener() {
             @Override
-            public void mouseDragged(MouseEvent e) {}
-            @Override
-            public void mouseMoved(MouseEvent e) {
+            public void mouseDragged(MouseEvent e) {
                 if (theInk != null && !clickstatus.equals("firstclick") && guiClass.toggledButton=="Polygon") {
                     canvas.clean();
                     canvas.readCommands();
@@ -128,10 +129,29 @@ public class Polygon extends Shape implements FillingShape {
                     canvas.readCommands();
                 }
             }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (theInk != null && !clickstatus.equals("firstclick") && guiClass.toggledButton=="Polygon") {
+                    canvas.clean();
+                    canvas.readCommands();
+                    if (points.size() > 1) {
+                        draw(theInk);
+                    }
+                    int x2 = e.getX();
+                    int y2 = e.getY();
+                    Line line = new Line();
+                    line.addPoints(points.get(points.size() - 1).x, points.get(points.size() - 1).y, x2, y2);
+                    line.draw(theInk);
+                    canvas.repaint();
+                    //redraw only the saved commands
+                    canvas.readCommands();
+
+                }
+            }
         });
 
-
     }
+
 
     public void addPoints(Point point) {
         points.add(point);
