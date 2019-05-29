@@ -8,11 +8,8 @@ import java.awt.event.*;
 import java.awt.GridLayout;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static Object toggledButton = null;
