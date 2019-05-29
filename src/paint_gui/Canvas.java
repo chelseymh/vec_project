@@ -69,7 +69,7 @@ public class Canvas extends JComponent {
     public void readCommands(){
         Graphics2D fillInk = (Graphics2D) image.getGraphics();
 
-        //System.out.println("Reading commands");
+        if (fill) fill = false;
         for (String lineFile : commands)
         {
             String[] input = lineFile.split("\\s");
@@ -118,7 +118,6 @@ public class Canvas extends JComponent {
                 case "pen":
                     System.out.println("pen");
                     theInk.setPaint(Color.decode(input[1]));
-                    fill = false;
                     break;
                 case "fill":
                     System.out.println("fill");
