@@ -63,6 +63,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileNew.addActionListener(e -> {
             guiClass gui = new guiClass();
             gui.createGUI();
+            gui.setLocation(300, 150);
         });
 
         undoButton = new JMenuItem("Undo");
@@ -142,8 +143,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         getContentPane().add(eastPanel, BorderLayout.EAST);
 
         // Display the window
+        setTitle("VEC Paint Program");
         setPreferredSize(new Dimension(800, 500));
-        setLocation(new Point(200, 200));
+        setLocation(new Point(100, 100));
         setMinimumSize(new Dimension(550, 242));
         setFocusableWindowState(true);
         setJMenuBar(fileMenu);
@@ -345,7 +347,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 }
             });
             guiHist.setSize(200, 150);
-            guiHist.setLocation(new Point(150, 150));
+            guiHist.setLocation(new Point(50, 50));
             guiHist.setTitle("Undo History");
             guiHist.addWindowListener(new WindowAdapter() {
                 @Override
