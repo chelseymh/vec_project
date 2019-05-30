@@ -1,6 +1,7 @@
 package paint_gui;
 
 
+import Exceptions.HistoryException;
 import Exceptions.WindowResizeException;
 import FileHandlers.ExporterBMP;
 import FileHandlers.FileHandler;
@@ -93,7 +94,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         undoHistory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                undoHistory();
+                try {
+                    undoHistory();
+                } catch (HistoryException event) {
+                    JOptionPane.showMessageDialog(null, event.getMessage(), "Window error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -147,11 +152,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setPreferredSize(new Dimension(800, 500));
         setLocation(new Point(200, 200));
         setMinimumSize(new Dimension(550, 242));
+        setFocusableWindowState(true);
         setJMenuBar(fileMenu);
         getContentPane().setBackground(Color.white);
         pack();
         setVisible(true);
-
 
         //ctrl z undo listener
         //
@@ -175,8 +180,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         //attach action to keybinding
         canvas.getActionMap().put("undo",
                 undoCommand);
-
-
 
         //Checks for window resize
         addComponentListener(new ComponentAdapter() {
@@ -260,7 +263,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     }
                     break;
                 case "History":
-                    undoHistory();
+                    try {
+                        undoHistory();
+                    } catch (HistoryException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "Window error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    // try catch
                     break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
@@ -330,11 +338,25 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return button;
     }
 
-    public void undoHistory() {
+    public void undoHistory() throws HistoryException {
         if (undoHisOpen) {
             undoHisOpen = false;
-            //setEnabled(false);
+            setEnabled(false);
             JFrame guiHist = new JFrame();
+            guiHist.setFocusableWindowState(true);
+            guiHist.requestFocus();
+            guiHist.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowLostFocus(WindowEvent e) {
+                    super.windowLostFocus(e);
+                    System.out.println("Lost focus");
+                    try {
+                        throw new HistoryException("Pl");
+                    } catch (HistoryException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            });
             history.fillLabels();
             JList histList = new JList(history.labels);
             JScrollPane scrollPane = new JScrollPane(histList);
@@ -351,21 +373,21 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 }
             });
             guiHist.setSize(200, 150);
-            guiHist.setLocation(new Point(50, 50));
+            guiHist.setLocation(new Point(150, 150));
             guiHist.setTitle("Undo History");
             guiHist.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     super.windowClosing(e);
                     undoHisOpen = true;
-                    //setEnabled(true);
+                    setEnabled(true);
                     if (!histList.isSelectionEmpty()) {
                         history.windowCloseAction();
-
                     }
                     guiHist.dispose();
                 }
             });
+            // window listener for Frame
             Container contentPane = guiHist.getContentPane();
             contentPane.add(scrollPane, BorderLayout.CENTER);
             guiHist.setVisible(true);
