@@ -116,8 +116,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 fileHandler.openFileNewWindow();
             } catch (IOException e1) {
                 e1.printStackTrace();
-            } catch (RuntimeException e2) {
-                JOptionPane.showMessageDialog(this, "Something went wrong", "Error message", JOptionPane.ERROR_MESSAGE);
             }
         });
         fileSave.addActionListener(actionEvent -> {
