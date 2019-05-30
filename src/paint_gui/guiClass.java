@@ -63,6 +63,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileNew.addActionListener(e -> {
             guiClass gui = new guiClass();
             gui.createGUI();
+            gui.setLocation(300, 150);
         });
 
         undoButton = new JMenuItem("Undo");
