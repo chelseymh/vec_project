@@ -1,7 +1,5 @@
 package paint_gui;
 
-
-import Exceptions.WindowResizeException;
 import FileHandlers.ExporterBMP;
 import FileHandlers.FileHandler;
 import Exceptions.UndoException;
@@ -147,11 +145,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setPreferredSize(new Dimension(800, 500));
         setLocation(new Point(200, 200));
         setMinimumSize(new Dimension(550, 242));
+        setFocusableWindowState(true);
         setJMenuBar(fileMenu);
         getContentPane().setBackground(Color.white);
         pack();
         setVisible(true);
-
 
         //ctrl z undo listener
         //
@@ -176,8 +174,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         canvas.getActionMap().put("undo",
                 undoCommand);
 
-
-
         //Checks for window resize
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent ev) {
@@ -200,24 +196,17 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         //add a leetle buffer
         sizeX -= 20;
         sizeY -= 20;
-        try {
-            //if the width is bigger than the height, the size of the square
-            //canvas should be set to the height to maintain aspect ratio
-            if (sizeX > sizeY) {
-                //canvas bounds starts at where west panel ends
-                canvas.setBounds(westPanel.getWidth() + 10, 10, sizeY, sizeY);
-                //if the height is bigger than the width canvas should
-                //be set to width to maintain aspect ratio
-            } else {
-                canvas.setBounds(westPanel.getWidth() + 10, 10, sizeX, sizeX);
-            }
-            canvas.refreshCanvas();
-            if (getWidth() <= minWidth && getHeight() <= minHeight) {
-                throw new WindowResizeException("Window is at minimum size. Cannot minimise any further.");
-            }
-            } catch (WindowResizeException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+        //if the width is bigger than the height, the size of the square
+        //canvas should be set to the height to maintain aspect ratio
+        if (sizeX > sizeY) {
+            //canvas bounds starts at where west panel ends
+            canvas.setBounds(westPanel.getWidth() + 10, 10, sizeY, sizeY);
+            //if the height is bigger than the width canvas should
+            //be set to width to maintain aspect ratio
+        } else {
+            canvas.setBounds(westPanel.getWidth() + 10, 10, sizeX, sizeX);
         }
+        canvas.refreshCanvas();
     }
 
 
@@ -261,6 +250,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     break;
                 case "History":
                     undoHistory();
+                    // try catch
                     break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
@@ -334,9 +324,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
     public void undoHistory() {
         if (undoHisOpen) {
-            //build the list
             undoHisOpen = false;
+            setEnabled(false);
             JFrame guiHist = new JFrame();
+            guiHist.setFocusableWindowState(true);
+            guiHist.requestFocus();
             history.fillLabels();
             JList histList = new JList(history.labels);
             JScrollPane scrollPane = new JScrollPane(histList);
@@ -353,19 +345,38 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 }
             });
             guiHist.setSize(200, 150);
-            guiHist.setLocation(new Point(50, 50));
+            guiHist.setLocation(new Point(150, 150));
             guiHist.setTitle("Undo History");
             guiHist.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     super.windowClosing(e);
                     undoHisOpen = true;
+                    setEnabled(true);
                     if(!histList.isSelectionEmpty()) {
                         history.windowCloseAction();
-                    	guiHist.dispose();
+
+                    }
+                    guiHist.dispose();
+                }
+            });
+            guiHist.addWindowFocusListener(new WindowFocusListener() {
+                @Override
+                public void windowGainedFocus(WindowEvent e) {
+                    if (e.getOppositeWindow()==null) {
+                        System.out.printf("gained focus");
+                    }
+                }
+                @Override
+                public void windowLostFocus(WindowEvent e) {
+                    if (!undoHisOpen) {
+                        JOptionPane.showMessageDialog(null, "Undo History is still open. Please close to " +
+                                "continue drawing.", "Window error", JOptionPane.ERROR_MESSAGE);
+                        guiHist.requestFocus();
                     }
                 }
             });
+            // window listener for Frame
             Container contentPane = guiHist.getContentPane();
             contentPane.add(scrollPane, BorderLayout.CENTER);
             guiHist.setVisible(true);
