@@ -11,14 +11,12 @@ import java.util.List;
 
 public class Ellipse extends Shape implements FillingShape {
     private int x1, y1, x2, y2;
-    private paint_gui.Canvas canvas;
+
 
 
 
     public Ellipse(Canvas canvas) {
         super(canvas);
-        this.canvas=canvas;
-
     }
 
     public Ellipse(int x1, int y1, int x2, int y2) {
@@ -38,8 +36,6 @@ public class Ellipse extends Shape implements FillingShape {
                     revertY ? Math.abs(y2 - y1) : Math.abs(y1 - y2));
         }
     }
-
-
 
     @Override
     public void fill(Graphics2D g) {

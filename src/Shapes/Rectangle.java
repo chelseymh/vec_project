@@ -11,13 +11,9 @@ import paint_gui.Canvas;
 
 public class Rectangle extends Shape implements FillingShape {
     private int x1, y1, x2, y2;
-    private paint_gui.Canvas canvas;
-    private Graphics2D theInk;
 
     public Rectangle(Canvas canvas) {
         super(canvas);
-        this.canvas=canvas;
-        theInk=canvas.getTheInk();
     }
 
     public Rectangle(int x1, int y1, int x2, int y2) {

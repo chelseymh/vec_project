@@ -282,10 +282,10 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     System.out.printf(name);
                     try {
                         Class shapeClass = Class.forName("Shapes."+ name);
-                        System.out.printf("\nClass " +name +" found");
+                        System.out.println("\nClass " +name +" found");
                         Object shape =shapeClass.getConstructor(Canvas.class).newInstance(canvas);
                     } catch (Exception e){
-                        System.out.printf("There is a problem");
+                        System.out.println("There is a problem");
                     }
             }
 
