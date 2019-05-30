@@ -17,7 +17,7 @@ import Shapes.Shape;
 
 
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
-    public static Object toggledButton = null;
+    public static String toggledButton = "";
     private JMenuBar fileMenu;
     private JPanel eastPanel = new JPanel();
     private JPanel westPanel = new JPanel();
@@ -284,35 +284,37 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                         canvas.addCommand(tool + " " + hex);
                     }
                     break;
-                case "Polygon":
-                    toggledButton = name;
-                    Shapes.Shape polygon = new Shapes.Polygon(canvas);
-                    System.out.println("Poly selected");
-                    break;
-                case "Rectangle":
-                    toggledButton = name;
-                    Shapes.Shape rect = new Shapes.Rectangle(canvas);
-                    System.out.println("Rect selected");
-                    break;
-                case "Ellipse":
-                    toggledButton = name;
-                    Shapes.Shape ellipse = new Shapes.Ellipse(canvas);
-
-                    System.out.println("Ellip selected");
-                    break;
-                case "Line":
-                    toggledButton = name;
-                    Shapes.Shape line = new Shapes.Line(canvas);
-                    System.out.println("Line selected");
-                    break;
-                case "Plot":
-                    toggledButton = name;
-                    Shapes.Shape plot = new Shapes.Plot(canvas);
-                    System.out.println("Plot selected");
-                    break;
-                default:
             }
+            if (!toggledButton.equals(name)) {
+                switch (name) {
+                    case "Polygon":
+                        toggledButton = name;
+                        Shapes.Shape polygon = new Shapes.Polygon(canvas);
+                        System.out.println("Poly selected");
+                        break;
+                    case "Rectangle":
+                        toggledButton = name;
+                        Shapes.Shape rect = new Shapes.Rectangle(canvas);
+                        System.out.println("Rect selected");
+                        break;
+                    case "Ellipse":
+                        toggledButton = name;
+                        Shapes.Shape ellipse = new Shapes.Ellipse(canvas);
 
+                        System.out.println("Ellip selected");
+                        break;
+                    case "Line":
+                        toggledButton = name;
+                        Shapes.Shape line = new Shapes.Line(canvas);
+                        System.out.println("Line selected");
+                        break;
+                    case "Plot":
+                        toggledButton = name;
+                        Shapes.Shape plot = new Shapes.Plot(canvas);
+                        System.out.println("Plot selected");
+                        break;
+                }
+            }
         });
         return tempBtn;
     }
