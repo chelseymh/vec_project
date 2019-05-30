@@ -277,37 +277,18 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                         canvas.addCommand(tool + " " + hex);
                     }
                     break;
+                default:
+                    toggledButton = name;
+                    System.out.printf(name);
+                    try {
+                        Class shapeClass = Class.forName("Shapes."+ name);
+                        System.out.printf("\nClass " +name +" found");
+                        Object shape =shapeClass.getConstructor(Canvas.class).newInstance(canvas);
+                    } catch (Exception e){
+                        System.out.printf("There is a problem");
+                    }
             }
-            if (!toggledButton.equals(name)) {
-                switch (name) {
-                    case "Polygon":
-                        toggledButton = name;
-                        Shapes.Shape polygon = new Shapes.Polygon(canvas);
-                        System.out.println("Poly selected");
-                        break;
-                    case "Rectangle":
-                        toggledButton = name;
-                        Shapes.Shape rect = new Shapes.Rectangle(canvas);
-                        System.out.println("Rect selected");
-                        break;
-                    case "Ellipse":
-                        toggledButton = name;
-                        Shapes.Shape ellipse = new Shapes.Ellipse(canvas);
 
-                        System.out.println("Ellip selected");
-                        break;
-                    case "Line":
-                        toggledButton = name;
-                        Shapes.Shape line = new Shapes.Line(canvas);
-                        System.out.println("Line selected");
-                        break;
-                    case "Plot":
-                        toggledButton = name;
-                        Shapes.Shape plot = new Shapes.Plot(canvas);
-                        System.out.println("Plot selected");
-                        break;
-                }
-            }
         });
         return tempBtn;
     }
