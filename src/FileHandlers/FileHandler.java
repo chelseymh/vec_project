@@ -16,24 +16,15 @@ public class FileHandler {
     }
 
     public void openFileNewWindow() throws IOException {
-        BufferedReader reader = openFile();
-        if (reader == null) throw new NullPointerException();
-        guiClass gui = new guiClass();
-        gui.createGUI();
-        gui.setLocation(300, 150);
-        gui.getFileHandler().readFile(reader);
-    }
-
-    private BufferedReader openFile() throws IOException {
-        BufferedReader reader = null;
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
-        chooser.setFileFilter(filter);
+        JFileChooser chooser = getFileChooser();
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
+            BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
+            guiClass gui = new guiClass();
+            gui.createGUI();
+            gui.setLocation(300, 150);
+            gui.getFileHandler().readFile(reader);
         }
-        return reader;
     }
 
     public void readFile(BufferedReader reader) throws IOException {
@@ -45,9 +36,7 @@ public class FileHandler {
     }
 
     public void saveFile() throws IOException {
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
-        chooser.setFileFilter(filter);
+        JFileChooser chooser = getFileChooser();
         int returnVal = chooser.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File fileToSave = chooser.getSelectedFile();
@@ -64,5 +53,12 @@ public class FileHandler {
             writer.close();
             JOptionPane.showMessageDialog(null, "File successfully saved to: \n" + fileToSave.getPath(), "Successful save", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    private JFileChooser getFileChooser() {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
+        chooser.setFileFilter(filter);
+        return chooser;
     }
 }
