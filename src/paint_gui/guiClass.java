@@ -375,16 +375,17 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             guiHist.setSize(200, 150);
             guiHist.setLocation(new Point(150, 150));
             guiHist.setTitle("Undo History");
-            guiHist.addWindowListener(new WindowAdapter() {
+            guiHist.addWindowFocusListener(new WindowFocusListener() {
                 @Override
-                public void windowClosing(WindowEvent e) {
-                    super.windowClosing(e);
-                    undoHisOpen = true;
-                    setEnabled(true);
-                    if (!histList.isSelectionEmpty()) {
-                        history.windowCloseAction();
+                public void windowGainedFocus(WindowEvent e) {
+                    if (e.getOppositeWindow()==null) {
+                        System.out.printf("gained focus");
                     }
-                    guiHist.dispose();
+                }
+
+                @Override
+                public void windowLostFocus(WindowEvent e) {
+                    System.out.printf("lost focus");
                 }
             });
             // window listener for Frame
