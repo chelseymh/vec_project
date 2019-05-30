@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.GridLayout;
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -122,6 +123,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileSave.addActionListener(actionEvent -> {
             try {
                 fileHandler.saveFile();
+            } catch (FileAlreadyExistsException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "File already exists", JOptionPane.ERROR_MESSAGE);
             } catch (IOException e) {
                 e.printStackTrace();
             }
