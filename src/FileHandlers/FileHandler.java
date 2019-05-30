@@ -6,6 +6,7 @@ import paint_gui.guiClass;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 
 public class FileHandler {
     private Canvas canvas;
@@ -53,12 +54,15 @@ public class FileHandler {
             String filePath = fileToSave.getAbsolutePath();
             // Check the type of the file
             if (!filePath.endsWith(".vec")) fileToSave = new File(filePath.concat(".vec"));
+            // Check if file already exists
+            if (fileToSave.exists()) throw new FileAlreadyExistsException("File name already in use. Please rename or delete the existing file.");
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave));
             for (String command : canvas.getCommands()) {
                 writer.write(command);
                 writer.newLine();
             }
             writer.close();
+            JOptionPane.showMessageDialog(null, "File successfully saved to: \n" + fileToSave.getPath(), "Successful save", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
