@@ -17,12 +17,13 @@ public class FileHandler {
     public void openFileNewWindow() throws IOException {
         guiClass gui = new guiClass();
         gui.createGUI();
-        BufferedReader reader = openFile();
+        gui.setLocation(300, 150);
+        BufferedReader reader = openFile(gui);
         if (reader != null) gui.getFileHandler().readFile(reader);
         else throw new RuntimeException("Reader null");
     }
 
-    private BufferedReader openFile() throws IOException {
+    private BufferedReader openFile(guiClass gui) throws IOException {
         BufferedReader reader = null;
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
@@ -30,7 +31,7 @@ public class FileHandler {
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-        }
+        } else gui.dispose();
         return reader;
     }
 
