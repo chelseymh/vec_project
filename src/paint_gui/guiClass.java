@@ -332,8 +332,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
     public void undoHistory() {
         if (undoHisOpen) {
-            //build the list
             undoHisOpen = false;
+            //setEnabled(false);
             JFrame guiHist = new JFrame();
             history.fillLabels();
             JList histList = new JList(history.labels);
@@ -358,10 +358,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 public void windowClosing(WindowEvent e) {
                     super.windowClosing(e);
                     undoHisOpen = true;
-                    if(!histList.isSelectionEmpty()) {
+                    //setEnabled(true);
+                    if (!histList.isSelectionEmpty()) {
                         history.windowCloseAction();
-                    	guiHist.dispose();
+
                     }
+                    guiHist.dispose();
                 }
             });
             Container contentPane = guiHist.getContentPane();
