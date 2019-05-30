@@ -6,9 +6,6 @@ import java.util.List;
 
 import paint_gui.Canvas;
 
-//mouse handlers
-
-
 public class Rectangle extends Shape implements FillingShape {
     private int x1, y1, x2, y2;
 
@@ -16,8 +13,8 @@ public class Rectangle extends Shape implements FillingShape {
         super(canvas);
     }
 
-    public Rectangle(int x1, int y1, int x2, int y2) {
-        super(x1, y1, x2, y2);
+    public Rectangle(List points) {
+        super(points);
     }
 
     @Override

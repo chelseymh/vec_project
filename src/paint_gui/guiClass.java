@@ -279,7 +279,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     break;
                 default:
                     toggledButton = name;
-                    System.out.printf(name);
                     try {
                         Class shapeClass = Class.forName("Shapes."+ name);
                         System.out.println("\nClass " +name +" found");
@@ -287,6 +286,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     } catch (Exception e){
                         System.out.println("There is a problem");
                     }
+                    break;
             }
 
         });

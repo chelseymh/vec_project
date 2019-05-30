@@ -19,11 +19,9 @@ public abstract class Shape {
 
     public Shape(){}
 
-    public Shape(int x1, int y1, int x2, int y2) {
-        Point point1 = new Point(x1, y1);
-        points.add(point1);
-        Point point2 = new Point(x2, y2);
-        points.add(point2);
+    public Shape(List points) {
+        System.out.println("points = [" + points + "]");
+        this.points.addAll(points);
     }
 
     public Shape(Canvas canvas) {
@@ -99,13 +97,10 @@ public abstract class Shape {
         }
     }
 
-
-
     public String getCommand(){
-
-        String command=className.toUpperCase();;
-        for (Point point : points){
-            command+= String.format(" %1$.2f %2$.2f", (float)point.x/canvas.getHeight(), (float)point.y/canvas.getWidth());
+        String command=className.toUpperCase();
+        for (Point point : this.points){
+            command+= String.format(" %1$.2f %2$.2f", (float)point.getX()/canvas.getHeight(), (float)point.getY()/canvas.getWidth());
         }
         return command;
     }

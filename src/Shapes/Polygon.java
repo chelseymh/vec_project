@@ -121,8 +121,7 @@ public class Polygon extends Shape implements FillingShape {
                     }
                     int x2 = e.getX();
                     int y2 = e.getY();
-                    Line line = new Line(points.get(points.size()-1).x, points.get(points.size()-1).y, x2, y2);
-                    line.draw(theInk);
+                    theInk.drawLine(x1, y1, x2, y2);
                     canvas.repaint();
                     //redraw only the saved commands
                     canvas.readCommands();
@@ -138,8 +137,7 @@ public class Polygon extends Shape implements FillingShape {
                     }
                     int x2 = e.getX();
                     int y2 = e.getY();
-                    Line line = new Line(points.get(points.size() - 1).x, points.get(points.size() - 1).y, x2, y2);
-                    line.draw(theInk);
+                    theInk.drawLine(x1, y1, x2, y2);
                     canvas.repaint();
                     //redraw only the saved commands
                     canvas.readCommands();
@@ -151,8 +149,8 @@ public class Polygon extends Shape implements FillingShape {
     }
 
 
-    public void addPoints(Point point) {
-        points.add(point);
+    public Polygon(List points) {
+        super(points);
     }
 
     @Override
