@@ -89,23 +89,15 @@ public class guiClass extends JFrame {
         edit.add(undoButton);
         edit.add(undoHistory);
 
-        // undo Listeners
-        undoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
+        //Undo listeners
+        undoButton.addActionListener(actionEvent -> {
                 try {
                     undo.undo();
                 } catch (UndoException e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(), "undo error", JOptionPane.ERROR_MESSAGE);
-                } 
-            }
+                }
         });
-        undoHistory.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                undoHistory();
-            }
-        });
+        undoHistory.addActionListener(actionEvent -> undoHistory());
 
         // Edit the panels
         eastPanel.setLayout(new GridLayout(5, 2));
@@ -175,7 +167,6 @@ public class guiClass extends JFrame {
         Action undoCommand = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                //do nothing
                 try {
                     undo.undo();
                 } catch (UndoException e) {
@@ -184,9 +175,9 @@ public class guiClass extends JFrame {
             }
         };
 
-        //create keybinding
+        //create key binding
         canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),"undo");
-        //attach action to keybinding
+        //attach action to key binding
         canvas.getActionMap().put("undo", undoCommand);
 
         //Checks for window resize
@@ -201,14 +192,14 @@ public class guiClass extends JFrame {
         calculateAndSetCanvasBounds();
    }
 
-    //Calculates and sets the bounds of the canvas to match with the size and resizing of the main frame
+    //Calculates and sets the bounds of the canvas to match with the size and resizing of the main window
     private void calculateAndSetCanvasBounds() {
         //Canvas needs to take up the space between the west and east panels
         int sizeX = getWidth() - eastPanel.getWidth() - westPanel.getWidth();
         //Canvas needs to take up the space below fileMenu panel
         int sizeY = eastPanel.getHeight();
 
-        //Add a leetle buffer
+        //Add a leetleicious buffer
         sizeX -= 20;
         sizeY -= 20;
         //If the width is bigger than the height, the size of the square
@@ -338,11 +329,10 @@ public class guiClass extends JFrame {
             histList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
             histList.setLayoutOrientation(JList.VERTICAL);
             histList.addListSelectionListener(new ListSelectionListener() {
-                //start listener
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
                     if (!e.getValueIsAdjusting()) {
-                        //pass through the desired index
+                        //Pass through the desired index
                         history.displayPreview(histList.getSelectedIndex());
                     }
                 }
@@ -351,7 +341,6 @@ public class guiClass extends JFrame {
             guiHist.setLocation(new Point(50, 50));
             guiHist.setTitle("undo History");
 
-            // window listener for Frame
             guiHist.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -368,9 +357,6 @@ public class guiClass extends JFrame {
             guiHist.addWindowFocusListener(new WindowFocusListener() {
                 @Override
                 public void windowGainedFocus(WindowEvent e) {
-                    if (e.getOppositeWindow()==null) {
-                        System.out.printf("gained focus");
-                    }
                 }
                 @Override
                 public void windowLostFocus(WindowEvent e) {
