@@ -29,11 +29,14 @@ public class ExporterBMP {
     /**
      * Exports the image of the canvas into a BMP file.
      * <p>Creates a <code>JFileChooser</code> for the user to choose where to save the file.</p>
-     * <p>Then a <code>File</code> at this directory with the given name is created.</p>
+     * <p>Then a <code>File</code> at this directory with the given name is created.
+     * If the name already exists in the directory a <code>FileAlreadyExistsException</code> is thrown.</p>
      * <p>A pop up prompting the user to specify the dimensions of the BMP file is then created.
-     * If the user does not input any numbers the image will be saved with the dimensions of the canvas.</p>
+     * If the user inputs anything apart from a whole and positive number an <code>InvalidDimensionsException</code> is thrown.</p>
      * <p>The image contained in Canvas is then written to the BMP file format</p>
      * @throws IOException If something goes wrong with the encoding of the image
+     * @throws FileAlreadyExistsException If a file with the given name already exists
+     * @throws InvalidDimensionsException If the user inputs anything that is not a whole number greater than zero
      */
     public void exportBMP() throws IOException, InvalidDimensionsException {
         JFileChooser chooser = new JFileChooser();
@@ -48,7 +51,7 @@ public class ExporterBMP {
 
             JTextField widthField = new JTextField(5);
             JTextField heightField = new JTextField(5);
-            int result = getInput(widthField, heightField);
+            int result = createInputDialogReturnInput(widthField, heightField);
             if (result == JOptionPane.OK_OPTION) {
                 String widthInput = widthField.getText();
                 String heightInput = heightField.getText();
@@ -65,7 +68,7 @@ public class ExporterBMP {
     }
 
     //Creates the input windows to specify the dimensions of the BMP file.
-    private int getInput(JTextField widthField, JTextField heightField) {
+    private int createInputDialogReturnInput(JTextField widthField, JTextField heightField) {
         JPanel centerPanel = new JPanel();
         centerPanel.add(new JLabel("Height:"));
         centerPanel.add(heightField);
