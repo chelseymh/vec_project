@@ -253,7 +253,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     break;
                 case "History":
                     undoHistory();
-                    // try catch
                     break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
@@ -280,8 +279,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 default:
                     toggledButton = name;
                     try {
+                        //Get name of class to create from button name
                         Class shapeClass = Class.forName("Shapes."+ name);
-                        System.out.println("\nClass " +name +" found");
+                        //Instantiate from associated constructor and pass through parameters
                         Object shape =shapeClass.getConstructor(Canvas.class).newInstance(canvas);
                     } catch (Exception e){
                         System.out.println("Problem in the gui switch class");
