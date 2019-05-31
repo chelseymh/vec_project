@@ -13,9 +13,12 @@ import java.nio.file.FileAlreadyExistsException;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import Shapes.Shape;
 
-
+/**
+ * Extends <code>javax.swing.JFrame</code> and is the main class for handling everything related to the graphical user interface.
+ * It is the root of the application and instantiates the other major classes
+ * <code>Canvas</code>, <code>Undo</code>, and <code>History</code>.
+ */
 public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
     public static String toggledButton = "";
     private JMenuBar fileMenu;
@@ -30,7 +33,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
     private FileHandler fileHandler;
 
     /**
-     * Create the GUI and display it.
+     * Creates all the Swing components and adds the necessary action listeners and key bindings.
+     * <p>The buttons of the window is made by a series of private helper methods.</p>
+     * <p>An private method handles the resizing of the canvas to follow the main window.</p>
+     * <p>A private <code>undoHistory</code> method handles the pop up window containing the
+     * drawing history of the program, allowing the user to go back in time.</p>
+     * Packs the frame and makes the frame visible.
      */
     public void createGUI() {
 
@@ -185,16 +193,17 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         //Checks for window resize
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent ev) {
-                calculateCanvasBounds();
+                calculateAndSetCanvasBounds();
                 //Redraw the canvas so the images will be resized
                 canvas.readCommands();
                 canvas.repaint();
             }
         });
-        calculateCanvasBounds();
+        calculateAndSetCanvasBounds();
    }
 
-    public void calculateCanvasBounds() {
+    //Calculates and sets the bounds of the canvas to match with the size and resizing of the main frame
+    private void calculateAndSetCanvasBounds() {
         final int minWidth = 550, minHeight = 242;
         //Canvas needs to take up the space between the west and east panels
         int sizeX = getWidth() - eastPanel.getWidth() - westPanel.getWidth();
@@ -217,8 +226,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         canvas.refreshCanvas();
     }
 
-
-    public void createButtonTools() {
+    //Creates all the buttons by of the window by calling another helper method and adds them to the right JPanel
+    private void createButtonTools() {
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, historyBtn;
         JToggleButton fillBtn;
         JButton black, blue, red, green, otherColor;
@@ -245,7 +254,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         eastPanel.add(green); eastPanel.add(otherColor);
     }
 
-    public JButton createButton(String name) {
+    //Creates all the JButtons with the given name and adds a universal ActionListener for this type of button.
+    private JButton createButton(String name) {
         JButton tempBtn = new JButton(name);
         tempBtn.addActionListener(actionEvent -> {
             switch (name) {
@@ -298,6 +308,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return tempBtn;
     }
 
+    //Creates the "Fill" JToggleButton and adds the required ActionListener
     private JToggleButton makeFillButton() {
         JToggleButton button = new JToggleButton("Fill");
         button.addActionListener(actionEvent -> {
@@ -311,7 +322,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return button;
     }
 
-    public void undoHistory() {
+    //Creates the undo history window when the Undo History button or menu item is pressed,
+    //and adds window listeners to the Undo History frame in order to prevent the user from using
+    //the main window when the history is open.
+    //Uses the History class to display the old commands.
+    private void undoHistory() {
         if (undoHisOpen) {
             undoHisOpen = false;
             setEnabled(false);
@@ -372,6 +387,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         }
     }
 
+    /**
+     * Gets the file handler.
+     * <p>Is called in the <code>FileHandler</code> class to open files in a new window.</p>
+     * @return The FileHandler of a newly created guiClass in order to open a file in this window
+     * and not in the one from where the action to open a new file have been made.
+     */
     public FileHandler getFileHandler() {
         return fileHandler;
     }
