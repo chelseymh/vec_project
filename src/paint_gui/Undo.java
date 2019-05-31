@@ -19,17 +19,16 @@ public class Undo {
     }
 
     /**
-     * Removes the latest command from the canvas
+     * Removes the latest command from the canvas and repaints it.
      * @throws UndoException If there are no more commands to remove
      */
     public void undo() throws UndoException {
         List<String> commands = canvas.getCommands();
-        int size = canvas.getCommands().size() -1;
+        int lastIndex = canvas.getCommands().size() -1;
         if (!canvas.getCommands().isEmpty()) {
-            commands.remove(size);
-            System.out.println("Undoed drawing operation");
+            commands.remove(lastIndex);
         } else {
-            throw new UndoException("No more undoes");
+            throw new UndoException("No more commands to undo");
         }
         canvas.clean();
         canvas.readCommands();
