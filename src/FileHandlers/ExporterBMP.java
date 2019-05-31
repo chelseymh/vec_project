@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 
 public class ExporterBMP {
     private Canvas canvas;
@@ -27,10 +28,10 @@ public class ExporterBMP {
             File fileToSave = chooser.getSelectedFile();
             String filePath = fileToSave.getAbsolutePath();
             if (!filePath.endsWith(".bmp")) fileToSave = new File(filePath.concat(".bmp"));
+            if (fileToSave.exists()) throw new FileAlreadyExistsException(fileToSave.getName() + " already exists. Please rename or delete the existing file.");
 
             JTextField widthField = new JTextField(5);
             JTextField heightField = new JTextField(5);
-
             int result = getInput(widthField, heightField);
             if (result == JOptionPane.OK_OPTION) {
                 String widthInput = widthField.getText();

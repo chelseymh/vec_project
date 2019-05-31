@@ -131,10 +131,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         fileExportBMP.addActionListener(actionEvent -> {
             try {
                 BMPexporter.exportBMP();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (FileAlreadyExistsException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "File already exists", JOptionPane.ERROR_MESSAGE);
             } catch (InvalidDimensionsException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Invalid dimension input", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
