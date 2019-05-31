@@ -13,24 +13,33 @@ import java.nio.file.FileAlreadyExistsException;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import Shapes.Shape;
 
-
-public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
+/**
+ * Extends <code>javax.swing.JFrame</code> and is the main class for handling everything related to the graphical user interface.
+ * It instantiates the other major classes <code>Canvas</code>, <code>undo</code>, and <code>History</code>.
+ */
+public class guiClass extends JFrame {
+    /**
+     * The name of the button that was last pressed.
+     */
     public static String toggledButton = "";
-    private JMenuBar fileMenu;
     private JPanel eastPanel = new JPanel();
     private JPanel westPanel = new JPanel();
-    Canvas canvas;
-    History history;
-    Undo undo;
+    private Canvas canvas;
+    private History history;
+    private Undo undo;
     private String tool = "PEN";
     private boolean fill = false;
     private boolean undoHisOpen;
     private FileHandler fileHandler;
 
     /**
-     * Create the GUI and display it.
+     * Creates all the Swing components and adds the necessary action listeners and key bindings.
+     * <p>The buttons of the window is made by a series of private helper methods.</p>
+     * <p>An private method handles the resizing of the canvas to follow the main window.</p>
+     * <p>A private <code>undoHistory</code> method handles the pop up window containing the
+     * drawing history of the program, allowing the user to go back in time.</p>
+     * Packs the frame and makes the frame visible.
      */
     public void createGUI() {
 
@@ -46,12 +55,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Build top menu and first file dropdown
-        fileMenu = new JMenuBar();
+        JMenuBar fileMenu = new JMenuBar();
         fileMenu.setOpaque(true);
         fileMenu.setBackground(Color.white);
         fileMenu.setPreferredSize(new Dimension(200, 20));
         file = new JMenu("File");
-        // Add listener here
+
         fileMenu.add(file);
         fileMenu.add(edit);
 
@@ -68,8 +77,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             gui.setLocation(300, 150);
         });
 
-        undoButton = new JMenuItem("Undo");
-        undoHistory = new JMenuItem("Undo History");
+        undoButton = new JMenuItem("undo");
+        undoHistory = new JMenuItem("undo History");
 
         // Add menu items
         file.add(fileNew);
@@ -80,23 +89,15 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         edit.add(undoButton);
         edit.add(undoHistory);
 
-        // Undo Listeners
-        undoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
+        //Undo listeners
+        undoButton.addActionListener(actionEvent -> {
                 try {
-                    undo.Undo();
+                    undo.undo();
                 } catch (UndoException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
-                } 
-            }
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "undo error", JOptionPane.ERROR_MESSAGE);
+                }
         });
-        undoHistory.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                undoHistory();
-            }
-        });
+        undoHistory.addActionListener(actionEvent -> undoHistory());
 
         // Edit the panels
         eastPanel.setLayout(new GridLayout(5, 2));
@@ -110,7 +111,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         //Instantiate file handlers
         fileHandler = new FileHandler(canvas);
-        ExporterBMP BMPexporter = new ExporterBMP(canvas);
+        ExporterBMP exporter = new ExporterBMP(canvas);
 
         fileOpen.addActionListener(actionEvent -> {
             try {
@@ -130,7 +131,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         });
         fileExportBMP.addActionListener(actionEvent -> {
             try {
-                BMPexporter.exportBMP();
+                exporter.exportBMP();
             } catch (FileAlreadyExistsException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "File already exists", JOptionPane.ERROR_MESSAGE);
             } catch (InvalidDimensionsException e) {
@@ -160,51 +161,48 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setVisible(true);
 
         //ctrl z undo listener
-        //
         int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
+
         //create action for key binding
         Action undoCommand = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                //do nothing
                 try {
-                    undo.Undo();
+                    undo.undo();
                 } catch (UndoException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "undo error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
 
-        //create keybinding
-        canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-                "undo");
-        //attach action to keybinding
-        canvas.getActionMap().put("undo",
-                undoCommand);
+        //create key binding
+        canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),"undo");
+        //attach action to key binding
+        canvas.getActionMap().put("undo", undoCommand);
 
         //Checks for window resize
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent ev) {
-                calculateCanvasBounds();
+                calculateAndSetCanvasBounds();
                 //Redraw the canvas so the images will be resized
                 canvas.readCommands();
                 canvas.repaint();
             }
         });
-        calculateCanvasBounds();
+        calculateAndSetCanvasBounds();
    }
 
-    public void calculateCanvasBounds() {
-        final int minWidth = 550, minHeight = 242;
+    //Calculates and sets the bounds of the canvas to match with the size and resizing of the main window
+    private void calculateAndSetCanvasBounds() {
         //Canvas needs to take up the space between the west and east panels
         int sizeX = getWidth() - eastPanel.getWidth() - westPanel.getWidth();
-        ////Canvas needs to take up the space below fileMenu panel
+        //Canvas needs to take up the space below fileMenu panel
         int sizeY = eastPanel.getHeight();
 
-        //add a leetle buffer
+        //Add a leetleicious buffer
         sizeX -= 20;
         sizeY -= 20;
-        //if the width is bigger than the height, the size of the square
+        //If the width is bigger than the height, the size of the square
         //canvas should be set to the height to maintain aspect ratio
         if (sizeX > sizeY) {
             //canvas bounds starts at where west panel ends
@@ -217,8 +215,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         canvas.refreshCanvas();
     }
 
-
-    public void createButtonTools() {
+    //Creates all the buttons by of the window by calling another helper method and adds them to the right JPanel
+    private void createButtonTools() {
         JButton plotBtn, rectangleBtn, ellipseBtn, lineBtn, polygonBtn, undoBtn, historyBtn;
         JToggleButton fillBtn;
         JButton black, blue, red, green, otherColor;
@@ -227,7 +225,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         lineBtn = createButton("Line");
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
-        undoBtn = createButton("Undo");
+        undoBtn = createButton("undo");
         historyBtn = createButton("History");
         fillBtn = makeFillButton();
         black = createButton("Black");
@@ -245,15 +243,16 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         eastPanel.add(green); eastPanel.add(otherColor);
     }
 
-    public JButton createButton(String name) {
+    //Creates all the JButtons with the given name and adds a universal ActionListener for this type of button.
+    private JButton createButton(String name) {
         JButton tempBtn = new JButton(name);
         tempBtn.addActionListener(actionEvent -> {
             switch (name) {
-                case "Undo":
+                case "undo":
                     try {
-                        undo.Undo();
+                        undo.undo();
                     } catch (UndoException e) {
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "undo error", JOptionPane.ERROR_MESSAGE);
                     }
                     break;
                 case "History":
@@ -282,22 +281,24 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     }
                     break;
                 default:
-                    toggledButton = name;
-                    try {
-                        //Get name of class to create from button name
-                        Class shapeClass = Class.forName("Shapes."+ name);
-                        //Instantiate from associated constructor and pass through parameters
-                        Object shape =shapeClass.getConstructor(Canvas.class).newInstance(canvas);
-                    } catch (Exception e){
-                        System.out.println("Problem in the gui switch class");
+                    if (!toggledButton.equals(name)) {
+                        toggledButton = name;
+                        try {
+                            //Get name of class to create from button name
+                            Class shapeClass = Class.forName("Shapes."+ name);
+                            //Instantiate from associated constructor and pass through parameters
+                            Object shape = shapeClass.getConstructor(Canvas.class).newInstance(canvas);
+                        } catch (Exception e){
+                            System.out.println("Problem in the gui switch class");
+                        }
                     }
                     break;
             }
-
         });
         return tempBtn;
     }
 
+    //Creates the "Fill" JToggleButton and adds the required ActionListener
     private JToggleButton makeFillButton() {
         JToggleButton button = new JToggleButton("Fill");
         button.addActionListener(actionEvent -> {
@@ -311,7 +312,11 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         return button;
     }
 
-    public void undoHistory() {
+    //Creates the undo history window when the undo History button or menu item is pressed,
+    //and adds window listeners to the undo History frame in order to prevent the user from using
+    //the main window when the history is open.
+    //Uses the History class to display the old commands.
+    private void undoHistory() {
         if (undoHisOpen) {
             undoHisOpen = false;
             setEnabled(false);
@@ -319,23 +324,23 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             guiHist.setFocusableWindowState(true);
             guiHist.requestFocus();
             history.fillLabels();
-            JList histList = new JList(history.labels);
+            JList histList = new JList(history.getLabels());
             JScrollPane scrollPane = new JScrollPane(histList);
             histList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
             histList.setLayoutOrientation(JList.VERTICAL);
             histList.addListSelectionListener(new ListSelectionListener() {
-                //start listener
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
                     if (!e.getValueIsAdjusting()) {
-                        //pass through the desired index
+                        //Pass through the desired index
                         history.displayPreview(histList.getSelectedIndex());
                     }
                 }
             });
             guiHist.setSize(200, 150);
             guiHist.setLocation(new Point(50, 50));
-            guiHist.setTitle("Undo History");
+            guiHist.setTitle("undo History");
+
             guiHist.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -352,26 +357,28 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             guiHist.addWindowFocusListener(new WindowFocusListener() {
                 @Override
                 public void windowGainedFocus(WindowEvent e) {
-                    if (e.getOppositeWindow()==null) {
-                        System.out.printf("gained focus");
-                    }
                 }
                 @Override
                 public void windowLostFocus(WindowEvent e) {
                     if (!undoHisOpen) {
-                        JOptionPane.showMessageDialog(null, "Undo History is still open. Please close to " +
+                        JOptionPane.showMessageDialog(null, "undo History is still open. Please close to " +
                                 "continue drawing.", "Window error", JOptionPane.ERROR_MESSAGE);
                         guiHist.requestFocus();
                     }
                 }
             });
-            // window listener for Frame
             Container contentPane = guiHist.getContentPane();
             contentPane.add(scrollPane, BorderLayout.CENTER);
             guiHist.setVisible(true);
         }
     }
 
+    /**
+     * Gets the <code>fileHandler</code>.
+     * <p>Is called in the <code>FileHandler</code> class to open files in a new window.</p>
+     * @return The FileHandler of a newly created guiClass in order to open a file in this window
+     * and not in the one from where the action to open a new file has been made.
+     */
     public FileHandler getFileHandler() {
         return fileHandler;
     }

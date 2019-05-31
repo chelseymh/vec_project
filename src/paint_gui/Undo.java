@@ -4,21 +4,31 @@ import Exceptions.UndoException;
 
 import java.util.List;
 
+/**
+ * Handles the undo functionality of the program.
+ */
 public class Undo {
-    Canvas canvas;
+    private Canvas canvas;
 
+    /**
+     * Creates an <code>Undo</code> object to handle undo operations on the specified <code>Canvas</code>.
+     * @param canvas The canvas from which to retrieve commands
+     */
     public Undo(Canvas canvas) {
         this.canvas = canvas;
     }
 
-    public void Undo() throws UndoException {
+    /**
+     * Removes the latest command from the canvas and repaints it.
+     * @throws UndoException If there are no more commands to remove
+     */
+    public void undo() throws UndoException {
         List<String> commands = canvas.getCommands();
-        int size = canvas.getCommands().size() -1;
+        int lastIndex = canvas.getCommands().size() -1;
         if (!canvas.getCommands().isEmpty()) {
-            commands.remove(size);
-            System.out.println("Undoed drawing operation");
+            commands.remove(lastIndex);
         } else {
-            throw new UndoException("No more undoes");
+            throw new UndoException("No more commands to undo");
         }
         canvas.clean();
         canvas.readCommands();

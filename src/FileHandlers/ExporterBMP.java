@@ -12,13 +12,29 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 
+/**
+ * Handles all exports to the BMP file format.
+ */
 public class ExporterBMP {
     private Canvas canvas;
 
+    /**
+     * Creates an <code>ExporterBMP</code> object to export files with the image of the specified canvas.
+     * @param canvas The <code>Canvas</code> from which to retrieve the image and transform it to the BMP format.
+     */
     public ExporterBMP(Canvas canvas) {
         this.canvas = canvas;
     }
 
+    /**
+     * Exports the image of the canvas into a BMP file.
+     * <p>Creates a <code>JFileChooser</code> for the user to choose where to save the file.</p>
+     * <p>Then a <code>File</code> at this directory with the given name is created.</p>
+     * <p>A pop up prompting the user to specify the dimensions of the BMP file is then created.
+     * If the user does not input any numbers the image will be saved with the dimensions of the canvas.</p>
+     * <p>The image contained in Canvas is then written to the BMP file format</p>
+     * @throws IOException If something goes wrong with the encoding of the image
+     */
     public void exportBMP() throws IOException, InvalidDimensionsException {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("BMP file", "bmp");
@@ -48,6 +64,7 @@ public class ExporterBMP {
         }
     }
 
+    //Creates the input windows to specify the dimensions of the BMP file.
     private int getInput(JTextField widthField, JTextField heightField) {
         JPanel centerPanel = new JPanel();
         centerPanel.add(new JLabel("Height:"));
@@ -63,10 +80,11 @@ public class ExporterBMP {
         return JOptionPane.showConfirmDialog(null, panel, "Input dimensions", JOptionPane.OK_CANCEL_OPTION);
     }
 
+    //Transforms the image contained in Canvas to a BufferedImage
     private BufferedImage imageToBufferedImage(Image image, int width, int height) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-        // Draw the image onto the buffered image
+        // Draw the image of canvas onto the newly created buffered image
         Graphics2D g = bufferedImage.createGraphics();
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
