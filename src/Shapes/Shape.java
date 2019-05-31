@@ -30,7 +30,9 @@ public abstract class Shape {
         MouseListener mouseListener=new MouseListener(){
             @Override
             public void mousePressed(MouseEvent e) {
-                mousePressedAction(e, canvas);
+                if (Gui.toggledButton.equals(className)) {
+                    mousePressedAction(e, canvas);
+                }
             }
 
             @Override

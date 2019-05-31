@@ -49,7 +49,6 @@ public class Polygon extends Shape implements FillingShape {
 
     @Override
     public void mousePressedAction(MouseEvent e, Canvas canvas){
-        System.out.println("Mouse has been pressed in poly class");
         //Polygon is marked as done with a double click
         if (e.getClickCount() == 2) {
             Point point = new Point(e.getX(), e.getY());
@@ -62,38 +61,44 @@ public class Polygon extends Shape implements FillingShape {
             //clear parent points
             getPoints().clear();
             //clear polygon points
-            this.points.clear();
+            points.clear();
 
         } else {
-            Point point = new Point(e.getX(), e.getY());
-            points.add(point);
-            //The second click in a polygon line segment
+            //if () {
+                Point point = new Point(e.getX(), e.getY());
+                points.add(point);
+                //Don't draw unless there is a complete pair of points
+                if (points.size()>1){
+                    drawPreview(e, canvas);
+                }
+         //   }
         }
     }
 
     public void mouseReleasedAction(MouseEvent e, Canvas canvas) {
-        //store mouse coords into a point object
-        Point point = new Point(e.getX(), e.getY());
-        //add that point to the polygon points list
-        points.add(point);
-        draw(canvas.getTheInk());
-        //clear the canvas of any previews
-        canvas.clean();
-        //redraw only the saved commands
-        canvas.readCommands();
-        //because our polygon isn't finished it hasn't been
-        //saved to commands so we draw manually
-        draw(canvas.getTheInk());
+//        //store mouse coords into a point object
+//        Point point = new Point(e.getX(), e.getY());
+//        //add that point to the polygon points list
+//        points.add(point);
+//        draw(canvas.getTheInk());
+//        //clear the canvas of any previews
+//        canvas.clean();
+//        //redraw only the saved commands
+//        canvas.readCommands();
+//        //because our polygon isn't finished it hasn't been
+//        //saved to commands so we draw manually
+//        draw(canvas.getTheInk());
     }
 
     public void mouseMovedAction(MouseEvent e, Canvas canvas){
-        //Don't draw until first point is confirmed
+        //parent class method so uses parent variables
         setPoints(points);
-        if (points.size()>1){
+        //Don't draw until at least first point is confirmed
+        if (getPoints().size()>0){
             drawPreview(e, canvas);
-            System.out.println("points = " + points);
         }
     }
+
 
     public void pointSetter(){
         this.points= getPoints();
