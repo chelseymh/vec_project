@@ -1,5 +1,6 @@
 package paint_gui;
 
+import Exceptions.InvalidDimensionsException;
 import FileHandlers.ExporterBMP;
 import FileHandlers.FileHandler;
 import Exceptions.UndoException;
@@ -132,6 +133,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                 BMPexporter.exportBMP();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InvalidDimensionsException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Invalid dimension input", JOptionPane.ERROR_MESSAGE);
             }
         });
 
