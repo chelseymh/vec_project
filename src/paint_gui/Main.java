@@ -9,7 +9,6 @@ public class Main {
      * @param args List of possible arguments. Is always empty in our program.
      */
     public static void main(String[] args) {
-        guiClass gui = new paint_gui.guiClass();
-        gui.createGUI();
+        new paint_gui.guiClass().createGUI();
     }
 }
