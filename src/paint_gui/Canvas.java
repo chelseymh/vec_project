@@ -85,9 +85,7 @@ public class Canvas extends JComponent {
                         points.add(point);
                         i = i + 2;
                     }
-
                     try {
-
                         Class shapeClass = Class.forName("Shapes."+ classNameCapped);
                         System.out.println("\nClass " +classNameCapped +" found");
                         Shapes.Shape shape =(Shapes.Shape)shapeClass.getConstructor(List.class).newInstance(points);
@@ -104,8 +102,6 @@ public class Canvas extends JComponent {
                     } catch (InvocationTargetException e) {
                         System.out.println("Fucking ITE exception");
                     }
-
-
                     break;
             }
         }

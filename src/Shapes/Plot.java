@@ -29,7 +29,7 @@ public class Plot extends Shape {
     }
 
     @Override
-    public String getCommand(){
+    public String getCommand(Canvas canvas){
         return String.format("PLOT %1$.2f %2$.2f", (float)x1/canvas.getHeight(), (float)y1/canvas.getWidth());
     }
 

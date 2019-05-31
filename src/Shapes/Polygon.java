@@ -19,13 +19,10 @@ public class Polygon extends Shape implements FillingShape {
     private Graphics2D theInk;
     private String clickstatus="firstclick";
 
-    public Polygon() {
-
-    }
-
     public Polygon(Canvas canvas) {
         this.canvas = canvas;
         this.theInk = canvas.getTheInk();
+        this.points=getPoints();
         System.out.println("poly constructor");
 
         canvas.addMouseListener(new MouseListener() {
@@ -38,21 +35,20 @@ public class Polygon extends Shape implements FillingShape {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                //Polygon is marked as done with a double click
+
                 if (guiClass.toggledButton=="Polygon") {
 
-
+                    //Polygon is marked as done with a double click
                     if (e.getClickCount() == 2) {
                         Point point = new Point(e.getX(), e.getY());
                         points.add(point);
                         Point firstPoint = points.get(0);
                         points.add(firstPoint);
                         // System.out.println(getCommand());
-                        canvas.addCommand(getCommand());
+                        canvas.addCommand(getCommand(canvas));
 
                         //redraw only the saved commands
                         canvas.readCommands();
-
 
                         points.clear();
                         clickstatus = "firstclick";
@@ -86,8 +82,6 @@ public class Polygon extends Shape implements FillingShape {
                         //because our polygon isn't finished it hasn't been
                         //saved to commands so we draw manually
                         draw(theInk);
-
-
                     }
                 }
 
@@ -114,34 +108,13 @@ public class Polygon extends Shape implements FillingShape {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (theInk != null && !clickstatus.equals("firstclick") && guiClass.toggledButton=="Polygon") {
-                    canvas.clean();
-                    canvas.readCommands();
-                    if (points.size() > 1) {
-                        draw(theInk);
-                    }
-                    int x2 = e.getX();
-                    int y2 = e.getY();
-                    theInk.drawLine(x1, y1, x2, y2);
-                    canvas.repaint();
-                    //redraw only the saved commands
-                    canvas.readCommands();
+                    drawPreview(e, canvas);
                 }
             }
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (theInk != null && !clickstatus.equals("firstclick") && guiClass.toggledButton=="Polygon") {
-                    canvas.clean();
-                    canvas.readCommands();
-                    if (points.size() > 1) {
-                        draw(theInk);
-                    }
-                    int x2 = e.getX();
-                    int y2 = e.getY();
-                    theInk.drawLine(x1, y1, x2, y2);
-                    canvas.repaint();
-                    //redraw only the saved commands
-                    canvas.readCommands();
-
+                    drawPreview(e, canvas);
                 }
             }
         });
@@ -151,6 +124,7 @@ public class Polygon extends Shape implements FillingShape {
 
     public Polygon(List points) {
         super(points);
+        this.points.addAll(points);
     }
 
     @Override
@@ -168,15 +142,6 @@ public class Polygon extends Shape implements FillingShape {
         }
     }
 
-    public String getCommand(){
-        //place holder
-        String command="POLYGON ";
-        for (Point point : points){
-            command+= String.format("%1$.2f %2$.2f ", (float)point.x/canvas.getHeight(), (float)point.y/canvas.getWidth());
-        }
-
-        return command;
-    }
 
     @Override
     public void fill(Graphics2D g) {
