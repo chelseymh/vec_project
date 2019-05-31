@@ -19,14 +19,13 @@ import javax.swing.event.ListSelectionListener;
  * It is the root of the application and instantiates the other major classes
  * <code>Canvas</code>, <code>Undo</code>, and <code>History</code>.
  */
-public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ {
+public class guiClass extends JFrame {
     public static String toggledButton = "";
-    private JMenuBar fileMenu;
     private JPanel eastPanel = new JPanel();
     private JPanel westPanel = new JPanel();
-    Canvas canvas;
-    History history;
-    Undo undo;
+    private Canvas canvas;
+    private History history;
+    private Undo undo;
     private String tool = "PEN";
     private boolean fill = false;
     private boolean undoHisOpen;
@@ -54,12 +53,12 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Build top menu and first file dropdown
-        fileMenu = new JMenuBar();
+        JMenuBar fileMenu = new JMenuBar();
         fileMenu.setOpaque(true);
         fileMenu.setBackground(Color.white);
         fileMenu.setPreferredSize(new Dimension(200, 20));
         file = new JMenu("File");
-        // Add listener here
+
         fileMenu.add(file);
         fileMenu.add(edit);
 
@@ -118,7 +117,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
         //Instantiate file handlers
         fileHandler = new FileHandler(canvas);
-        ExporterBMP BMPexporter = new ExporterBMP(canvas);
+        ExporterBMP exporter = new ExporterBMP(canvas);
 
         fileOpen.addActionListener(actionEvent -> {
             try {
@@ -138,7 +137,7 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         });
         fileExportBMP.addActionListener(actionEvent -> {
             try {
-                BMPexporter.exportBMP();
+                exporter.exportBMP();
             } catch (FileAlreadyExistsException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "File already exists", JOptionPane.ERROR_MESSAGE);
             } catch (InvalidDimensionsException e) {
@@ -168,8 +167,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         setVisible(true);
 
         //ctrl z undo listener
-        //
         int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW;
+
         //create action for key binding
         Action undoCommand = new AbstractAction() {
             @Override
@@ -184,11 +183,9 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
         };
 
         //create keybinding
-        canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-                "undo");
+        canvas.getInputMap(mapName).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),"undo");
         //attach action to keybinding
-        canvas.getActionMap().put("undo",
-                undoCommand);
+        canvas.getActionMap().put("undo", undoCommand);
 
         //Checks for window resize
         addComponentListener(new ComponentAdapter() {
@@ -204,16 +201,15 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
 
     //Calculates and sets the bounds of the canvas to match with the size and resizing of the main frame
     private void calculateAndSetCanvasBounds() {
-        final int minWidth = 550, minHeight = 242;
         //Canvas needs to take up the space between the west and east panels
         int sizeX = getWidth() - eastPanel.getWidth() - westPanel.getWidth();
-        ////Canvas needs to take up the space below fileMenu panel
+        //Canvas needs to take up the space below fileMenu panel
         int sizeY = eastPanel.getHeight();
 
-        //add a leetle buffer
+        //Add a leetle buffer
         sizeX -= 20;
         sizeY -= 20;
-        //if the width is bigger than the height, the size of the square
+        //If the width is bigger than the height, the size of the square
         //canvas should be set to the height to maintain aspect ratio
         if (sizeX > sizeY) {
             //canvas bounds starts at where west panel ends
@@ -292,18 +288,19 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     }
                     break;
                 default:
-                    toggledButton = name;
-                    try {
-                        //Get name of class to create from button name
-                        Class shapeClass = Class.forName("Shapes."+ name);
-                        //Instantiate from associated constructor and pass through parameters
-                        Object shape =shapeClass.getConstructor(Canvas.class).newInstance(canvas);
-                    } catch (Exception e){
-                        System.out.println("Problem in the gui switch class");
+                    if (!toggledButton.equals(name)) {
+                        toggledButton = name;
+                        try {
+                            //Get name of class to create from button name
+                            Class shapeClass = Class.forName("Shapes."+ name);
+                            //Instantiate from associated constructor and pass through parameters
+                            Object shape = shapeClass.getConstructor(Canvas.class).newInstance(canvas);
+                        } catch (Exception e){
+                            System.out.println("Problem in the gui switch class");
+                        }
                     }
                     break;
             }
-
         });
         return tempBtn;
     }
@@ -351,6 +348,8 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
             guiHist.setSize(200, 150);
             guiHist.setLocation(new Point(50, 50));
             guiHist.setTitle("Undo History");
+
+            // window listener for Frame
             guiHist.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
@@ -380,7 +379,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     }
                 }
             });
-            // window listener for Frame
             Container contentPane = guiHist.getContentPane();
             contentPane.add(scrollPane, BorderLayout.CENTER);
             guiHist.setVisible(true);
