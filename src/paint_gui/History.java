@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class History {
     private Canvas canvas;
-    private String labels[];
+    private String[] labels;
     private List<String> userSelection= new ArrayList<String>();
 
     /**
@@ -35,19 +35,17 @@ public class History {
      *              Is always smaller than the last index of the commands list.
      */
     public void  displayPreview(int index){
-        //clear final list for usage
+        //Clear final list for usage
         userSelection.clear();
-        List<String> originalCommands= new ArrayList<String>();
-        //calls the actual commands object in canvas
-        List<String> commands =canvas.getCommands();
-        // Backing up old commands
-        originalCommands.addAll(commands);
+        //Call the actual commands object in canvas
+        List<String> commands = canvas.getCommands();
+        //Back up old commands
+        List<String> originalCommands = new ArrayList<String>(commands);
 
-        //remove all commands from the end till user selection
-        //select(index);
-        int i=commands.size()-1;
+        //Remove all commands from the end till user selection
+        int i = commands.size()-1;
         while (i > index) {
-            //remove commmand
+            //Remove commmand
             commands.remove(i);
             i--;
         }
@@ -61,7 +59,7 @@ public class History {
         //clear commands
         commands.clear();
         //put back in the original list
-        //for more user previewing
+        //for the ability to continue previewing
         commands.addAll(originalCommands);
     }
 
