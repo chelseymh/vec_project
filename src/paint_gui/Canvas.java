@@ -3,6 +3,7 @@ package paint_gui;
 import Shapes.*;
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,43 +58,6 @@ public class Canvas extends JComponent {
         {
             String[] input = lineFile.split("\\s");
             switch (input[0].toLowerCase()) {
-                case "line":
-                    //System.out.println("line");
-                    Shapes.Line line = new Shapes.Line((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
-                    line.draw(theInk);
-                    break;
-                case "plot":
-                    //System.out.println("plot");
-                    Shapes.Plot plot = new Shapes.Plot((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[1]))*getHeight()), (int)(Float.parseFloat(input[2])*getWidth()));
-                    plot.draw(theInk);
-
-                    break;
-                case "rectangle":
-                    //System.out.println("rectangle");
-                    Shapes.Rectangle rect = new Shapes.Rectangle((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
-                    rect.draw(theInk);
-                    if (fill) rect.fill(fillInk);
-                    break;
-                case "ellipse":
-                    //System.out.println("ellipse");
-                    Ellipse ellipse = new Ellipse((int)(Float.parseFloat(input[1])*getHeight()), (int)(Float.parseFloat((input[2]))*getWidth()), (int)(Float.parseFloat((input[3]))*getHeight()), (int)(Float.parseFloat(input[4])*getWidth()));
-                    ellipse.draw(theInk);
-                    if (fill) ellipse.fill(fillInk);
-                    break;
-                case "polygon":
-                    //System.out.println("polygon");
-                    Shapes.Polygon polygon = new Shapes.Polygon();
-                    int i = 1;
-                    while (i < input.length - 1) {
-                        Point point = new Point();
-                        point.setLocation(Float.parseFloat(input[i])*getHeight(), Float.parseFloat(input[i + 1])*getWidth());
-                        polygon.addPoints(point);
-                        i = i + 2;
-                    }
-                    polygon.draw(theInk);
-                    if (fill) polygon.fill(fillInk);
-
-                    break;
                 case "pen":
                     System.out.println("pen");
                     theInk.setPaint(Color.decode(input[1]));
@@ -107,6 +71,37 @@ public class Canvas extends JComponent {
                     }
                     break;
                 default:
+                    List points= new ArrayList<Point>();
+                    String className=input[0].toLowerCase();
+                    //make first letter caps to match class names
+                    String classNameCapped = className.substring(0, 1).toUpperCase() + className.substring(1);
+
+                    //read points to a list for transportation to the constructor
+                    int i = 1;
+                    while (i < input.length - 1) {
+                        Point point = new Point();
+                        //Convert back to unscaled int
+                        point.setLocation(Float.parseFloat(input[i])*getHeight(), Float.parseFloat(input[i + 1])*getWidth());
+                        points.add(point);
+                        i = i + 2;
+                    }
+                    try {
+                        Class shapeClass = Class.forName("Shapes."+ classNameCapped);
+                        System.out.println("\nClass " +classNameCapped +" found");
+                        Shapes.Shape shape =(Shapes.Shape)shapeClass.getConstructor(List.class).newInstance(points);
+                        shape.draw(theInk);
+                        if (fill) shape.fill(fillInk);
+                    } catch (ClassNotFoundException e){
+                        System.out.println("Class not found");
+                    } catch (NoSuchMethodException e){
+                        System.out.println("No fucking method");
+                    } catch (InstantiationException e) {
+                        System.out.println("Fucking instantiation exception");
+                    } catch (IllegalAccessException e) {
+                        System.out.println("Fucking illegal access exception");
+                    } catch (InvocationTargetException e) {
+                        System.out.println("Fucking ITE exception");
+                    }
                     break;
             }
         }

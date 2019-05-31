@@ -12,18 +12,13 @@ import java.util.List;
 
 public class Line extends Shape {
     private int x1, y1, x2, y2;
-    private paint_gui.Canvas canvas;
-    private Graphics2D theInk;
 
     public Line(Canvas canvas) {
         super(canvas);
-        this.canvas=canvas;
-        theInk=canvas.getTheInk();
-
     }
 
-    public Line(int x1, int y1, int x2, int y2) {
-        super(x1, y1, x2, y2);
+    public Line(List points) {
+        super(points);
     }
 
     public void draw(Graphics2D g) {

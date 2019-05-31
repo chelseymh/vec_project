@@ -253,7 +253,6 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                     break;
                 case "History":
                     undoHistory();
-                    // try catch
                     break;
                 case "Black":
                     canvas.addCommand(tool + " #000000");
@@ -277,37 +276,19 @@ public class guiClass extends JFrame /*implements ActionListener, KeyListener*/ 
                         canvas.addCommand(tool + " " + hex);
                     }
                     break;
+                default:
+                    toggledButton = name;
+                    try {
+                        //Get name of class to create from button name
+                        Class shapeClass = Class.forName("Shapes."+ name);
+                        //Instantiate from associated constructor and pass through parameters
+                        Object shape =shapeClass.getConstructor(Canvas.class).newInstance(canvas);
+                    } catch (Exception e){
+                        System.out.println("Problem in the gui switch class");
+                    }
+                    break;
             }
-            if (!toggledButton.equals(name)) {
-                switch (name) {
-                    case "Polygon":
-                        toggledButton = name;
-                        Shapes.Shape polygon = new Shapes.Polygon(canvas);
-                        System.out.println("Poly selected");
-                        break;
-                    case "Rectangle":
-                        toggledButton = name;
-                        Shapes.Shape rect = new Shapes.Rectangle(canvas);
-                        System.out.println("Rect selected");
-                        break;
-                    case "Ellipse":
-                        toggledButton = name;
-                        Shapes.Shape ellipse = new Shapes.Ellipse(canvas);
 
-                        System.out.println("Ellip selected");
-                        break;
-                    case "Line":
-                        toggledButton = name;
-                        Shapes.Shape line = new Shapes.Line(canvas);
-                        System.out.println("Line selected");
-                        break;
-                    case "Plot":
-                        toggledButton = name;
-                        Shapes.Shape plot = new Shapes.Plot(canvas);
-                        System.out.println("Plot selected");
-                        break;
-                }
-            }
         });
         return tempBtn;
     }

@@ -11,7 +11,6 @@ import java.util.List;
 
 public abstract class Shape {
     private paint_gui.Canvas canvas;
-    private Graphics2D theInk;
     private List<Point> points= new ArrayList<Point>();
     private boolean done;
     private String className=this.getClass().getSimpleName();
@@ -19,16 +18,12 @@ public abstract class Shape {
 
     public Shape(){}
 
-    public Shape(int x1, int y1, int x2, int y2) {
-        Point point1 = new Point(x1, y1);
-        points.add(point1);
-        Point point2 = new Point(x2, y2);
-        points.add(point2);
+    public Shape(List points) {
+        this.points.addAll(points);
     }
 
     public Shape(Canvas canvas) {
         this.canvas = canvas;
-        this.theInk = canvas.getTheInk();
         done=false;
 
         MouseListener mouseListener=new MouseListener(){
@@ -48,7 +43,7 @@ public abstract class Shape {
                 if (paint_gui.guiClass.toggledButton.equals(className)) {
                     Point point = new Point(e.getX(), e.getY());
                     points.add(point);
-                    canvas.addCommand(getCommand());
+                    canvas.addCommand(getCommand(canvas));
                     canvas.clean();
                     canvas.readCommands();
                     points.clear();
@@ -75,15 +70,7 @@ public abstract class Shape {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                Point previewPoint = new Point(e.getX(), e.getY());
-                //temporarily add the preview point
-                points.add(previewPoint);
-                canvas.clean();
-                canvas.readCommands();
-                draw(theInk);
-                canvas.repaint();
-                //remove last element added which is the preview point
-                points.remove(points.size()-1);
+                drawPreview(e, canvas);
             }
 
             @Override
@@ -99,15 +86,24 @@ public abstract class Shape {
         }
     }
 
-
-
-    public String getCommand(){
-
-        String command=className.toUpperCase();;
-        for (Point point : points){
-            command+= String.format(" %1$.2f %2$.2f", (float)point.x/canvas.getHeight(), (float)point.y/canvas.getWidth());
+    public String getCommand(Canvas canvas){
+        String command=className.toUpperCase();
+        for (Point point : this.points){
+            command+= String.format(" %1$.2f %2$.2f", (float)point.getX()/canvas.getHeight(), (float)point.getY()/canvas.getWidth());
         }
         return command;
+    }
+
+    public void drawPreview(MouseEvent e, Canvas canvas){
+        Point previewPoint = new Point(e.getX(), e.getY());
+        //temporarily add the preview point
+        points.add(previewPoint);
+        canvas.clean();
+        canvas.readCommands();
+        draw(canvas.getTheInk());
+        canvas.repaint();
+        //remove last element added which is the preview point
+        points.remove(points.size()-1);
     }
 
     public List<Point> getPoints(){
