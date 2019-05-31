@@ -17,7 +17,7 @@ import javax.swing.event.ListSelectionListener;
 /**
  * Extends <code>javax.swing.JFrame</code> and is the main class for handling everything related to the graphical user interface.
  * It is the root of the application and instantiates the other major classes
- * <code>Canvas</code>, <code>Undo</code>, and <code>History</code>.
+ * <code>Canvas</code>, <code>undo</code>, and <code>History</code>.
  */
 public class guiClass extends JFrame {
     public static String toggledButton = "";
@@ -75,8 +75,8 @@ public class guiClass extends JFrame {
             gui.setLocation(300, 150);
         });
 
-        undoButton = new JMenuItem("Undo");
-        undoHistory = new JMenuItem("Undo History");
+        undoButton = new JMenuItem("undo");
+        undoHistory = new JMenuItem("undo History");
 
         // Add menu items
         file.add(fileNew);
@@ -87,14 +87,14 @@ public class guiClass extends JFrame {
         edit.add(undoButton);
         edit.add(undoHistory);
 
-        // Undo Listeners
+        // undo Listeners
         undoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 try {
-                    undo.Undo();
+                    undo.undo();
                 } catch (UndoException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "undo error", JOptionPane.ERROR_MESSAGE);
                 } 
             }
         });
@@ -175,9 +175,9 @@ public class guiClass extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 //do nothing
                 try {
-                    undo.Undo();
+                    undo.undo();
                 } catch (UndoException e) {
-                    JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "undo error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
@@ -232,7 +232,7 @@ public class guiClass extends JFrame {
         lineBtn = createButton("Line");
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
-        undoBtn = createButton("Undo");
+        undoBtn = createButton("undo");
         historyBtn = createButton("History");
         fillBtn = makeFillButton();
         black = createButton("Black");
@@ -255,11 +255,11 @@ public class guiClass extends JFrame {
         JButton tempBtn = new JButton(name);
         tempBtn.addActionListener(actionEvent -> {
             switch (name) {
-                case "Undo":
+                case "undo":
                     try {
-                        undo.Undo();
+                        undo.undo();
                     } catch (UndoException e) {
-                        JOptionPane.showMessageDialog(null, e.getMessage(), "Undo error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "undo error", JOptionPane.ERROR_MESSAGE);
                     }
                     break;
                 case "History":
@@ -319,8 +319,8 @@ public class guiClass extends JFrame {
         return button;
     }
 
-    //Creates the undo history window when the Undo History button or menu item is pressed,
-    //and adds window listeners to the Undo History frame in order to prevent the user from using
+    //Creates the undo history window when the undo History button or menu item is pressed,
+    //and adds window listeners to the undo History frame in order to prevent the user from using
     //the main window when the history is open.
     //Uses the History class to display the old commands.
     private void undoHistory() {
@@ -347,7 +347,7 @@ public class guiClass extends JFrame {
             });
             guiHist.setSize(200, 150);
             guiHist.setLocation(new Point(50, 50));
-            guiHist.setTitle("Undo History");
+            guiHist.setTitle("undo History");
 
             // window listener for Frame
             guiHist.addWindowListener(new WindowAdapter() {
@@ -373,7 +373,7 @@ public class guiClass extends JFrame {
                 @Override
                 public void windowLostFocus(WindowEvent e) {
                     if (!undoHisOpen) {
-                        JOptionPane.showMessageDialog(null, "Undo History is still open. Please close to " +
+                        JOptionPane.showMessageDialog(null, "undo History is still open. Please close to " +
                                 "continue drawing.", "Window error", JOptionPane.ERROR_MESSAGE);
                         guiHist.requestFocus();
                     }

@@ -5,13 +5,13 @@ import Exceptions.UndoException;
 import java.util.List;
 
 public class Undo {
-    Canvas canvas;
+    private Canvas canvas;
 
     public Undo(Canvas canvas) {
         this.canvas = canvas;
     }
 
-    public void Undo() throws UndoException {
+    public void undo() throws UndoException {
         List<String> commands = canvas.getCommands();
         int size = canvas.getCommands().size() -1;
         if (!canvas.getCommands().isEmpty()) {
