@@ -36,6 +36,7 @@ public class ExporterBMP {
                 int height = heightField.getText().equals("") ? canvas.getHeight() : Integer.parseInt(heightField.getText());
                 BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage(), width, height);
                 ImageIO.write(bufferedImage, "BMP", fileToSave);
+                JOptionPane.showMessageDialog(null, "File successfully exported and saved to: \n" + fileToSave.getPath(), "Successful export", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
