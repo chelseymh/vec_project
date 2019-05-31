@@ -8,13 +8,25 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 
+/**
+ * Handles the file reading and file writing operations necessary for opening and saving VEC files.
+ */
 public class FileHandler {
     private Canvas canvas;
 
+    /**
+     * Creates a FileHandler object to open and save files to and from the specified <code>Canvas</code>.
+     * @param canvas The canvas from which to add or retrieve commands, dependent on whether the user is
+     *               opening or saving files.
+     */
     public FileHandler(Canvas canvas) {
         this.canvas = canvas;
     }
 
+    /**
+     * Creates a <code>JFileChooser</code> object for the user to choose a VEC file and opens it in a new window.
+     * @throws IOException If something goes wrong with the <code>BufferedReader</code>
+     */
     public void openFileNewWindow() throws IOException {
         JFileChooser chooser = getFileChooser();
         int returnVal = chooser.showOpenDialog(null);
@@ -27,6 +39,13 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Iterates through the given <code>BufferedReader</code> and adds the lines to the commands list found in <code>Canvas</code>.
+     * <p>Is public because the opened file has to be read into the newly created window instead of the one from which the
+     * call to open a file was made.</p>
+     * @param reader The reader containing the lines of the file chosen by the user.
+     * @throws IOException If something goes wrong with the <code>BufferedReader</code>
+     */
     public void readFile(BufferedReader reader) throws IOException {
         for (String lineFile = reader.readLine(); lineFile != null; lineFile = reader.readLine())
         {
@@ -35,6 +54,14 @@ public class FileHandler {
         canvas.readCommands();
     }
 
+    /**
+     * Saves a file containing the current commands of the canvas to whatever directory the user wants.
+     * <p>Creates a <code>JFileChooser</code>, a <code>File</code> and a <code>BufferedWriter</code> to write the commands
+     * of the canvas to a <code>File</code> and saves it to the directory chosen by the user.</p>
+     * <p>A success message is shown, if the file is saved.</p>
+     * @throws IOException If something goes wrong with the <code>BufferedWriter</code>
+     * @throws FileAlreadyExistsException If a file with the given name already exists in the chosen directory.
+     */
     public void saveFile() throws IOException {
         JFileChooser chooser = getFileChooser();
         int returnVal = chooser.showSaveDialog(null);
@@ -55,6 +82,7 @@ public class FileHandler {
         }
     }
 
+    //Helper method to create and return a JFileChooser that only accepts VEC files.
     private JFileChooser getFileChooser() {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("VEC file", "vec");
