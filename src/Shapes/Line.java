@@ -2,12 +2,8 @@ package Shapes;
 
 import java.awt.*;
 import paint_gui.Canvas;
-import paint_gui.guiClass;
 
 //mouse handlers
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 public class Line extends Shape {

@@ -1,7 +1,7 @@
 package paint_gui;
 
 /**
- * Starts up the application by creating an instance of guiClass and calling its <code>createGUI</code> method.
+ * Starts up the application by creating an instance of Gui and calling its <code>createGUI</code> method.
  */
 public class Main {
     /**
@@ -9,6 +9,6 @@ public class Main {
      * @param args List of possible arguments. Is always empty in our program.
      */
     public static void main(String[] args) {
-        new paint_gui.guiClass().createGUI();
+        new Gui().createGUI();
     }
 }

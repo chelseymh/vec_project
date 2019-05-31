@@ -1,7 +1,7 @@
 package FileHandlers;
 
 import paint_gui.Canvas;
-import paint_gui.guiClass;
+import paint_gui.Gui;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -32,7 +32,7 @@ public class FileHandler {
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             BufferedReader reader = new BufferedReader(new FileReader(chooser.getSelectedFile().toString()));
-            guiClass gui = new guiClass();
+            Gui gui = new Gui();
             gui.createGUI();
             gui.setLocation(300, 150);
             gui.getFileHandler().readFile(reader);

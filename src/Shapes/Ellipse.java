@@ -1,12 +1,8 @@
 package Shapes;
 
 import paint_gui.Canvas;
-import paint_gui.guiClass;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 public class Ellipse extends Shape implements FillingShape {

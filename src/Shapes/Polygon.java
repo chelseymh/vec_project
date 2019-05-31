@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import paint_gui.Canvas;
-import paint_gui.guiClass;
 
 //mouse handlers
 import java.awt.event.MouseEvent;

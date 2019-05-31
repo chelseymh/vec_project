@@ -1,6 +1,7 @@
 package Shapes;
 
 import paint_gui.Canvas;
+import paint_gui.Gui;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -40,7 +41,7 @@ public abstract class Shape {
             @Override
             public void mouseReleased(MouseEvent e) {
 
-                if (paint_gui.guiClass.toggledButton.equals(className)) {
+                if (Gui.toggledButton.equals(className)) {
                     Point point = new Point(e.getX(), e.getY());
                     points.add(point);
                     canvas.addCommand(getCommand(canvas));

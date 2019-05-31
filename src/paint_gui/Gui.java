@@ -18,7 +18,7 @@ import javax.swing.event.ListSelectionListener;
  * Extends <code>javax.swing.JFrame</code> and is the main class for handling everything related to the graphical user interface.
  * It instantiates the other major classes <code>Canvas</code>, <code>undo</code>, and <code>History</code>.
  */
-public class guiClass extends JFrame {
+public class Gui extends JFrame {
     /**
      * The name of the button that was last pressed.
      */
@@ -72,7 +72,7 @@ public class guiClass extends JFrame {
 
         // Add action listeners
         fileNew.addActionListener(e -> {
-            guiClass gui = new guiClass();
+            Gui gui = new Gui();
             gui.createGUI();
             gui.setLocation(300, 150);
         });
@@ -376,7 +376,7 @@ public class guiClass extends JFrame {
     /**
      * Gets the <code>fileHandler</code>.
      * <p>Is called in the <code>FileHandler</code> class to open files in a new window.</p>
-     * @return The FileHandler of a newly created guiClass in order to open a file in this window
+     * @return The FileHandler of a newly created Gui in order to open a file in this window
      * and not in the one from where the action to open a new file has been made.
      */
     public FileHandler getFileHandler() {
