@@ -331,7 +331,7 @@ public class guiClass extends JFrame {
             guiHist.setFocusableWindowState(true);
             guiHist.requestFocus();
             history.fillLabels();
-            JList histList = new JList(history.labels);
+            JList histList = new JList(history.getLabels());
             JScrollPane scrollPane = new JScrollPane(histList);
             histList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
             histList.setLayoutOrientation(JList.VERTICAL);

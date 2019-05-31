@@ -5,8 +5,8 @@ import java.util.List;
 
 
 public class History {
-    Canvas canvas;
-    public String labels[];
+    private Canvas canvas;
+    private String labels[];
     private List<String> userSelection= new ArrayList<String>();
 
     public History(Canvas canvas) {
@@ -63,5 +63,9 @@ public class History {
         canvas.clean();
         canvas.readCommands();
         canvas.repaint();
+    }
+
+    public String[] getLabels() {
+        return labels;
     }
 }
