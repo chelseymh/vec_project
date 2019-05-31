@@ -30,8 +30,7 @@ public abstract class Shape {
         MouseListener mouseListener=new MouseListener(){
             @Override
             public void mousePressed(MouseEvent e) {
-                Point point = new Point(e.getX(), e.getY());
-                points.add(point);
+                mousePressedAction(e, canvas);
             }
 
             @Override
@@ -40,15 +39,8 @@ public abstract class Shape {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-
                 if (Gui.toggledButton.equals(className)) {
-                    Point point = new Point(e.getX(), e.getY());
-                    points.add(point);
-                    canvas.addCommand(getCommand(canvas));
-                    canvas.clean();
-                    canvas.readCommands();
-                    points.clear();
-                    done = true;
+                    mouseReleasedAction(e, canvas);
                 }
 
             }
@@ -76,6 +68,9 @@ public abstract class Shape {
 
             @Override
             public void mouseMoved(MouseEvent e) {
+                if (Gui.toggledButton.equals(className)) {
+                    mouseMovedAction(e, canvas);
+                }
             }
         };
 
@@ -96,9 +91,9 @@ public abstract class Shape {
     }
 
     public void drawPreview(MouseEvent e, Canvas canvas){
-        Point previewPoint = new Point(e.getX(), e.getY());
         //temporarily add the preview point
-        points.add(previewPoint);
+        addPoint(e.getX(), e.getY());
+        //Wipe and redraw
         canvas.clean();
         canvas.readCommands();
         draw(canvas.getTheInk());
@@ -107,8 +102,33 @@ public abstract class Shape {
         points.remove(points.size()-1);
     }
 
+    public void addPoint(int x, int y){
+        Point point = new Point(x, y);
+        points.add(point);
+    }
+
+    public void mousePressedAction(MouseEvent e, Canvas canvas){
+        addPoint(e.getX(), e.getY());
+    }
+
+    public void mouseReleasedAction(MouseEvent e, Canvas canvas){
+        addPoint(e.getX(), e.getY());
+        canvas.addCommand(getCommand(canvas));
+        canvas.clean();
+        canvas.readCommands();
+        points.clear();
+        done = true;
+    }
+
+    public void mouseMovedAction(MouseEvent e, Canvas canvas){
+    }
+
     public List<Point> getPoints(){
         return points;
+    }
+
+    public void setPoints(List points){
+        this.points=points;
     }
     public abstract void draw(Graphics2D g);
 }
