@@ -23,10 +23,7 @@ public class History {
      * Fills up the <code>labels</code> array with the commands stored in Canvas.
      */
     public void fillLabels() {
-        List<String> tempCommands = new ArrayList<String>();
-        tempCommands.clear(); // Clear the Jlist on open to ensure OLD / UNDOED drawings are removed
-        tempCommands.addAll(canvas.getCommands());
-        labels = tempCommands.toArray(new String[0]);
+        labels = canvas.getCommands().toArray(String[]::new);
     }
 
     /**
