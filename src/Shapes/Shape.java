@@ -19,7 +19,6 @@ public abstract class Shape {
     public Shape(){}
 
     public Shape(List points) {
-        System.out.println("points = [" + points + "]");
         this.points.addAll(points);
     }
 
