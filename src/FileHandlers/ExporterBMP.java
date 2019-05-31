@@ -1,5 +1,6 @@
 package FileHandlers;
 
+import Exceptions.InvalidDimensionsException;
 import paint_gui.Canvas;
 
 import javax.imageio.ImageIO;
@@ -17,7 +18,7 @@ public class ExporterBMP {
         this.canvas = canvas;
     }
 
-    public void exportBMP() throws IOException {
+    public void exportBMP() throws IOException, InvalidDimensionsException {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("BMP file", "bmp");
         chooser.setFileFilter(filter);
@@ -32,8 +33,13 @@ public class ExporterBMP {
 
             int result = getInput(widthField, heightField);
             if (result == JOptionPane.OK_OPTION) {
-                int width = widthField.getText().equals("") ? canvas.getWidth() : Integer.parseInt(widthField.getText());
-                int height = heightField.getText().equals("") ? canvas.getHeight() : Integer.parseInt(heightField.getText());
+                String widthInput = widthField.getText();
+                String heightInput = heightField.getText();
+                //Check the input of the user
+                String number = "[0-9]+";
+                if (!widthInput.matches(number) || !heightInput.matches(number)) throw new InvalidDimensionsException("Dimension has to be a whole number greater than zero.");
+                int width = Integer.parseInt(widthInput);
+                int height = Integer.parseInt(heightInput);
                 BufferedImage bufferedImage = imageToBufferedImage(canvas.getImage(), width, height);
                 ImageIO.write(bufferedImage, "BMP", fileToSave);
                 JOptionPane.showMessageDialog(null, "File successfully exported and saved to: \n" + fileToSave.getPath(), "Successful export", JOptionPane.INFORMATION_MESSAGE);
@@ -42,13 +48,18 @@ public class ExporterBMP {
     }
 
     private int getInput(JTextField widthField, JTextField heightField) {
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Height:"));
-        panel.add(heightField);
-        panel.add(new JLabel("Width:"));
-        panel.add(widthField);
+        JPanel centerPanel = new JPanel();
+        centerPanel.add(new JLabel("Height:"));
+        centerPanel.add(heightField);
+        centerPanel.add(new JLabel("Width:"));
+        centerPanel.add(widthField);
 
-        return JOptionPane.showConfirmDialog(null, panel, "Please enter height and width:", JOptionPane.OK_CANCEL_OPTION);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(new JLabel("Please input whole numbers greater than zero"), BorderLayout.NORTH);
+        panel.add(centerPanel, BorderLayout.CENTER);
+
+        return JOptionPane.showConfirmDialog(null, panel, "Input dimensions", JOptionPane.OK_CANCEL_OPTION);
     }
 
     private BufferedImage imageToBufferedImage(Image image, int width, int height) {
