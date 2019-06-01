@@ -87,7 +87,6 @@ public class Canvas extends JComponent {
                     }
                     try {
                         Class shapeClass = Class.forName("Shapes."+ classNameCapped);
-                        System.out.println("\nClass " +classNameCapped +" found");
                         Shapes.Shape shape =(Shapes.Shape)shapeClass.getConstructor(List.class).newInstance(points);
                         shape.draw(theInk);
                         if (fill && shape instanceof FillingShape) ((FillingShape) shape).fill(fillInk);

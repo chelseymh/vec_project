@@ -33,6 +33,11 @@ public class Plot extends Shape {
     @Override
     public void mousePressedAction(MouseEvent e, Canvas canvas){
         addPoint(e.getX(),e.getY());
-        draw(canvas.getTheInk());
+        canvas.addCommand(getCommand(canvas));
+        canvas.clean();
+        canvas.readCommands();
+    }
+
+    public void mouseReleasedAction(MouseEvent e, Canvas canvas) {
     }
 }
