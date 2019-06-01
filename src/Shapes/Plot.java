@@ -7,9 +7,6 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class Plot extends Shape {
-    private int x1, y1;
-
-
     public Plot(Canvas canvas) {
         super(canvas);
     }
@@ -20,24 +17,19 @@ public class Plot extends Shape {
 
     @Override
     public void draw(Graphics2D g) {
-        pointSetter();
-        g.drawLine(x1, y1, x1, y1);
+        g.drawLine(points.get(0).x, points.get(0).y, points.get(0).x, points.get(0).y);
     }
-
-    public void pointSetter(){
-        List<Point> points= this.getPoints();
-        x1=points.get(0).x;
-        y1=points.get(0).y;
-    }
-
+    //Draw the single point
     @Override
-    public void mousePressedAction(MouseEvent e, Canvas canvas){
+    public void mousePressedAction(MouseEvent e){
         addPoint(e.getX(),e.getY());
         canvas.addCommand(getCommand(canvas));
         canvas.clean();
         canvas.readCommands();
     }
 
-    public void mouseReleasedAction(MouseEvent e, Canvas canvas) {
+    //Plot is a single click shape so no release action
+    @Override
+    public void mouseReleasedAction(MouseEvent e) {
     }
 }

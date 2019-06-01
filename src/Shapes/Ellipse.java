@@ -6,10 +6,6 @@ import java.awt.*;
 import java.util.List;
 
 public class Ellipse extends Shape implements FillingShape {
-    private int x1, y1, x2, y2;
-
-
-
 
     public Ellipse(Canvas canvas) {
         super(canvas);
@@ -21,34 +17,25 @@ public class Ellipse extends Shape implements FillingShape {
 
     @Override
     public void draw(Graphics2D g) {
-        pointSetter();
         //ellipse function takes xy coords of start followed by width and height,
         // we get this by getting the difference of our start and end coords
         // Revert if ellipse is reverted
-        if (x1 != 0 || x2 != 0) {
-            boolean revertX = x1 < x2;
-            boolean revertY = y1 < y2;
-            g.drawOval(revertX ? x1 : x2, revertY ? y1 : y2, revertX ? Math.abs(x2 - x1) : Math.abs(x1 - x2),
-                    revertY ? Math.abs(y2 - y1) : Math.abs(y1 - y2));
+        if (points.get(0).x != 0 || points.get(1).x != 0) {
+            boolean revertX = points.get(0).x < points.get(1).x;
+            boolean revertY = points.get(0).y < points.get(1).y;
+            g.drawOval(revertX ? points.get(0).x : points.get(1).x, revertY ? points.get(0).y : points.get(1).y, revertX ? Math.abs(points.get(1).x - points.get(0).x) : Math.abs(points.get(0).x - points.get(1).x),
+                    revertY ? Math.abs(points.get(1).y - points.get(0).y) : Math.abs(points.get(0).y - points.get(1).y));
         }
     }
 
     @Override
     public void fill(Graphics2D g) {
-        pointSetter();
-        if (x1 != 0 || x2 != 0) {
-            boolean revertX = x1 < x2;
-            boolean revertY = y1 < y2;
-            g.fillOval(revertX ? x1 : x2, revertY ? y1 : y2, revertX ? Math.abs(x2 - x1) : Math.abs(x1 - x2),
-                    revertY ? Math.abs(y2 - y1) : Math.abs(y1 - y2));
+        if (points.get(0).x != 0 || points.get(1).x != 0) {
+            boolean revertX = points.get(0).x < points.get(1).x;
+            boolean revertY = points.get(0).y < points.get(1).y;
+            g.fillOval(revertX ? points.get(0).x : points.get(1).x, revertY ? points.get(0).y : points.get(1).y, revertX ? Math.abs(points.get(1).x - points.get(0).x) : Math.abs(points.get(0).x - points.get(1).x),
+                    revertY ? Math.abs(points.get(1).y - points.get(0).y) : Math.abs(points.get(0).y - points.get(1).y));
         }
     }
 
-    public void pointSetter(){
-        List<Point> points= this.getPoints();
-        x1=points.get(0).x;
-        y1=points.get(0).y;
-        x2=points.get(1).x;
-        y2=points.get(1).y;
-    }
 }
