@@ -3,7 +3,6 @@ package paint_gui;
 import Shapes.*;
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +81,7 @@ public class Canvas extends JComponent {
      * string. As the points are stored as floats in the VEC format, they
      * are scaled according to canvas size and converted back to int format.
      * Finally the shape is drawn using the draw method associated with
-     * its class
+     * its class. If not a shape command, sets pen or fill options.
      */
     public void readCommands(){
         Graphics2D fillInk = (Graphics2D) image.getGraphics();
@@ -94,10 +93,12 @@ public class Canvas extends JComponent {
         {
             String[] input = lineFile.split("\\s");
             switch (input[0].toLowerCase()) {
+                //Reads a PEN color VEC command
                 case "pen":
                     System.out.println("pen");
                     theInk.setPaint(Color.decode(input[1]));
                     break;
+                    //Reads a FILL OFF VEC command
                 case "fill":
                     if (input[1].equals("OFF")) {
                         fill = false;
