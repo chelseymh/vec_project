@@ -24,11 +24,6 @@ public class Plot extends Shape {
         g.drawLine(x1, y1, x1, y1);
     }
 
-    @Override
-    public void fill(Graphics2D g) {
-
-    }
-
     public void pointSetter(){
         List<Point> points= this.getPoints();
         x1=points.get(0).x;
