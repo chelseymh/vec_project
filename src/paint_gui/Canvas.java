@@ -90,7 +90,7 @@ public class Canvas extends JComponent {
                         System.out.println("\nClass " +classNameCapped +" found");
                         Shapes.Shape shape =(Shapes.Shape)shapeClass.getConstructor(List.class).newInstance(points);
                         shape.draw(theInk);
-                        if (fill) shape.fill(fillInk);
+                        if (fill && shape instanceof FillingShape) ((FillingShape) shape).fill(fillInk);
                     } catch (ClassNotFoundException e){
                         System.out.println("Class not found");
                     } catch (NoSuchMethodException e){
