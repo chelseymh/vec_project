@@ -84,7 +84,6 @@ public class Canvas extends JComponent {
      */
     public void readCommands(){
         Graphics2D fillInk = (Graphics2D) image.getGraphics();
-
         boolean fill = false;
         //Reset theInk to the grey colour
         theInk.setPaint(Color.DARK_GRAY);

@@ -1,7 +1,6 @@
 package paint_gui;
 
 import Exceptions.UndoException;
-
 import java.util.List;
 
 /**
