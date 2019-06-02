@@ -77,8 +77,8 @@ public class Gui extends JFrame {
             gui.setLocation(300, 150);
         });
 
-        undoButton = new JMenuItem("undo");
-        undoHistory = new JMenuItem("undo History");
+        undoButton = new JMenuItem("Undo");
+        undoHistory = new JMenuItem("Undo History");
 
         // Add menu items
         file.add(fileNew);

@@ -6,19 +6,19 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Concrete child extension of Shape class. Creates an ellipse
+ * Concrete child extension of AbstractShape class. Creates an ellipse
  * shape. Implements abstract method draw by calling awt
  * oval drawing command as well as fill from the
  * FillingShape class it implements. Has two constructors,
  * one for user interactive mouse coordinate inputs and
  * a constructor for preexisting points.
  */
-public class Ellipse extends Shape implements FillingShape {
+public class Ellipse extends AbstractShape implements FillingShape {
 
     /**
      * The constructor called when the ellipse is being created
      * by mouse. Passes the canvas constructor to parent
-     * class Shape and lets it deal with it.
+     * class AbstractShape and lets it deal with it.
      * @param canvas the canvas on which the shape is to be
      *               drawn
      */

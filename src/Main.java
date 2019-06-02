@@ -1,4 +1,4 @@
-package paint_gui;
+import paint_gui.Gui;
 
 /**
  * Starts up the application by creating an instance of Gui and calling its <code>createGUI</code> method.

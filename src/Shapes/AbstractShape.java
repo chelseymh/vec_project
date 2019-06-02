@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Shape is the abstract parent class to all the specific
+ * AbstractShape is the abstract parent class to all the specific
  * child shape classes. Contains all the common methods used
  * by all shapes as well the mouse handler for creating the
  * shapes via mouse. The variables that the children classes
@@ -21,14 +21,14 @@ import java.util.List;
  * <code>className</code> field informs the parent class which child owns
  * the current instance
  */
-public abstract class Shape {
+public abstract class AbstractShape {
     protected paint_gui.Canvas canvas;
     protected List<Point> points = new ArrayList<>();
     protected boolean done;
     private String className = this.getClass().getSimpleName();
 
 
-    public Shape() {
+    public AbstractShape() {
     }
 
     /**
@@ -37,7 +37,7 @@ public abstract class Shape {
      * stored in Canvas
      * @param points Takes a List of the shape's points
      */
-    public Shape(List points) {
+    public AbstractShape(List points) {
         this.points.addAll(points);
     }
 
@@ -56,7 +56,7 @@ public abstract class Shape {
      * time another shape is created.
      * @param canvas
      */
-    public Shape(Canvas canvas) {
+    public AbstractShape(Canvas canvas) {
         this.canvas = canvas;
         done = false;
 

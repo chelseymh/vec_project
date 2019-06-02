@@ -1,25 +1,24 @@
 package Shapes;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import paint_gui.Canvas;
 
 /**
- * Concrete child extension of Shape class. Creates a rectangle
+ * Concrete child extension of AbstractShape class. Creates a rectangle
  * shape. Implements abstract method draw with awt rect
  * drawing command as well as fill from the FillingShape class it
  * implements. Has two constructors, one for user interactive mouse
  * coordinate inputs and a constructor for preexisting points
  *
  */
-public class Rectangle extends Shape implements FillingShape {
+public class Rectangle extends AbstractShape implements FillingShape {
 
     /**
      * The constructor called when the rectangle is being created
      * by mouse. Passes the canvas constructor to parent
-     * class Shape and lets it deal with it.
+     * class AbstractShape and lets it deal with it.
      * @param canvas the canvas on which the shape is to be
      *               drawn
      */

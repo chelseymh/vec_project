@@ -7,18 +7,18 @@ import paint_gui.Canvas;
 import java.util.List;
 
 /**
- * Concrete child extension of Shape class. Creates a line
+ * Concrete child extension of AbstractShape class. Creates a line
  * shape. Implements abstract method draw with awt line
  * drawing command. Has two constructors, one for user
  * interactive mouse coordinate inputs and a constructor
  * for preexisting points.
  */
-public class Line extends Shape {
+public class Line extends AbstractShape {
 
     /**
      * The constructor called when the line is being created
      * by mouse. Passes the canvas constructor to parent
-     * class Shape and lets it deal with it.
+     * class AbstractShape and lets it deal with it.
      * @param canvas the canvas on which the shape is to be
      *               drawn
      */

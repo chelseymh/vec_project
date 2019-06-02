@@ -16,7 +16,7 @@ import java.util.List;
 public class Canvas extends JComponent {
     private Graphics2D theInk;
     private Image image;
-    private List<String> commands = new ArrayList<String>();
+    private List<String> commands = new ArrayList<>();
 
     /**
      * Instantiates a new canvas
@@ -107,7 +107,7 @@ public class Canvas extends JComponent {
                     }
                     break;
                 default:
-                    List points= new ArrayList<Point>();
+                    List points = new ArrayList<Point>();
                     String className=input[0].toLowerCase();
                     //make first letter caps to match class names
                     String classNameCapped = className.substring(0, 1).toUpperCase() + className.substring(1);
@@ -123,7 +123,7 @@ public class Canvas extends JComponent {
                     }
                     try {
                         Class shapeClass = Class.forName("Shapes."+ classNameCapped);
-                        Shapes.Shape shape =(Shapes.Shape)shapeClass.getConstructor(List.class).newInstance(points);
+                        AbstractShape shape = (AbstractShape)shapeClass.getConstructor(List.class).newInstance(points);
                         shape.draw(theInk);
                         if (fill && shape instanceof FillingShape) ((FillingShape) shape).fill(fillInk);
                     } catch (Exception e){
