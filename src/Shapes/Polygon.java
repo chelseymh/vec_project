@@ -1,17 +1,12 @@
 package Shapes;
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import paint_gui.Canvas;
 
 //mouse handlers
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 public class Polygon extends Shape implements FillingShape {
-    private List<Point> points= new ArrayList<Point>();
-
 
     public Polygon(Canvas canvas) {
         super(canvas);
@@ -19,7 +14,7 @@ public class Polygon extends Shape implements FillingShape {
 
     public Polygon(List points) {
         super(points);
-        this.points.addAll(points);
+        points.addAll(points);
     }
 
     @Override
@@ -48,7 +43,7 @@ public class Polygon extends Shape implements FillingShape {
     }
 
     @Override
-    public void mousePressedAction(MouseEvent e, Canvas canvas){
+    public void mousePressedAction(MouseEvent e){
         //Polygon is marked as done with a double click
         if (e.getClickCount() == 2) {
             Point point = new Point(e.getX(), e.getY());
@@ -58,24 +53,21 @@ public class Polygon extends Shape implements FillingShape {
             canvas.addCommand(getCommand(canvas));
             //redraw only the saved commands
             canvas.readCommands();
-            //clear parent points
-            getPoints().clear();
             //clear polygon points
             points.clear();
 
         } else {
             //if () {
-                Point point = new Point(e.getX(), e.getY());
-                points.add(point);
+                addPoint(e.getX(),e.getY());
                 //Don't draw unless there is a complete pair of points
                 if (points.size()>1){
-                    drawPreview(e, canvas);
+                    drawPreview(e);
                 }
          //   }
         }
     }
 
-    public void mouseReleasedAction(MouseEvent e, Canvas canvas) {
+    public void mouseReleasedAction(MouseEvent e) {
 //        //store mouse coords into a point object
 //        Point point = new Point(e.getX(), e.getY());
 //        //add that point to the polygon points list
@@ -90,19 +82,10 @@ public class Polygon extends Shape implements FillingShape {
 //        draw(canvas.getTheInk());
     }
 
-    public void mouseMovedAction(MouseEvent e, Canvas canvas){
-        //parent class method so uses parent variables
-        setPoints(points);
+    public void mouseMovedAction(MouseEvent e){
         //Don't draw until at least first point is confirmed
-        if (getPoints().size()>0){
-            drawPreview(e, canvas);
+        if (points.size()>0){
+            drawPreview(e);
         }
     }
-
-
-    public void pointSetter(){
-        this.points= getPoints();
-    }
-
-
 }
