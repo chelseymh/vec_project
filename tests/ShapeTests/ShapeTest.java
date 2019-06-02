@@ -1,5 +1,6 @@
 package ShapeTests;
 
+import Shapes.AbstractShape;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class ShapeTest {
         testPoints.add(rectPoint1);
         testPoints.add(rectPoint2);
 
-        Shapes.Shape shape = new Shapes.Rectangle(testPoints);
+        AbstractShape shape = new Shapes.Rectangle(testPoints);
 
 
         assertEquals("RECTANGLE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
@@ -58,7 +59,7 @@ class ShapeTest {
         testPoints.add(ellPoint1);
         testPoints.add(ellPoint2);
 
-        Shapes.Shape shape = new Shapes.Ellipse(testPoints);
+        AbstractShape shape = new Shapes.Ellipse(testPoints);
 
         assertEquals("ELLIPSE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
     }
@@ -77,7 +78,7 @@ class ShapeTest {
         testPoints.add(linePoint1);
         testPoints.add(linePoint2);
 
-        Shapes.Shape shape = new Shapes.Line(testPoints);
+        AbstractShape shape = new Shapes.Line(testPoints);
 
 
         assertEquals("LINE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
@@ -93,7 +94,7 @@ class ShapeTest {
         Point plotPoint = new Point();
         plotPoint.setLocation(200,200);
         testPoints.add(plotPoint);
-        Shapes.Shape shape = new Shapes.Plot(testPoints);
+        AbstractShape shape = new Shapes.Plot(testPoints);
 
 
         assertEquals("PLOT 0.5 0.5", shape.getCommand(canvas));
@@ -121,7 +122,7 @@ class ShapeTest {
         testPoints.add(Point4);
 
 
-        Shapes.Shape shape = new Shapes.Polygon(testPoints);
+        AbstractShape shape = new Shapes.Polygon(testPoints);
 
         assertEquals("POLYGON 0.5 0.0 1.0 0.5 0.5 1.0 0.0 0.5", shape.getCommand(canvas));
     }
@@ -140,7 +141,7 @@ class ShapeTest {
         rectPoint2.setLocation(200,200);
         testPoints.add(rectPoint1);
         testPoints.add(rectPoint2);
-        Shapes.Shape shape = new Shapes.Rectangle(testPoints);
+        AbstractShape shape = new Shapes.Rectangle(testPoints);
         shape.drawSanitizer();
         assertEquals("RECTANGLE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
     }
