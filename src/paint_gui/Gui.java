@@ -225,7 +225,7 @@ public class Gui extends JFrame {
         lineBtn = createButton("Line");
         polygonBtn = createButton("Polygon");
         rectangleBtn = createButton("Rectangle");
-        undoBtn = createButton("undo");
+        undoBtn = createButton("Undo");
         historyBtn = createButton("History");
         fillBtn = makeFillButton();
         black = createButton("Black");
@@ -248,7 +248,7 @@ public class Gui extends JFrame {
         JButton tempBtn = new JButton(name);
         tempBtn.addActionListener(actionEvent -> {
             switch (name) {
-                case "undo":
+                case "Undo":
                     try {
                         undo.undo();
                     } catch (UndoException e) {
