@@ -1,6 +1,8 @@
 package Shapes;
 import java.util.List;
 import java.awt.*;
+
+import Exceptions.IllegalShapeException;
 import paint_gui.Canvas;
 
 //mouse handlers
@@ -35,10 +37,14 @@ public class Polygon extends AbstractShape implements FillingShape {
      * by existing points
      * @param points x and y coordinates of each point of the polygon
      */
-    public Polygon(List points) {
+    public Polygon(List points) throws IllegalShapeException {
         super(points);
+        if (points.size()<3) {
+            throw new IllegalShapeException(points.size());
+        }
         points.addAll(points);
     }
+
 
     /**
      * The polygon implementation of draw. Uses awt drawLine

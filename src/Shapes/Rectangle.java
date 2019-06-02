@@ -3,6 +3,7 @@ package Shapes;
 import java.awt.*;
 import java.util.List;
 
+import Exceptions.IllegalShapeException;
 import paint_gui.Canvas;
 
 /**
@@ -32,8 +33,11 @@ public class Rectangle extends AbstractShape implements FillingShape {
      * @param points x and y coordinates of the top left of
      *               the rectangle and bottom right
      */
-    public Rectangle(List points) {
+    public Rectangle(List points) throws IllegalShapeException {
         super(points);
+        if (points.size()!=2){
+            throw new IllegalShapeException(2,className, points.size());
+        }
     }
 
     /**
