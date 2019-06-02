@@ -17,7 +17,6 @@ public class Canvas extends JComponent {
     private Graphics2D theInk;
     private Image image;
     private List<String> commands = new ArrayList<String>();
-    private boolean fill = false;
 
     /**
      * Instantiates a new canvas
@@ -86,7 +85,8 @@ public class Canvas extends JComponent {
     public void readCommands(){
         Graphics2D fillInk = (Graphics2D) image.getGraphics();
 
-        //Reset theInk and fill to their default values
+        boolean fill = false;
+        //Reset theInk to the grey colour
         theInk.setPaint(Color.DARK_GRAY);
         for (String lineFile : commands)
         {
