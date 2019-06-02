@@ -1,4 +1,4 @@
-package Shapes.ShapeTests;
+package ShapeTests;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,8 +40,7 @@ class ShapeTest {
 
         Shapes.Shape shape = new Shapes.Rectangle(testPoints);
 
-        //calculate with canvas bounds
-        System.out.println(canvas.getSize());
+
         assertEquals("RECTANGLE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
     }
 
@@ -61,8 +60,6 @@ class ShapeTest {
 
         Shapes.Shape shape = new Shapes.Ellipse(testPoints);
 
-        //calculate with canvas bounds
-        System.out.println(canvas.getSize());
         assertEquals("ELLIPSE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
     }
 
@@ -82,8 +79,7 @@ class ShapeTest {
 
         Shapes.Shape shape = new Shapes.Line(testPoints);
 
-        //calculate with canvas bounds
-        System.out.println(canvas.getSize());
+
         assertEquals("LINE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
     }
 
@@ -111,45 +107,25 @@ class ShapeTest {
 
         Shapes.Shape shape = new Shapes.Polygon(testPoints);
 
-        //calculate with canvas bounds
-        System.out.println(canvas.getSize());
         assertEquals("POLYGON 0.5 0.0 1.0 0.5 0.5 1.0 0.0 0.5", shape.getCommand(canvas));
     }
 
 
     /**
-     * Test draw preview doesn't mess up actual points
+     * Give drawSanitizer points that are reversed and see if
+     * it reverts them correctly
      */
     @Test
-    void drawPreview() {
-
-    }
-
-    @Test
     void drawSanitizer() {
-
-
-
-    }
-
-
-    @Test
-    void addPoint() {
-    }
-
-    @Test
-    void mousePressedAction() {
-    }
-
-    @Test
-    void mouseReleasedAction() {
-    }
-
-    @Test
-    void mouseMovedAction() {
-    }
-
-    @Test
-    void draw() {
+        List testPoints = new ArrayList<Point>();
+        Point rectPoint1 = new Point();
+        rectPoint1.setLocation(300,300);
+        Point rectPoint2 = new Point();
+        rectPoint2.setLocation(200,200);
+        testPoints.add(rectPoint1);
+        testPoints.add(rectPoint2);
+        Shapes.Shape shape = new Shapes.Rectangle(testPoints);
+        shape.drawSanitizer();
+        assertEquals("RECTANGLE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
     }
 }
