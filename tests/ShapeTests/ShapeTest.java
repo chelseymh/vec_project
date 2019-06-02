@@ -48,7 +48,7 @@ class ShapeTest {
         }
 
 
-        assertEquals("RECTANGLE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("RECTANGLE 0.50 0.50 0.75 0.75", shape.getCommand(canvas));
     }
 
     /**
@@ -72,7 +72,7 @@ class ShapeTest {
             e.printStackTrace();
         }
 
-        assertEquals("ELLIPSE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("ELLIPSE 0.50 0.50 0.75 0.75", shape.getCommand(canvas));
     }
 
     /**
@@ -83,7 +83,7 @@ class ShapeTest {
     void testLine() {
         List testPoints = new ArrayList<Point>();
         Point linePoint1 = new Point();
-        linePoint1.setLocation(200,200);
+        linePoint1.setLocation(193,200);
         Point linePoint2 = new Point();
         linePoint2.setLocation(300,300);
         testPoints.add(linePoint1);
@@ -97,7 +97,7 @@ class ShapeTest {
         }
 
 
-        assertEquals("LINE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("LINE 0.48 0.50 0.75 0.75", shape.getCommand(canvas));
     }
 
     /**
@@ -118,7 +118,7 @@ class ShapeTest {
         }
 
 
-        assertEquals("PLOT 0.5 0.5", shape.getCommand(canvas));
+        assertEquals("PLOT 0.50 0.50", shape.getCommand(canvas));
     }
 
     /**
@@ -150,7 +150,7 @@ class ShapeTest {
             e.printStackTrace();
         }
 
-        assertEquals("POLYGON 0.5 0.0 1.0 0.5 0.5 1.0 0.0 0.5", shape.getCommand(canvas));
+        assertEquals("POLYGON 0.50 0.00 1.00 0.50 0.50 1.00 0.00 0.50", shape.getCommand(canvas));
     }
 
 
@@ -174,7 +174,7 @@ class ShapeTest {
             e.printStackTrace();
         }
         shape.drawSanitizer();
-        assertEquals("RECTANGLE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("RECTANGLE 0.50 0.50 0.75 0.75", shape.getCommand(canvas));
     }
 
     /**
