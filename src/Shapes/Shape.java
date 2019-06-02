@@ -146,7 +146,8 @@ public abstract class Shape {
 
     public void drawPreview(MouseEvent e) {
         //temporarily add the preview point
-        Point originPoint = points.get(points.size()-1);
+        int x=points.get(points.size()-1).x;
+        int y=points.get(points.size()-1).y;
         addPoint(e.getX(), e.getY());
         //Wipe and redraw
         canvas.clean();
@@ -155,8 +156,9 @@ public abstract class Shape {
         canvas.repaint();
         //remove preview points
         points.remove(points.size()-1);
-        points.remove(points.size()-1);
-        points.add(originPoint);
+        points.remove(points.size()- 1);
+        addPoint(x,y);
+
     }
 
     /**
