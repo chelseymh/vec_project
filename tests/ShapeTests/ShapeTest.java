@@ -48,7 +48,7 @@ class ShapeTest {
         }
 
 
-        assertEquals("RECTANGLE 0.50 0.50 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("RECTANGLE 0.5000 0.5000 0.7500 0.7500", shape.getCommand(canvas));
     }
 
     /**
@@ -72,7 +72,7 @@ class ShapeTest {
             e.printStackTrace();
         }
 
-        assertEquals("ELLIPSE 0.50 0.50 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("ELLIPSE 0.5000 0.5000 0.7500 0.7500", shape.getCommand(canvas));
     }
 
     /**
@@ -97,7 +97,7 @@ class ShapeTest {
         }
 
 
-        assertEquals("LINE 0.48 0.50 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("LINE 0.4825 0.5000 0.7500 0.7500", shape.getCommand(canvas));
     }
 
     /**
@@ -118,7 +118,7 @@ class ShapeTest {
         }
 
 
-        assertEquals("PLOT 0.50 0.50", shape.getCommand(canvas));
+        assertEquals("PLOT 0.5000 0.5000", shape.getCommand(canvas));
     }
 
     /**
@@ -150,7 +150,7 @@ class ShapeTest {
             e.printStackTrace();
         }
 
-        assertEquals("POLYGON 0.50 0.00 1.00 0.50 0.50 1.00 0.00 0.50", shape.getCommand(canvas));
+        assertEquals("POLYGON 0.5000 0.0000 1.0000 0.5000 0.5000 1.0000 0.0000 0.5000", shape.getCommand(canvas));
     }
 
 
@@ -174,7 +174,7 @@ class ShapeTest {
             e.printStackTrace();
         }
         shape.drawSanitizer();
-        assertEquals("RECTANGLE 0.50 0.50 0.75 0.75", shape.getCommand(canvas));
+        assertEquals("RECTANGLE 0.5000 0.5000 0.7500 0.7500", shape.getCommand(canvas));
     }
 
     /**

@@ -130,14 +130,14 @@ public abstract class AbstractShape {
      * to recreate the shapes in canvas, or store them to a VEC file.
      * Takes the int saved points from the shape instance, scales with respect
      * to canvas, and saves them as float points. The class name is used to create
-     * the first parameter of the VEC file.
+     * the first parameter of the VEC file. Has 4 decimal places for more accuracy
      * @param canvas canvas is needed so the points can be scaled appropriately
      * @return
      */
     public String getCommand(Canvas canvas) {
         String command = className.toUpperCase();
         for (Point point : this.points) {
-            command += String.format(" %1$.2f %2$.2f", (float) point.getX() / canvas.getHeight(), (float) point.getY() / canvas.getWidth());
+            command += String.format(" %1$.4f %2$.4f", (float) point.getX() / canvas.getHeight(), (float) point.getY() / canvas.getWidth());
         }
         return command;
     }
