@@ -61,7 +61,7 @@ public class Polygon extends Shape implements FillingShape {
                 addPoint(e.getX(),e.getY());
                 //Don't draw unless there is a complete pair of points
                 if (points.size()>1){
-                    drawPreview(e, canvas);
+                    drawPreview(e);
                 }
          //   }
         }
@@ -85,7 +85,7 @@ public class Polygon extends Shape implements FillingShape {
     public void mouseMovedAction(MouseEvent e){
         //Don't draw until at least first point is confirmed
         if (points.size()>0){
-            drawPreview(e, canvas);
+            drawPreview(e);
         }
     }
 }
