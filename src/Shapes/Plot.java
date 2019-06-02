@@ -26,10 +26,13 @@ public class Plot extends Shape {
         canvas.addCommand(getCommand(canvas));
         canvas.clean();
         canvas.readCommands();
+        points.clear();
     }
 
     //Plot is a single click shape so no release action
     @Override
     public void mouseReleasedAction(MouseEvent e) {
     }
+
+
 }

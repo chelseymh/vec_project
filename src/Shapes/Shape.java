@@ -49,14 +49,10 @@ public abstract class Shape {
             }
 
             @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
+            public void mouseEntered(MouseEvent e) {}
 
             @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
+            public void mouseExited(MouseEvent e) {}
         };
 
         canvas.addMouseListener(mouseListener);
@@ -67,7 +63,7 @@ public abstract class Shape {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (Gui.toggledButton.equals(className)) {
-                    drawPreview(e, canvas);
+                    //drawPreview(e, canvas);
                 }
             }
 
