@@ -66,6 +66,8 @@ public class Plot extends AbstractShape {
     @Override
     public void mouseReleasedAction(MouseEvent e) {
     }
+    //Plot is a single click shape so no drag action
+    public void mouseDraggedAction(MouseEvent e) {}
 
 
 }

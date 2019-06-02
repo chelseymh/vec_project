@@ -286,7 +286,6 @@ public class Gui extends JFrame {
                         try {
                             //Get name of class to create from button name
                             Class shapeClass = Class.forName("Shapes."+ name);
-                            System.out.println("name = " + name);
                             //Instantiate from associated constructor and pass through parameters
                             Object shape = shapeClass.getConstructor(Canvas.class).newInstance(canvas);
                         } catch (Exception e){

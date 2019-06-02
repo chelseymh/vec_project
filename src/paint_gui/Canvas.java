@@ -96,7 +96,6 @@ public class Canvas extends JComponent {
             switch (input[0].toLowerCase()) {
                 //Reads a PEN color VEC command
                 case "pen":
-                    System.out.println("pen");
                     theInk.setPaint(Color.decode(input[1]));
                     break;
                     //Reads a FILL OFF VEC command

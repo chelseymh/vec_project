@@ -97,15 +97,12 @@ public abstract class AbstractShape {
             public void mouseExited(MouseEvent e) {}
         };
 
-
-
-
         MouseMotionListener mouseMotionListener = new MouseMotionListener() {
 
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (Gui.toggledButton.equals(className)) {
-                    drawPreview(e);
+                    mouseDraggedAction(e);
                 }
             }
 
@@ -168,7 +165,6 @@ public abstract class AbstractShape {
         points.remove(points.size()-1);
         points.remove(points.size()- 1);
         addPoint(x,y);
-
     }
 
     /**
@@ -238,6 +234,10 @@ public abstract class AbstractShape {
      * @param e Takes the mouse event so it can be used by the action
      */
     public void mouseMovedAction(MouseEvent e) {
+    }
+
+    public void mouseDraggedAction(MouseEvent e) {
+        drawPreview(e);
     }
 
     /**
