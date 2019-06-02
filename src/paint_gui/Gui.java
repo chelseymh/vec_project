@@ -199,7 +199,7 @@ public class Gui extends JFrame {
         //Canvas needs to take up the space below fileMenu panel
         int sizeY = eastPanel.getHeight();
 
-        //Add a leetleicious buffer
+        //Add a little buffer
         sizeX -= 20;
         sizeY -= 20;
         //If the width is bigger than the height, the size of the square
@@ -286,6 +286,7 @@ public class Gui extends JFrame {
                         try {
                             //Get name of class to create from button name
                             Class shapeClass = Class.forName("Shapes."+ name);
+                            System.out.println("name = " + name);
                             //Instantiate from associated constructor and pass through parameters
                             Object shape = shapeClass.getConstructor(Canvas.class).newInstance(canvas);
                         } catch (Exception e){
