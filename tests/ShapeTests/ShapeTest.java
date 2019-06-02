@@ -4,7 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import paint_gui.Canvas;
-import paint_gui.Gui;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -123,7 +122,7 @@ class ShapeTest {
      */
     @Test
     void drawPreview() {
-        
+
     }
 
     @Test
@@ -132,6 +131,7 @@ class ShapeTest {
 
 
     }
+
 
     @Test
     void addPoint() {
