@@ -23,9 +23,21 @@ import java.util.List;
  * the current instance
  */
 public abstract class AbstractShape {
+    /**
+     * The canvas on which to paint the given shape on.
+     */
     protected paint_gui.Canvas canvas;
+    /**
+     * List of points of the individual shape. Dynamic in how many points the shape can contain.
+     */
     protected List<Point> points = new ArrayList<>();
+    /**
+     * Records whether the shape has been drawn and the <code>MouseListener</code>s should be removed.
+     */
     protected boolean done;
+    /**
+     * Necessary field for the testing of shapes
+     */
     protected String className = this.getClass().getSimpleName();
 
 
@@ -230,7 +242,7 @@ public abstract class AbstractShape {
 
     /**
      * Abstract command the children classes are expected to implement
-     * that will draw the shape that they are
+     * that will draw the shape the way it should be
      * @param g the ink the shape will be drawn in
      */
     public abstract void draw(Graphics2D g);
