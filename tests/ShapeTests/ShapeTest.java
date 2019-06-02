@@ -84,6 +84,22 @@ class ShapeTest {
     }
 
     /**
+     * Tests Plot creation via points,
+     * screen scaling and getCommand for plot
+     */
+    @Test
+    void testPlot() {
+        List testPoints = new ArrayList<Point>();
+        Point plotPoint = new Point();
+        plotPoint.setLocation(200,200);
+        testPoints.add(plotPoint);
+        Shapes.Shape shape = new Shapes.Plot(testPoints);
+
+
+        assertEquals("PLOT 0.5 0.5", shape.getCommand(canvas));
+    }
+
+    /**
      * Tests Polygon creation via points,
      * screen scaling and getCommand for polygon
      */
