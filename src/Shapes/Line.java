@@ -1,6 +1,8 @@
 package Shapes;
 
 import java.awt.*;
+
+import Exceptions.IllegalShapeException;
 import paint_gui.Canvas;
 
 //mouse handlers
@@ -32,8 +34,11 @@ public class Line extends AbstractShape {
      * @param points x and y coordinates of the beginning of
      *               the line and end point
      */
-    public Line(List points) {
+    public Line(List points) throws IllegalShapeException {
         super(points);
+        if (points.size()!=2){
+            throw new IllegalShapeException(2,className, points.size());
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package Shapes;
 
+import Exceptions.IllegalShapeException;
 import paint_gui.Canvas;
 import paint_gui.Gui;
 
@@ -25,11 +26,8 @@ public abstract class AbstractShape {
     protected paint_gui.Canvas canvas;
     protected List<Point> points = new ArrayList<>();
     protected boolean done;
-    private String className = this.getClass().getSimpleName();
+    protected String className = this.getClass().getSimpleName();
 
-
-    public AbstractShape() {
-    }
 
     /**
      * Creates a new instance from a list of points. Used by FileHandler
@@ -38,7 +36,7 @@ public abstract class AbstractShape {
      * @param points Takes a List of the shape's points
      */
     public AbstractShape(List points) {
-        this.points.addAll(points);
+            this.points.addAll(points);
     }
 
     /**
@@ -230,9 +228,10 @@ public abstract class AbstractShape {
     public void mouseMovedAction(MouseEvent e) {
     }
 
+    /**
+     * Abstract command the children classes are expected to implement
+     * that will draw the shape that they are
+     * @param g the ink the shape will be drawn in
+     */
     public abstract void draw(Graphics2D g);
-
-
-
-
 }

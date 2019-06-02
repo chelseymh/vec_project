@@ -1,5 +1,6 @@
 package Shapes;
 
+import Exceptions.IllegalShapeException;
 import paint_gui.Canvas;
 
 import java.awt.*;
@@ -33,8 +34,11 @@ public class Ellipse extends AbstractShape implements FillingShape {
      *               the ellipse if it was enclosed with a
      *              rectangle and bottom right corner
      */
-    public Ellipse(List points) {
+    public Ellipse(List points) throws IllegalShapeException {
         super(points);
+        if (points.size()!=2){
+            throw new IllegalShapeException(2,className, points.size());
+        }
     }
 
     /**

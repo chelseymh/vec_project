@@ -1,6 +1,9 @@
 package paint_gui;
 
+import Exceptions.IllegalShapeException;
 import Shapes.*;
+import Shapes.Rectangle;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;

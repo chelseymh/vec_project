@@ -1,6 +1,8 @@
 package Shapes;
 
 import java.awt.*;
+
+import Exceptions.IllegalShapeException;
 import paint_gui.Canvas;
 
 import java.awt.event.MouseEvent;
@@ -33,8 +35,11 @@ public class Plot extends AbstractShape {
      * by existing points
      * @param points x and y coordinates of the plot
      */
-    public Plot(List points) {
+    public Plot(List points) throws IllegalShapeException {
         super(points);
+        if (points.size()!=1){
+            throw new IllegalShapeException(1,className, points.size());
+        }
     }
 
     /**
