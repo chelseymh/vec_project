@@ -7,7 +7,7 @@ import paint_gui.Canvas;
 import java.awt.event.MouseEvent;
 
 /**
- * Concrete child extension of Shape class. Creates a free
+ * Concrete child extension of AbstractShape class. Creates a free
  * form polygon with as many points as the user desires.
  * Implements abstract method draw by calling awt
  * line drawing command for as many points as have been selected
@@ -17,12 +17,12 @@ import java.awt.event.MouseEvent;
  * Polygon overrides and implements its own mousePressedAction,
  * mouseMovedAction, and mouseReleasedAction
  */
-public class Polygon extends Shape implements FillingShape {
+public class Polygon extends AbstractShape implements FillingShape {
 
     /**
      * The constructor called when the polygon is being created
      * by mouse. Passes the canvas constructor to parent
-     * class Shape and lets it deal with it.
+     * class AbstractShape and lets it deal with it.
      * @param canvas the canvas on which the shape is to be
      *               drawn
      */

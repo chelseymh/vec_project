@@ -7,19 +7,19 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 /**
- * Concrete child extension of Shape class. Creates a plot
+ * Concrete child extension of AbstractShape class. Creates a plot
  * shape. This is a single dot so has its own implementation
- * of several Shape methods. Overrides mousePressedAction
+ * of several AbstractShape methods. Overrides mousePressedAction
  * and mouseReleasedAction. Has two constructors,
  * one for user interactive mouse coordinate inputs and
  * a constructor for preexisting points.
  */
-public class Plot extends Shape {
+public class Plot extends AbstractShape {
 
     /**
      * The constructor called when the plot is being created
      * by mouse. Passes the canvas constructor to parent
-     * class Shape and lets it deal with it.
+     * class AbstractShape and lets it deal with it.
      * @param canvas the canvas on which the shape is to be
      *               drawn
      */
