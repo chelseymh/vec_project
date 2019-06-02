@@ -8,7 +8,7 @@ import paint_gui.Canvas;
 
 /**
  * Concrete child extension of Shape class. Creates a rectangle
- * shape. Implements abstract method draw with in built java rect
+ * shape. Implements abstract method draw with awt rect
  * drawing command as well as fill from the FillingShape class it
  * implements. Has two constructors, one for user interactive mouse
  * coordinate inputs and a constructor for preexisting points

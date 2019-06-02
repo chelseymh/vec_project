@@ -7,11 +7,11 @@ import java.util.List;
 
 /**
  * Concrete child extension of Shape class. Creates an ellipse
- * shape. Implements abstract method draw by calling inbuilt
- * java oval drawing command as well as fill from the
+ * shape. Implements abstract method draw by calling awt
+ * oval drawing command as well as fill from the
  * FillingShape class it implements. Has two constructors,
  * one for user interactive mouse coordinate inputs and
- * a constructor for preexisting points
+ * a constructor for preexisting points.
  */
 public class Ellipse extends Shape implements FillingShape {
 
@@ -30,7 +30,8 @@ public class Ellipse extends Shape implements FillingShape {
      * The constructor called when the ellipse is being created
      * by existing points
      * @param points x and y coordinates of the top left of
-     *               the rectangle and bottom right
+     *               the ellipse if it was enclosed with a
+     *              rectangle and bottom right corner
      */
     public Ellipse(List points) {
         super(points);
@@ -41,7 +42,7 @@ public class Ellipse extends Shape implements FillingShape {
      * deal with coordinates not being in the format the java draw
      * component expects then draws the ellipse with the now
      * corrected points using awt library drawOval
-     * @param g the Graphics2D tool the rectangle is to be drawn with
+     * @param g the Graphics2D tool the ellipse is to be drawn with
      */
     @Override
     public void draw(Graphics2D g) {
