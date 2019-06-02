@@ -104,7 +104,7 @@ public class Gui extends JFrame {
         westPanel.setLayout(new GridLayout(5, 1));
 
        // Instantiate the canvas
-        canvas = new Canvas(Color.white);
+        canvas = new Canvas();
         history = new History(canvas);
         undo = new Undo(canvas);
         undoHisOpen = true;
