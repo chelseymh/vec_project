@@ -25,13 +25,17 @@ class ShapeTest {
     void tearDown() {
     }
 
+    /**
+     * Tests Rectangle creation via points,
+     * screen scaling and getCommand for rectangle
+     */
     @Test
-    void getCommand() {
+    void testRectangle() {
         List testPoints = new ArrayList<Point>();
         Point rectPoint1 = new Point();
         rectPoint1.setLocation(200,200);
         Point rectPoint2 = new Point();
-        rectPoint1.setLocation(300,300);
+        rectPoint2.setLocation(300,300);
         testPoints.add(rectPoint1);
         testPoints.add(rectPoint2);
 
@@ -39,18 +43,93 @@ class ShapeTest {
 
         //calculate with canvas bounds
         System.out.println(canvas.getSize());
-//        assertEquals(400, canvas.getSize().height);
-//        assertEquals(400, canvas.getSize().width);
         assertEquals("RECTANGLE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
     }
 
+    /**
+     * Tests Ellipse creation via points,
+     * screen scaling and getCommand for ellipse
+     */
+    @Test
+    void testEllipse() {
+        List testPoints = new ArrayList<Point>();
+        Point ellPoint1 = new Point();
+        ellPoint1.setLocation(200,200);
+        Point ellPoint2 = new Point();
+        ellPoint2.setLocation(300,300);
+        testPoints.add(ellPoint1);
+        testPoints.add(ellPoint2);
+
+        Shapes.Shape shape = new Shapes.Ellipse(testPoints);
+
+        //calculate with canvas bounds
+        System.out.println(canvas.getSize());
+        assertEquals("ELLIPSE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
+    }
+
+    /**
+     * Tests Line creation via points,
+     * screen scaling and getCommand for line
+     */
+    @Test
+    void testLine() {
+        List testPoints = new ArrayList<Point>();
+        Point linePoint1 = new Point();
+        linePoint1.setLocation(200,200);
+        Point linePoint2 = new Point();
+        linePoint2.setLocation(300,300);
+        testPoints.add(linePoint1);
+        testPoints.add(linePoint2);
+
+        Shapes.Shape shape = new Shapes.Line(testPoints);
+
+        //calculate with canvas bounds
+        System.out.println(canvas.getSize());
+        assertEquals("LINE 0.5 0.5 0.75 0.75", shape.getCommand(canvas));
+    }
+
+    /**
+     * Tests Polygon creation via points,
+     * screen scaling and getCommand for polygon
+     */
+    @Test
+    void testPolygon() {
+        List testPoints = new ArrayList<Point>();
+        Point Point1 = new Point();
+        Point1.setLocation(200,0);
+        Point Point2 = new Point();
+        Point2.setLocation(400,200);
+        Point Point3 = new Point();
+        Point3.setLocation(200,400);
+        Point Point4 = new Point();
+        Point4.setLocation(0,200);
+
+        testPoints.add(Point1);
+        testPoints.add(Point2);
+        testPoints.add(Point3);
+        testPoints.add(Point4);
+
+
+        Shapes.Shape shape = new Shapes.Polygon(testPoints);
+
+        //calculate with canvas bounds
+        System.out.println(canvas.getSize());
+        assertEquals("POLYGON 0.5 0.0 1.0 0.5 0.5 1.0 0.0 0.5", shape.getCommand(canvas));
+    }
+
+
+    /**
+     * Test draw preview doesn't mess up actual points
+     */
     @Test
     void drawPreview() {
+        
     }
 
     @Test
     void drawSanitizer() {
-        
+
+
 
     }
 

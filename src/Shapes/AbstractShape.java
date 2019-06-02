@@ -130,7 +130,7 @@ public abstract class AbstractShape {
     public String getCommand(Canvas canvas) {
         String command = className.toUpperCase();
         for (Point point : this.points) {
-            command += String.format(" %1$.2f %2$.2f", (float) point.getX() / canvas.getHeight(), (float) point.getY() / canvas.getWidth());
+            command += String.format(" %1$3s %2$3s", (float) point.getX() / canvas.getHeight(), (float) point.getY() / canvas.getWidth());
         }
         return command;
     }
