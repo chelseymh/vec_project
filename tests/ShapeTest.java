@@ -1,5 +1,3 @@
-package ShapeTests;
-
 import Exceptions.IllegalShapeException;
 import Shapes.AbstractShape;
 import org.junit.jupiter.api.AfterEach;
