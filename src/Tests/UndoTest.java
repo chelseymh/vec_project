@@ -5,14 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import paint_gui.Undo;
 import paint_gui.Canvas;
-import java.awt.*;
-import java.util.Random;
 import Exceptions.UndoException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UndoTest {
-
     private Canvas canvas; // Is this meant to be static?
     private Undo undo;
 
@@ -52,5 +49,4 @@ class UndoTest {
         int size = canvas.getCommands().size();
         assertEquals(size, 0);
     }
-
 }
