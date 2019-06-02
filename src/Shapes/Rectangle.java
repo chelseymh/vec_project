@@ -41,7 +41,7 @@ public class Rectangle extends Shape implements FillingShape {
      * The rectangle implementation of draw. Calls drawSanitizer to
      * deal with coordinates not being in the format the java draw
      * component expects then draws the rectangle with the now
-     * corrected points using awt library drawRect
+     * corrected points using awt command drawRect
      * @param g the Graphics2D tool the rectangle is to be drawn with
      */
     @Override
@@ -55,13 +55,14 @@ public class Rectangle extends Shape implements FillingShape {
      * The rectangle implementation of fill. Calls drawSanitizer to
      * deal with coordinates not being in the format the java draw
      * component expects then draws and fills the rectangle with the now
-     * corrected points. Uses awt library fillRect
+     * corrected points. Uses awt command fillRect
      * @param g the Graphics2D tool the rectangle is to be drawn and
      *          filled with
      */
     @Override
     public void fill(Graphics2D g) {
         //fill with reverted points if needed
+        drawSanitizer();
             g.fillRect(points.get(0).x, points.get(0).y, points.get(1).x-points.get(0).x, points.get(1).y-points.get(0).y);
 
     }

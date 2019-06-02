@@ -39,8 +39,8 @@ public class Ellipse extends Shape implements FillingShape {
 
     /**
      * The ellipse implementation of draw. Calls drawSanitizer to
-     * deal with coordinates not being in the format the java draw
-     * component expects then draws the ellipse with the now
+     * deal with coordinates not being in the format awt
+     * expects then draws the ellipse with the now
      * corrected points using awt library drawOval
      * @param g the Graphics2D tool the ellipse is to be drawn with
      */
@@ -57,12 +57,13 @@ public class Ellipse extends Shape implements FillingShape {
      * The ellipse implementation of fill. Calls drawSanitizer to
      * deal with coordinates not being in the format the java draw
      * component expects then draws and fills the ellipse with the now
-     * corrected points. Uses awt library fillOval
+     * corrected points. Uses awt command fillOval
      * @param g the Graphics2D tool the rectangle is to be drawn and
      *          filled with
      */
     @Override
     public void fill(Graphics2D g) {
+        drawSanitizer();
         g.fillOval(points.get(0).x, points.get(0).y, points.get(1).x-points.get(0).x, points.get(1).y-points.get(0).y);;
 
     }
